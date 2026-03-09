@@ -4848,30 +4848,24 @@
         }
 
         const depositBtn = document.getElementById('depositBtn');
-        if (depositBtn) {
-            depositBtn.addEventListener('click', function() {
-                if (!currentUser) {
-                    showNotification('❌ Сначала войди в аккаунт!', 'bad');
-                    openAuthModal();
-                    return;
-                }
-                depositModal.classList.add('active');
-                depositAmount.value = '100';
-                payAmountSpan.textContent = '100 ₽';
-            });
+if (depositBtn) {
+    depositBtn.addEventListener('click', function() {
+        if (!currentUser) {
+            showNotification('❌ Сначала войди в аккаунт!', 'bad');
+            openAuthModal();
+            return;
         }
-
-        if (inventoryBtn) {
-            inventoryBtn.addEventListener('click', function() {
-                if (!currentUser) {
-                    showNotification('❌ Сначала войди в аккаунт!', 'bad');
-                    openAuthModal();
-                    return;
-                }
-                inventoryModal.classList.add('active');
-                updateInventoryUI();
-            });
-        }
+        
+        // Ссылка на DonationAlerts с минимальным режимом
+        const donateLink = 'https://www.donationalerts.com/r/lucky_drop_so2?minimal=1';
+        
+        // Открываем в новом окне
+        window.open(donateLink, '_blank');
+        
+        // Показываем уведомление
+        showNotification('💳 Переход к оплате...', 'good');
+    });
+}
 
         if (closeInventory) {
             closeInventory.addEventListener('click', function() {
