@@ -4179,7 +4179,7 @@
                 localStorage.setItem('pendingOrders', JSON.stringify(pendingOrders));
                 
                 // Формируем ссылку на оплату через Crystal Pay
-                const payUrl = `https://pay.crystalpay.io/?s=${CRYSTAL_PAY_ID}&n=${orderId}&a=${amount}`;
+                const payUrl = `https://pay.crystalpay.io/?s=${CRYSTAL_PAY_ID}&n=${orderId}&a=${amount}&n=success&u=https://174dml-dot.github.io/luckydrop/`;
                 
                 // Открываем окно оплаты
                 window.open(payUrl, '_blank');
