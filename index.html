@@ -2497,6 +2497,49 @@
         let usedPromoCodes = JSON.parse(localStorage.getItem('usedPromoCodes')) || {};
         let promoCodeUsage = JSON.parse(localStorage.getItem('promoCodeUsage')) || {};
         let bannedUsers = JSON.parse(localStorage.getItem('bannedUsers')) || [];
+
+        // Загружаем пользователей с сервера при старте
+fetch('get_users.php')
+    .then(response => response.json())
+    .then(data => {
+        if (data.users) {
+            // Сохраняем в localStorage
+            localStorage.setItem('users', JSON.stringify(data.users));
+            
+            // Обновляем текущего пользователя, если он есть
+            let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                const updatedUser = data.users.find(u => u.username === currentUser.username);
+                if (updatedUser) {
+                    currentUser = updatedUser;
+                    balance = currentUser.balance;
+                    inventory = currentUser.inventory || [];
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    updateBalanceUI();
+                }
+            }
+        }
+    })
+    .catch(() => {});
+
+// Функция для сохранения пользователей на сервер
+function saveUsersToServer() {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    fetch('save_users.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ users: users })
+    }).catch(() => {});
+}
+
+// Переопределяем saveUserData, чтобы сохранять и локально и на сервер
+const originalSaveUserData = saveUserData;
+saveUserData = function() {
+    if (originalSaveUserData) originalSaveUserData();
+    saveUsersToServer();
+};
         
         const currency = 'G';
         const MARKET_FEE = 0.2;
@@ -4855,6 +4898,15 @@ if (depositBtn) {
             openAuthModal();
             return;
         }
+        
+        const username = currentUser.username;
+        const message = encodeURIComponent(`username: ${username}`);
+        const donateLink = `https://www.donationalerts.com/r/lucky_drop_so2?minimal=1&message=${message}`;
+        
+        window.open(donateLink, '_blank');
+        showNotification('💳 Переход к оплате...', 'good');
+    });
+}
         
         // Ссылка на DonationAlerts с минимальным режимом
         const donateLink = 'https://www.donationalerts.com/r/lucky_drop_so2?minimal=1';
