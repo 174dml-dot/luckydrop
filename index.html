@@ -5530,7 +5530,7 @@ botsListDiv.innerHTML = sortedBets.map(bot => `
 
         function getCrashPoint() {
             const rand = Math.random() * 100;
-            if (rand < 40) return Math.random() * 0.2 + 1.1;
+            if (rand < 35) return Math.random() * 0.2 + 1;
             if (rand < 65) return Math.random() * 0.3 + 1.2;
             if (rand < 85) return Math.random() * 0.5 + 1.5;
             if (rand < 95) return Math.random() * 1.0 + 2.0;
