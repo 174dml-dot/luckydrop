@@ -3994,9 +3994,9 @@ botsListDiv.innerHTML = sortedBets.map(bot => `
             if (item.price <= 5) return 13;
             if (item.price <= 7) return 15;
             if (item.price <= 9) return 11;
-            if (item.price <= 10) return 9;
+            if (item.price <= 10) return 11;
             if (item.price <= 20) return 7;
-            if (item.price <= 50) return 7;
+            if (item.price <= 50) return 5;
             return 1;
         }
         return (1 / caseData.items.length * 100).toFixed(1);
@@ -4076,8 +4076,8 @@ botsListDiv.innerHTML = sortedBets.map(bot => `
                 if (rand < 51) return items.find(i => i.id === 'm60_fatal');
                 if (rand < 66) return items.find(i => i.id === 'spas_zeus');
                 if (rand < 77) return items.find(i => i.id === 'p90_pilot');
-                if (rand < 86) return items.find(i => i.id === 'ump45_spirit');
-                if (rand < 93) return items.find(i => i.id === 'tec9_splash');
+                if (rand < 88) return items.find(i => i.id === 'ump45_spirit');
+                if (rand < 95) return items.find(i => i.id === 'tec9_splash');
                 if (rand < 100) return items.find(i => i.id === 'fs_venom');
                 return items.find(i => i.id === 'akr_sport');
             }
