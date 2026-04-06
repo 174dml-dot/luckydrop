@@ -4011,25 +4011,26 @@ botsListDiv.innerHTML = sortedBets.map(bot => `
     itemsGrid.innerHTML = sortedItems.map((item, index) => {
         const chance = getItemChance(item, caseData);
         
-        // Определяем, является ли иконка уже HTML-тегом img
-        const isHtmlImage = typeof item.icon === 'string' && (item.icon.includes('<img') || item.icon.includes('src='));
-        // Или ссылкой на картинку
-        const isImageUrl = !isHtmlImage && item.icon && (item.icon.startsWith('http') || item.icon.startsWith('/') || item.icon.includes('.png') || item.icon.includes('.jpg'));
-        
+        // Обработка иконки
         let iconHtml = '';
-        if (isHtmlImage) {
-            // Если это уже HTML-тег img — оставляем как есть
-            iconHtml = item.icon;
-        } else if (isImageUrl) {
-            // Если это ссылка на картинку — оборачиваем в img
-            iconHtml = `<img src="${item.icon}" alt="${item.name}" style="width: 40px; height: 40px; object-fit: contain;">`;
+        if (typeof item.icon === 'string' && item.icon.includes('<img')) {
+            // Если это уже HTML-строка с img, извлекаем src
+            const srcMatch = item.icon.match(/src="([^"]+)"/);
+            if (srcMatch) {
+                iconHtml = `<img src="${srcMatch[1]}" style="width: 40px; height: 40px; object-fit: contain;">`;
+            } else {
+                iconHtml = item.icon;
+            }
+        } else if (typeof item.icon === 'string' && (item.icon.startsWith('http') || item.icon.includes('.png') || item.icon.includes('.jpg'))) {
+            // Если это просто ссылка на картинку
+            iconHtml = `<img src="${item.icon}" style="width: 40px; height: 40px; object-fit: contain;">`;
         } else {
-            // Иначе это эмодзи
+            // Эмодзи
             iconHtml = item.icon;
         }
         
         return `
-            <div class="item-card" data-item-index="${index}" data-item-name="${item.name}" data-item-price="${item.price}" data-item-chance="${chance}" data-item-icon="${item.icon}" data-is-image="${isImageUrl || isHtmlImage}">
+            <div class="item-card" data-item-index="${index}" data-item-name="${item.name}" data-item-price="${item.price}" data-item-chance="${chance}">
                 <div class="item-card-icon">
                     ${iconHtml}
                 </div>
