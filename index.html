@@ -3813,9 +3813,11 @@ botsListDiv.innerHTML = sortedBets.map(bot => `
         function renderCases() {
     if (!casesGrid) return;
     casesGrid.innerHTML = cases.map(c => {
-        // Проверяем, является ли иконка ссылкой на картинку (содержит .png или .jpg)
-        const isImage = c.icon && (c.icon.includes('.png') || c.icon.includes('.jpg') || c.icon.includes('.jpeg'));
-        const iconHtml = isImage ? `<img src="${c.icon}" alt="${c.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;">` : c.icon;
+        // Проверяем, является ли иконка картинкой (заканчивается на .png)
+        let iconHtml = c.icon;
+        if (c.icon && (c.icon.endsWith('.png') || c.icon.endsWith('.jpg') || c.icon.endsWith('.jpeg'))) {
+            iconHtml = `<img src="${c.icon}" alt="${c.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;">`;
+        }
         
         return `
             <div class="case-item" data-case-id="${c.id}">
