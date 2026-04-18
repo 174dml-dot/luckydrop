@@ -4311,13 +4311,7 @@ const fireItems = [
     casePage.classList.add('active');
 }
 
-        function renderItemsGrid(caseData) {
-    const itemsGrid = document.getElementById('itemsGrid');
-    if (!itemsGrid) return;
-    
-    const sortedItems = [...caseData.items].sort((a, b) => a.price - b.price);
-    
-    function getItemChance(item, caseData) {
+        function getItemChance(item, caseData) {
     // Для кейса Beginner
     if (caseData.id === 'beginner') {
         if (item.price <= 0.5) return 10;
@@ -4332,35 +4326,35 @@ const fireItems = [
         return 1;
     }
     
-    // Для кейса Cheap — жёсткие шансы по цене
+    // Для кейса Cheap — уникальные диапазоны по цене
     if (caseData.id === 'cheap') {
-        if (item.price <= 0.5) return 9;      // Mallard Paint Scrawl — 9%
-        if (item.price <= 0.7) return 7;      // G22 Scale — 7%
-        if (item.price <= 1) return 7;        // AKR Scale — 7%
-        if (item.price <= 5.5) return 7;      // SM1014 Branches — 7%
-        if (item.price <= 6) return 15;       // AKR12 Steam Beast — 15%
-        if (item.price <= 7) return 15;       // MP7 Palace — 15%
-        if (item.price <= 8) return 15;       // M110 Themis — 15%
-        if (item.price <= 23) return 19;      // P350 Lab Prototype — 19%
-        if (item.price <= 500) return 5;      // Famas Fury — 5%
-        return 1;                              // M4A1 Treasure Hunter — 1%
+        if (item.price <= 0.21) return 9;   // Mallard
+        if (item.price <= 0.45) return 7;   // G22 Scale
+        if (item.price <= 0.75) return 7;   // AKR Scale
+        if (item.price <= 5.23) return 7;   // SM1014 Branches
+        if (item.price <= 5.6) return 15;   // AKR12 Steam Beast
+        if (item.price <= 5.95) return 15;  // MP7 Palace
+        if (item.price <= 7.9) return 15;   // M110 Themis
+        if (item.price <= 22.3) return 19;  // P350 Lab Prototype
+        if (item.price <= 450) return 5;    // Famas Fury
+        return 1;                           // M4A1 Treasure Hunter
     }
     
-    // Для кейса Fire — жёсткие шансы по цене
+    // Для кейса Fire — уникальные диапазоны по цене
     if (caseData.id === 'fire') {
-        if (item.price <= 1) return 10;       // UMP45 Heatwave — 10%
-        if (item.price <= 2) return 10;       // VAL Forge — 10%
-        if (item.price <= 50) return 13;      // P350 Emberbird — 13%
-        if (item.price <= 60) return 12;      // F/S Venom — 12%
-        if (item.price <= 150) return 18;     // F/S Hellspawn — 18%
-        if (item.price <= 200) return 18;     // AKIMBO UZI Fire Horse — 18%
-        if (item.price <= 1700) return 3;     // AWM Vampire — 3%
-        if (item.price <= 300) return 12;     // S3 AKR12 Year Of The Horse — 12%
-        if (item.price <= 2100) return 3;     // AKR Vermilion — 3%
-        return 1;                              // MP3 2 Years Red — 1%
+        if (item.price <= 0.4) return 10;   // UMP45 Heatwave
+        if (item.price <= 1.1) return 10;   // VAL Forge
+        if (item.price <= 45.5) return 13;  // P350 Emberbird
+        if (item.price <= 40) return 12;    // F/S Venom
+        if (item.price <= 145) return 18;   // F/S Hellspawn
+        if (item.price <= 175) return 18;   // AKIMBO UZI Fire Horse
+        if (item.price <= 1600) return 3;   // AWM Vampire
+        if (item.price <= 250) return 12;   // S3 AKR12 Year Of The Horse
+        if (item.price <= 2030) return 3;   // AKR Vermilion
+        return 1;                           // MP3 2 Years Red
     }
     
-    // Для всех остальных кейсов - равные шансы
+    // Для остальных кейсов — равные шансы
     return (1 / caseData.items.length * 100).toFixed(1);
 }
 
