@@ -3624,17 +3624,17 @@ const doubleUpGameElem = document.getElementById('doubleUpGame');
 ];
 
         const cheapItems = [
-            { id: 'm60_warp', icon: '🔫', name: 'M6O "Warp"', price: 0.6, rarity: 'common' },
-            { id: 'val_joker', icon: '🔫', name: 'VAL "Joker"', price: 0.6, rarity: 'common' },
-            { id: 'p350_oni', icon: '🔫', name: 'P350 "Oni"', price: 1.5, rarity: 'common' },
-            { id: 'p90_clash', icon: '🔫', name: 'P90 "Clash"', price: 4.0, rarity: 'common' },
-            { id: 'akr12_spring', icon: '🔫', name: 'AKR12 "Spring"', price: 4.4, rarity: 'common' },
-            { id: 'akr_nano', icon: '🔫', name: 'AKR "Nano"', price: 17.5, rarity: 'rare' },
-            { id: 'fs_vines', icon: '⚔️', name: 'F/S "Vines"', price: 26.6, rarity: 'rare' },
-            { id: 'tec9_tie_dye', icon: '🔫', name: 'TEC-9 "Tie Dye" ST', price: 27.0, rarity: 'rare' },
-            { id: 'm4a1_tempest', icon: '⚔️', name: 'M4A1 "Tempest"', price: 62.6, rarity: 'legendary' },
-            { id: 'usp_rainforest', icon: '🔫', name: 'USP "Rainforest"', price: 100.0, rarity: 'legendary' }
-        ];
+    { id: 'mallard_paint_scrawl', icon: '🔫', name: 'Mallard "Paint Scrawl"', price: 0.21, rarity: 'common', chance: 9 },
+    { id: 'g22_scale', icon: '🔫', name: 'G22 "Scale"', price: 0.45, rarity: 'common', chance: 7 },
+    { id: 'akr_scale', icon: '🔫', name: 'AKR "Scale"', price: 0.75, rarity: 'common', chance: 7 },
+    { id: 'sm1014_branches', icon: '🔫', name: 'SM1014 "Branches"', price: 5.23, rarity: 'common', chance: 7 },
+    { id: 'akr12_steam_beast', icon: '🔫', name: 'AKR12 "Steam Beast"', price: 5.6, rarity: 'common', chance: 15 },
+    { id: 'mp7_palace', icon: '🔫', name: 'MP7 "Palace"', price: 5.95, rarity: 'common', chance: 15 },
+    { id: 'm110_themis', icon: '🔫', name: 'M110 "Themis"', price: 7.9, rarity: 'common', chance: 15 },
+    { id: 'p350_lab_prototype', icon: '🔫', name: 'P350 "Lab Prototype"', price: 22.3, rarity: 'rare', chance: 19 },
+    { id: 'famas_fury', icon: '⚔️', name: 'Famas "Fury"', price: 450, rarity: 'legendary', chance: 5 },
+    { id: 'm4a1_treasure_hunter', icon: '⚔️', name: 'M4A1 "Treasure Hunter"', price: 600, rarity: 'mythical', chance: 1 }
+];
 
         const fireItems = [
     { id: 'ump45_heatwave', icon: '2ED3CC74-77B7-4955-8D32-20E1DD8B8504.png', name: 'UMP45 "Heatwave"', price: 0.4, rarity: 'common', chance: 10 },
@@ -4434,6 +4434,16 @@ const doubleUpGameElem = document.getElementById('doubleUpGame');
     }
     
     if (caseData.id === 'fire') {
+        const rand = Math.random() * 100;
+        let cumulative = 0;
+        for (const item of items) {
+            cumulative += item.chance;
+            if (rand < cumulative) return item;
+        }
+        return items[0];
+    }
+    
+    if (caseData.id === 'cheap') {
         const rand = Math.random() * 100;
         let cumulative = 0;
         for (const item of items) {
