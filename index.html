@@ -4368,46 +4368,46 @@ const fireItems = [
     // Для кейса Beginner
     if (caseData.id === 'beginner') {
         const rand = Math.random() * 100;
-        if (rand < 10) return items.find(i => i.id === 'fs_zap');
-        if (rand < 23) return items.find(i => i.id === 'mp7_rebelion');
-        if (rand < 38) return items.find(i => i.id === 'mp5_clouds');
-        if (rand < 51) return items.find(i => i.id === 'm60_fatal');
-        if (rand < 66) return items.find(i => i.id === 'spas_zeus');
-        if (rand < 77) return items.find(i => i.id === 'p90_pilot');
-        if (rand < 88) return items.find(i => i.id === 'ump45_spirit');
-        if (rand < 95) return items.find(i => i.id === 'tec9_splash');
-        if (rand < 100) return items.find(i => i.id === 'fs_venom');
-        return items.find(i => i.id === 'akr_sport');
+        if (rand < 10) return items[0];  // fs_zap
+        if (rand < 23) return items[1];  // mp7_rebelion
+        if (rand < 38) return items[2];  // mp5_clouds
+        if (rand < 51) return items[3];  // m60_fatal
+        if (rand < 66) return items[4];  // spas_zeus
+        if (rand < 77) return items[5];  // p90_pilot
+        if (rand < 88) return items[6];  // ump45_spirit
+        if (rand < 95) return items[7];  // tec9_splash
+        if (rand < 100) return items[8]; // fs_venom
+        return items[9];                  // akr_sport
     }
     
-    // Для кейса Cheap — жёсткие шансы (как в Beginner)
+    // Для кейса Cheap (порядок из cheapItems)
     if (caseData.id === 'cheap') {
         const rand = Math.random() * 100;
-        if (rand < 9) return items.find(i => i.id === 'mallard_paint_scrawl');      // 9%
-        if (rand < 16) return items.find(i => i.id === 'g22_scale');                 // 7% (9+7=16)
-        if (rand < 23) return items.find(i => i.id === 'akr_scale');                 // 7% (16+7=23)
-        if (rand < 30) return items.find(i => i.id === 'sm1014_branches');           // 7% (23+7=30)
-        if (rand < 45) return items.find(i => i.id === 'akr12_steam_beast');        // 15% (30+15=45)
-        if (rand < 60) return items.find(i => i.id === 'mp7_palace');                // 15% (45+15=60)
-        if (rand < 75) return items.find(i => i.id === 'm110_themis');               // 15% (60+15=75)
-        if (rand < 94) return items.find(i => i.id === 'p350_lab_prototype');        // 19% (75+19=94)
-        if (rand < 99) return items.find(i => i.id === 'famas_fury');                // 5% (94+5=99)
-        return items.find(i => i.id === 'm4a1_treasure_hunter');                     // 1% (99+1=100)
+        if (rand < 9) return items[0];   // Mallard
+        if (rand < 16) return items[1];  // G22 Scale
+        if (rand < 23) return items[2];  // AKR Scale
+        if (rand < 30) return items[3];  // SM1014 Branches
+        if (rand < 45) return items[4];  // AKR12 Steam Beast
+        if (rand < 60) return items[5];  // MP7 Palace
+        if (rand < 75) return items[6];  // M110 Themis
+        if (rand < 94) return items[7];  // P350 Lab Prototype
+        if (rand < 99) return items[8];  // Famas Fury
+        return items[9];                  // M4A1 Treasure Hunter
     }
     
-    // Для кейса Fire — жёсткие шансы
+    // Для кейса Fire (порядок из fireItems)
     if (caseData.id === 'fire') {
         const rand = Math.random() * 100;
-        if (rand < 10) return items.find(i => i.id === 'ump45_heatwave');            // 10%
-        if (rand < 20) return items.find(i => i.id === 'val_forge');                 // 10% (10+10=20)
-        if (rand < 33) return items.find(i => i.id === 'p350_emberbird');            // 13% (20+13=33)
-        if (rand < 45) return items.find(i => i.id === 'fs_venom');                  // 12% (33+12=45)
-        if (rand < 63) return items.find(i => i.id === 'fs_hellspawn');              // 18% (45+18=63)
-        if (rand < 81) return items.find(i => i.id === 'akimbo_uzi_fire_horse');     // 18% (63+18=81)
-        if (rand < 84) return items.find(i => i.id === 'awm_vampire');               // 3% (81+3=84)
-        if (rand < 96) return items.find(i => i.id === 's3_akr12_year_of_the_horse'); // 12% (84+12=96)
-        if (rand < 99) return items.find(i => i.id === 'akr_vermilion');             // 3% (96+3=99)
-        return items.find(i => i.id === 'mp3_2_years_red');                           // 1% (99+1=100)
+        if (rand < 10) return items[0];  // UMP45 Heatwave
+        if (rand < 20) return items[1];  // VAL Forge
+        if (rand < 33) return items[2];  // P350 Emberbird
+        if (rand < 45) return items[3];  // F/S Venom
+        if (rand < 63) return items[4];  // F/S Hellspawn
+        if (rand < 81) return items[5];  // AKIMBO UZI Fire Horse
+        if (rand < 84) return items[6];  // AWM Vampire
+        if (rand < 96) return items[7];  // S3 AKR12 Year Of The Horse
+        if (rand < 99) return items[8];  // AKR Vermilion
+        return items[9];                  // MP3 2 Years Red
     }
     
     // Для всех остальных кейсов — равные шансы
