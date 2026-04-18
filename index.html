@@ -4318,104 +4318,50 @@ const doubleUpGameElem = document.getElementById('doubleUpGame');
     const sortedItems = [...caseData.items].sort((a, b) => a.price - b.price);
     
     function getItemChance(item, caseData) {
-        // Для кейса Beginner
-        if (caseData.id === 'beginner') {
-            if (item.price <= 0.5) return 10;
-            if (item.price <= 1) return 13;
-            if (item.price <= 3) return 15;
-            if (item.price <= 5) return 13;
-            if (item.price <= 7) return 15;
-            if (item.price <= 9) return 11;
-            if (item.price <= 10) return 11;
-            if (item.price <= 20) return 7;
-            if (item.price <= 50) return 5;
-            return 1;
-        }
-        
-        // Для кейса Fire - используем шансы из item.chance
-        if (caseData.id === 'fire') {
-            return item.chance || 0;
-        }
-        
-        // Для всех остальных кейсов - равные шансы
-        return (1 / caseData.items.length * 100).toFixed(1);
+    // Для кейса Beginner
+    if (caseData.id === 'beginner') {
+        if (item.price <= 0.5) return 10;
+        if (item.price <= 1) return 13;
+        if (item.price <= 3) return 15;
+        if (item.price <= 5) return 13;
+        if (item.price <= 7) return 15;
+        if (item.price <= 9) return 11;
+        if (item.price <= 10) return 11;
+        if (item.price <= 20) return 7;
+        if (item.price <= 50) return 5;
+        return 1;
     }
     
-    itemsGrid.innerHTML = sortedItems.map((item, index) => {
-        const chance = getItemChance(item, caseData);
-        
-        // Определяем, является ли иконка уже HTML-тегом img
-        const isHtmlImage = typeof item.icon === 'string' && (item.icon.includes('<img') || item.icon.includes('src='));
-        // Или ссылкой на картинку
-        const isImageUrl = !isHtmlImage && item.icon && (item.icon.startsWith('http') || item.icon.startsWith('/') || item.icon.includes('.png') || item.icon.includes('.jpg'));
-        
-        let iconHtml = '';
-        if (isHtmlImage) {
-            iconHtml = item.icon;
-        } else if (isImageUrl) {
-            iconHtml = `<img src="${item.icon}" alt="${item.name}" style="width: 80px; height: 80px; object-fit: contain;">`;
-        } else {
-            iconHtml = item.icon;
-        }
-        
-        return `
-            <div class="item-card" data-item-index="${index}" data-item-name="${item.name}" data-item-price="${item.price}" data-item-chance="${chance}" data-item-icon="${item.icon}" data-is-image="${isImageUrl || isHtmlImage}">
-                <div class="item-card-icon">
-                    ${iconHtml}
-                </div>
-                <div class="item-card-name" title="${item.name}">${item.name}</div>
-                <div class="item-card-info" style="display: none;">
-                    <span class="info-chance">🎲 Шанс: ${chance}%</span>
-                    <span class="info-price">💰 Цена: ${formatBalance(item.price)} G</span>
-                </div>
-            </div>
-        `;
-    }).join('');
+    // Для кейса Cheap — жёсткие шансы по цене
+    if (caseData.id === 'cheap') {
+        if (item.price <= 0.5) return 9;      // Mallard Paint Scrawl — 9%
+        if (item.price <= 0.7) return 7;      // G22 Scale — 7%
+        if (item.price <= 1) return 7;        // AKR Scale — 7%
+        if (item.price <= 5.5) return 7;      // SM1014 Branches — 7%
+        if (item.price <= 6) return 15;       // AKR12 Steam Beast — 15%
+        if (item.price <= 7) return 15;       // MP7 Palace — 15%
+        if (item.price <= 8) return 15;       // M110 Themis — 15%
+        if (item.price <= 23) return 19;      // P350 Lab Prototype — 19%
+        if (item.price <= 500) return 5;      // Famas Fury — 5%
+        return 1;                              // M4A1 Treasure Hunter — 1%
+    }
     
-    document.querySelectorAll('.item-card').forEach(card => {
-        card.addEventListener('click', function(e) {
-            e.stopPropagation();
-            
-            const isActive = this.classList.contains('active');
-            
-            if (isActive) {
-                this.classList.remove('active');
-                const iconDiv = this.querySelector('.item-card-icon');
-                const infoDiv = this.querySelector('.item-card-info');
-                if (iconDiv) iconDiv.style.display = 'flex';
-                if (infoDiv) infoDiv.style.display = 'none';
-                return;
-            }
-            
-            document.querySelectorAll('.item-card').forEach(c => {
-                if (c !== this) {
-                    c.classList.remove('active');
-                    const otherIconDiv = c.querySelector('.item-card-icon');
-                    const otherInfoDiv = c.querySelector('.item-card-info');
-                    if (otherIconDiv) otherIconDiv.style.display = 'flex';
-                    if (otherInfoDiv) otherInfoDiv.style.display = 'none';
-                }
-            });
-            
-            this.classList.add('active');
-            const iconDiv = this.querySelector('.item-card-icon');
-            const infoDiv = this.querySelector('.item-card-info');
-            if (iconDiv) iconDiv.style.display = 'none';
-            if (infoDiv) infoDiv.style.display = 'block';
-        });
-    });
+    // Для кейса Fire — жёсткие шансы по цене
+    if (caseData.id === 'fire') {
+        if (item.price <= 1) return 10;       // UMP45 Heatwave — 10%
+        if (item.price <= 2) return 10;       // VAL Forge — 10%
+        if (item.price <= 50) return 13;      // P350 Emberbird — 13%
+        if (item.price <= 60) return 12;      // F/S Venom — 12%
+        if (item.price <= 150) return 18;     // F/S Hellspawn — 18%
+        if (item.price <= 200) return 18;     // AKIMBO UZI Fire Horse — 18%
+        if (item.price <= 1700) return 3;     // AWM Vampire — 3%
+        if (item.price <= 300) return 12;     // S3 AKR12 Year Of The Horse — 12%
+        if (item.price <= 2100) return 3;     // AKR Vermilion — 3%
+        return 1;                              // MP3 2 Years Red — 1%
+    }
     
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.item-card')) {
-            document.querySelectorAll('.item-card').forEach(card => {
-                card.classList.remove('active');
-                const iconDiv = card.querySelector('.item-card-icon');
-                const infoDiv = card.querySelector('.item-card-info');
-                if (iconDiv) iconDiv.style.display = 'flex';
-                if (infoDiv) infoDiv.style.display = 'none';
-            });
-        }
-    });
+    // Для всех остальных кейсов - равные шансы
+    return (1 / caseData.items.length * 100).toFixed(1);
 }
 
         function getRandomItemWithChance(items, caseData) {
