@@ -4365,6 +4365,7 @@ const doubleUpGameElem = document.getElementById('doubleUpGame');
 }
 
         function getRandomItemWithChance(items, caseData) {
+    // Для кейса Beginner
     if (caseData.id === 'beginner') {
         const rand = Math.random() * 100;
         if (rand < 10) return items.find(i => i.id === 'fs_zap');
@@ -4379,26 +4380,37 @@ const doubleUpGameElem = document.getElementById('doubleUpGame');
         return items.find(i => i.id === 'akr_sport');
     }
     
-    if (caseData.id === 'fire') {
-        const rand = Math.random() * 100;
-        let cumulative = 0;
-        for (const item of items) {
-            cumulative += item.chance;
-            if (rand < cumulative) return item;
-        }
-        return items[0];
-    }
-    
+    // Для кейса Cheap — жёсткие шансы (как в Beginner)
     if (caseData.id === 'cheap') {
         const rand = Math.random() * 100;
-        let cumulative = 0;
-        for (const item of items) {
-            cumulative += item.chance;
-            if (rand < cumulative) return item;
-        }
-        return items[0];
+        if (rand < 9) return items.find(i => i.id === 'mallard_paint_scrawl');      // 9%
+        if (rand < 16) return items.find(i => i.id === 'g22_scale');                 // 7% (9+7=16)
+        if (rand < 23) return items.find(i => i.id === 'akr_scale');                 // 7% (16+7=23)
+        if (rand < 30) return items.find(i => i.id === 'sm1014_branches');           // 7% (23+7=30)
+        if (rand < 45) return items.find(i => i.id === 'akr12_steam_beast');        // 15% (30+15=45)
+        if (rand < 60) return items.find(i => i.id === 'mp7_palace');                // 15% (45+15=60)
+        if (rand < 75) return items.find(i => i.id === 'm110_themis');               // 15% (60+15=75)
+        if (rand < 94) return items.find(i => i.id === 'p350_lab_prototype');        // 19% (75+19=94)
+        if (rand < 99) return items.find(i => i.id === 'famas_fury');                // 5% (94+5=99)
+        return items.find(i => i.id === 'm4a1_treasure_hunter');                     // 1% (99+1=100)
     }
     
+    // Для кейса Fire — жёсткие шансы
+    if (caseData.id === 'fire') {
+        const rand = Math.random() * 100;
+        if (rand < 10) return items.find(i => i.id === 'ump45_heatwave');            // 10%
+        if (rand < 20) return items.find(i => i.id === 'val_forge');                 // 10% (10+10=20)
+        if (rand < 33) return items.find(i => i.id === 'p350_emberbird');            // 13% (20+13=33)
+        if (rand < 45) return items.find(i => i.id === 'fs_venom');                  // 12% (33+12=45)
+        if (rand < 63) return items.find(i => i.id === 'fs_hellspawn');              // 18% (45+18=63)
+        if (rand < 81) return items.find(i => i.id === 'akimbo_uzi_fire_horse');     // 18% (63+18=81)
+        if (rand < 84) return items.find(i => i.id === 'awm_vampire');               // 3% (81+3=84)
+        if (rand < 96) return items.find(i => i.id === 's3_akr12_year_of_the_horse'); // 12% (84+12=96)
+        if (rand < 99) return items.find(i => i.id === 'akr_vermilion');             // 3% (96+3=99)
+        return items.find(i => i.id === 'mp3_2_years_red');                           // 1% (99+1=100)
+    }
+    
+    // Для всех остальных кейсов — равные шансы
     return items[Math.floor(Math.random() * items.length)];
 }
 
