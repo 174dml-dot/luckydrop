@@ -3690,19 +3690,18 @@ const fireItems = [
     { id: 'm16_big_foot', icon: '0A7451E0-1B6F-486D-96EC-695BC6474BAD.png', name: 'M16 "Big Foot"', price: 34.86, rarity: 'mythical' }
 ];
 
-        const evolutionItems = [
-            { id: 'm60_flex', icon: '🔫', name: 'M60 "Flex"', price: 6.0, rarity: 'common' },
-            { id: 'm4a1_kitsune', icon: '🔫', name: 'M4A1 "Kitsune"', price: 3.0, rarity: 'common' },
-            { id: 'usp_ray', icon: '🔫', name: 'USP "Ray"', price: 7.0, rarity: 'common' },
-            { id: 'mp7_fright', icon: '🔫', name: 'MP7 "Fright"', price: 80.0, rarity: 'rare' },
-            { id: 'tec9_splash', icon: '🔫', name: 'TEC-9 "Splash"', price: 50.0, rarity: 'rare' },
-            { id: 'm4_samurai', icon: '🔫', name: 'M4 "Samurai"', price: 90.0, rarity: 'rare' },
-            { id: 'm16_raiva', icon: '⚔️', name: 'M16 "Raiva"', price: 200.0, rarity: 'legendary' },
-            { id: 'akr_night_fury', icon: '🔫', name: 'AKR "Night Fury"', price: 300.0, rarity: 'legendary' },
-            { id: 'g22_nest', icon: '🔫', name: 'G22 "Nest"', price: 900.0, rarity: 'mythical' },
-            { id: 'p350_blizzard', icon: '🔫', name: 'P350 "Blizzard"', price: 1000.0, rarity: 'mythical' },
-            { id: 'm4_pixel_storm', icon: '⚔️', name: 'M4 "Pixel Storm"', price: 1300.0, rarity: 'mythical' }
-        ];
+        const landItems = [
+    { id: 'deagle_infection', icon: '🔫', name: 'Desert Eagle "Infection"', price: 6.90, rarity: 'common' },
+    { id: 'deagle_winner', icon: '🔫', name: 'Desert Eagle "Winner"', price: 8.10, rarity: 'common' },
+    { id: 'mac10_tempest', icon: '🔫', name: 'MAC10 "Tempest"', price: 10.00, rarity: 'common' },
+    { id: 'm110_stickerbomb', icon: '🔫', name: 'M110 "Stickerbomb"', price: 18.38, rarity: 'common' },
+    { id: 'akimbo_uzi_howling_ghost', icon: '🔫', name: 'AKIMBO UZI "Howling Ghost"', price: 18.00, rarity: 'rare' },
+    { id: 'awm_jade_stone', icon: '🔫', name: 'AWM "Jade Stone"', price: 61.00, rarity: 'rare' },
+    { id: 'spas_octopus', icon: '🔫', name: 'SPAS "Octopus"', price: 120.00, rarity: 'legendary' },
+    { id: 'usp_stickerbomb', icon: '🔫', name: 'USP "Stickerbomb"', price: 130.50, rarity: 'legendary' },
+    { id: 'm16_raira', icon: '🔫', name: 'M16 "Raira"', price: 170.00, rarity: 'mythical' },
+    { id: 'val_windows_weave', icon: '🔫', name: 'VAL "Window\'s Weave"', price: 190.00, rarity: 'mythical' }
+];
 
         const knifeItems = [
             { id: 'kukri_cascade', icon: '🔪', name: 'Kukri “Cascade”', price: 600.0, rarity: 'rare' },
@@ -3717,13 +3716,12 @@ const fireItems = [
             { id: 'm9_amber_koi', icon: '🔪', name: 'M9 Bayonet “Amber Koi”', price: 4000.0, rarity: 'legendary' }
         ];
 
-        const weapons = [...beginnerItems, ...cheapItems, ...fireItems, ...glovesItems, ...lightningItems, ...waterItems, ...evolutionItems, ...knifeItems].sort((a, b) => a.price - b.price);
-
+        const weapons = [...beginnerItems, ...cheapItems, ...fireItems, ...glovesItems, ...lightningItems, ...waterItems, ...landItems, ...knifeItems].sort((a, b) => a.price - b.price);
         const cases = [
     { id: 'beginner', name: 'Beginner', price: 10, icon: '9621CC6E-58F4-4B97-B87F-3FD4EFBDC60D.png', items: beginnerItems },
     { id: 'cheap', name: 'Cheap', price: 25, icon: '31E637AD-346D-4C5C-808A-2B6716F1A981.png', items: cheapItems },
     { id: 'fire', name: 'Fire', price: 299, icon: '1FDEA39D-0602-4932-BD18-29D2319A302A.png', items: fireItems },
-    { id: 'evolution', name: 'Evolution', price: 299, icon: '🧬', items: evolutionItems },
+    { id: 'land', name: 'Land', price: 41, icon: '🌍', items: landItems },
     { id: 'lightning', name: 'Lightning', price: 34, icon: '11DA8CFD-3A6F-451D-82AD-9DCD4D21B39D.png', items: lightningItems },
     { id: 'water', name: 'Water', price: 4, icon: '4A4228FB-2982-487F-9B61-F4D1FF7EB183.png', items: waterItems },
     { id: 'gloves', name: 'ПЕРЧАТОЧНЫЙ', price: 2499, icon: '🧤', items: glovesItems },
@@ -4082,7 +4080,7 @@ const fireItems = [
 // ========== ПРЕДЗАГРУЗКА ВСЕХ ИЗОБРАЖЕНИЙ ==========
 function preloadAllImages() {
     // Собираем все иконки предметов из всех кейсов
-    const allItems = [...beginnerItems, ...cheapItems, ...fireItems, ...glovesItems, ...lightningItems, ...waterItems, ...evolutionItems, ...knifeItems];
+    const allItems = [...beginnerItems, ...cheapItems, ...fireItems, ...glovesItems, ...lightningItems, ...waterItems, ...landItems, ...knifeItems];
     
     allItems.forEach(item => {
         if (item.icon && (item.icon.endsWith('.png') || item.icon.endsWith('.jpg') || item.icon.endsWith('.jpeg') || item.icon.includes('http'))) {
@@ -4411,6 +4409,19 @@ if (caseData.id === 'lightning') {
     if (item.price <= 110.00) return 4; // P350 Raider
     return 1; // FAMAS Raider
 }
+            // Для кейса Land
+if (caseData.id === 'land') {
+    if (item.price <= 6.90) return 12;   // Desert Eagle Infection (12%)
+    if (item.price <= 8.10) return 16;   // Desert Eagle Winner (16%)
+    if (item.price <= 10.00) return 14;  // MAC10 Tempest (14%)
+    if (item.price <= 18.38) return 16;  // M110 Stickerbomb (16%)
+    if (item.price <= 18.00) return 18;  // AKIMBO UZI Howling Ghost (18%)
+    if (item.price <= 61.00) return 14;  // AWM Jade Stone (14%)
+    if (item.price <= 120.00) return 5;  // SPAS Octopus (5%)
+    if (item.price <= 130.50) return 3;  // USP Stickerbomb (3%)
+    if (item.price <= 170.00) return 1;  // M16 Raira (1%)
+    return 1;                            // VAL Window's Weave (1%)
+}
     
     // Для остальных кейсов — равные шансы
     return (1 / caseData.items.length * 100).toFixed(1);
@@ -4547,7 +4558,21 @@ if (caseData.id === 'lightning') {
     if (rand < 99) return items[8]; // P350 Raider (4%)
     return items[9]; // FAMAS Raider (1%)
 }
-    
+
+            // Для кейса Land
+if (caseData.id === 'land') {
+    const rand = Math.random() * 100;
+    if (rand < 12) return items[0];  // Desert Eagle Infection (12%)
+    if (rand < 28) return items[1];  // Desert Eagle Winner (16%)
+    if (rand < 42) return items[2];  // MAC10 Tempest (14%)
+    if (rand < 58) return items[3];  // M110 Stickerbomb (16%)
+    if (rand < 76) return items[4];  // AKIMBO UZI Howling Ghost (18%)
+    if (rand < 90) return items[5];  // AWM Jade Stone (14%)
+    if (rand < 95) return items[6];  // SPAS Octopus (5%)
+    if (rand < 98) return items[7];  // USP Stickerbomb (3%)
+    if (rand < 99) return items[8];  // M16 Raira (1%)
+    return items[9];                  // VAL Window's Weave (1%)
+}
     // Для всех остальных кейсов — равные шансы
     return items[Math.floor(Math.random() * items.length)];
 }
