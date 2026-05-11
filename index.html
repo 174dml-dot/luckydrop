@@ -4880,8 +4880,8 @@ balance = Math.max(0, balance - totalCost);
             track.style.transition = 'transform 2.5s cubic-bezier(0.1, 0.85, 0.3, 1)';
             track.style.transform = `translateX(${newX}px)`;
             
-            status.textContent = '🎰 Быстрая прокрутка...';
-            setTimeout(() => status.textContent = '🎰 Замедляется...', 1500);
+            status.textContent = 'Прокрутка...';
+            setTimeout(() => status.textContent = 'Ожидание...', 1500);
             
             setTimeout(() => {
                 status.textContent = '✨ Результат! ✨';
