@@ -4974,7 +4974,7 @@ balance = Math.max(0, balance - totalCost);
         
         caseAnimationArea.innerHTML = `
             <div style="text-align: center; margin-bottom: 15px;">
-                <span style="color: #00cc00; font-size: 18px;">🎲 Кейс ${index + 1} из ${allWinItems.length}</span>
+                <span style="color: #00cc00; font-size: 18px;">Кейс ${index + 1} из ${allWinItems.length}</span>
                 <div style="font-size: 14px; color: #ff3300; margin-top: 5px;">Открытие...</div>
             </div>
             <div class="csgo-rolling" style="position: relative; background: #1a0f0f; border-radius: 16px; padding: 15px;">
@@ -5018,16 +5018,16 @@ balance = Math.max(0, balance - totalCost);
             track.style.transition = 'transform 2.5s cubic-bezier(0.1, 0.85, 0.3, 1)';
             track.style.transform = `translateX(${newX}px)`;
             
-            status.textContent = '🎰 Быстрая прокрутка...';
-            setTimeout(() => status.textContent = '🎰 Замедляется...', 1500);
+            status.textContent = 'Прокрутка...';
+            setTimeout(() => status.textContent = 'Ожидание...', 1500);
             
             setTimeout(() => {
                 status.textContent = '✨ Результат! ✨';
                 const isWinImage = currentWinItem.icon && (currentWinItem.icon.startsWith('http') || currentWinItem.icon.startsWith('/') || currentWinItem.icon.includes('.'));
                 caseAnimationArea.innerHTML = `
                     <div style="text-align: center; margin-bottom: 15px;">
-                        <span style="color: #00cc00; font-size: 18px;">🎲 Кейс ${index + 1} из ${allWinItems.length}</span>
-                        <div style="font-size: 14px; color: gold; margin-top: 5px;">✅ Выпало!</div>
+                        <span style="color: #00cc00; font-size: 18px;">Кейс ${index + 1} из ${allWinItems.length}</span>
+                        <div style="font-size: 14px; color: gold; margin-top: 5px;">Выпало!</div>
                     </div>
                     <div class="final-item-csgo" style="background: linear-gradient(145deg, #3a2525, #2a1a1a); border: 4px solid gold; border-radius: 30px; padding: 30px; text-align: center;">
                         <div class="final-icon-csgo" style="font-size: 80px;">${isWinImage ? `<img src="${currentWinItem.icon}" style="max-width: 200px;">` : currentWinItem.icon}</div>
@@ -5051,7 +5051,7 @@ balance = Math.max(0, balance - totalCost);
                 
                 document.getElementById('multiKeepBtn')?.addEventListener('click', () => {
                     addToInventory(currentWinItem);
-                    showNotification(`📦 ${currentWinItem.name} добавлен в инвентарь`, 'good');
+                    showNotification(`${currentWinItem.name} добавлен в инвентарь`, 'good');
                     showSingleCaseRoll(index + 1);
                 });
             }, 2600);
@@ -5106,7 +5106,7 @@ balance = Math.max(0, balance - totalCost);
                     
                     document.getElementById('multiKeepBtn')?.addEventListener('click', () => {
                         addToInventory(item);
-                        showNotification(`📦 ${item.name} добавлен в инвентарь`, 'good');
+                        showNotification(`${item.name} добавлен в инвентарь`, 'good');
                         currentIndex++;
                         if (currentIndex < items.length) {
                             showNext();
