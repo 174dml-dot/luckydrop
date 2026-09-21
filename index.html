@@ -357,18 +357,19 @@ border-radius: 0 0 20px 0; /* ← закругление только справ
         }
 
         .balance-widget {
-            background: rgba(255, 221, 0, 0.15);
-            border: 2px solid #ffdd00;
-            border-radius: 30px;
-            padding: 6px 12px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-weight: 600;
-            font-size: clamp(12px, 3vw, 13px);
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
+    background: rgba(10, 14, 26, 0.95);
+    border: 2px solid #ffdd00;
+    border-radius: 30px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    font-size: clamp(12px, 3vw, 13px);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
 
         .balance-widget span {
             color: #ffdd00;
@@ -573,20 +574,59 @@ display: flex;
 }
 
 /* Шапка - всегда на экране */
+/* Шапка - всегда на экране */
 .case-page-header {
-display: flex;
-align-items: center;
-padding: 16px;
-background: rgba(10, 14, 26, 0.95);
-backdrop-filter: blur(10px);
--webkit-backdrop-filter: blur(10px);
-border-bottom: 3px solid #00d4ff;
-position: relative; /* ← меняем с fixed на relative */
-flex-shrink: 0; /* ← шапка не сжимается */
-z-index: 10;
-justify-content: center;
-border-radius: 0 0 20px 20px;
-width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background: rgba(10, 14, 26, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 3px solid #00d4ff;
+    position: relative;
+    flex-shrink: 0;
+    z-index: 10;
+    justify-content: center;
+    border-radius: 0 0 20px 20px;
+    width: 100%;
+}
+
+/* НОВОЕ: Баланс в шапке страницы кейса */
+.case-page-header .balance-widget {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%) translateX(30px);
+    opacity: 0;
+    background: rgba(10, 14, 26, 0.95);
+    border: 2px solid #ffdd00;
+    border-radius: 30px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    font-size: clamp(12px, 3vw, 13px);
+    white-space: nowrap;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    /* плавный переход */
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Когда страница кейса активна — баланс плавно появляется */
+.case-page.active .case-page-header .balance-widget {
+    transform: translateY(-50%) translateX(0);
+    opacity: 1;
+    transition-delay: 0.25s; /* небольшая задержка, чтобы появился ПОСЛЕ шапки */
+}
+
+/* При закрытии — плавно исчезает обратно */
+.case-page.closing .case-page-header .balance-widget {
+    transform: translateY(-50%) translateX(30px);
+    opacity: 0;
+    transition-delay: 0s;
 }
 
 /* Контейнер для прокручиваемого контента */
@@ -3231,7 +3271,7 @@ display: none;
 }
 
 .header-hidden.show .logo-icon {
-animation: glowPulse 2s ease-in-out infinite;
+animation: glowPulse 3s ease-in-out infinite;
 }
 
 @keyframes glowPulse {
@@ -3969,6 +4009,9 @@ transform: translateY(0);
     <div class="case-page-header">
         <button class="back-btn" id="backToMain"><i class="fas fa-arrow-left"></i></button>
         <span class="case-page-title" id="casePageTitle">Открытие кейса</span>
+        <div class="balance-widget" id="caseBalanceWidget" style="cursor: pointer;">
+            <i class="fas fa-plus"></i> <span id="caseBalance">0.0</span> <span style="color: #d9d9d9;">Ł</span>
+        </div>
     </div>
     <div class="case-page-scroll" id="casePageScroll">
         <div class="case-page-content">
@@ -4290,7 +4333,7 @@ message: 'Ведутся технические работы. Скоро вер�
     '3477665': {
         type: 'case_discount',
         caseId: 'water',
-        maxUses: 40,
+        maxUses: 4,
         perUserLimit: 1
     },
     '8900123': {
@@ -5455,12 +5498,22 @@ return;
         }
 
         function updateBalanceUI(animate = false) {
-            balanceSpan.innerText = formatBalance(balance);
-            if (animate) {
-                balanceSpan.classList.add('balance-update');
-                setTimeout(() => balanceSpan.classList.remove('balance-update'), 500);
-            }
+    balanceSpan.innerText = formatBalance(balance);
+    if (animate) {
+        balanceSpan.classList.add('balance-update');
+        setTimeout(() => balanceSpan.classList.remove('balance-update'), 500);
+    }
+    
+    // НОВОЕ: обновляем баланс на странице кейса
+    const caseBalance = document.getElementById('caseBalance');
+    if (caseBalance) {
+        caseBalance.innerText = formatBalance(balance);
+        if (animate) {
+            caseBalance.classList.add('balance-update');
+            setTimeout(() => caseBalance.classList.remove('balance-update'), 500);
         }
+    }
+}
 
         function updateAuthUI() {
             if (currentUser) {
@@ -5650,15 +5703,15 @@ ${hasAnyDiscount ? `
         <div class="case-image" style="position: relative;">${iconHtml}</div>
         <div class="case-name">${c.name}</div>
         <div class="case-price">
-            ${hasAnyDiscount ? `
-                <span style="text-decoration: line-through; color: #888; font-size: 13px; font-weight: 500;">${displayOriginalPrice} <span style="color: #888888;">Ł</span></span>
-<span style="color: ${discountType === 'promo' ? '#00ff00' : '#ff3300'}; margin-left: 5px; font-weight: 700; font-size: ${discountType === 'promo' ? '20px' : '16px'};">
-    ${displayPrice} <span style="color: #888888;">Ł</span>
-${discountType === 'promo' ? '<span style="color: #00ff00; font-size: 11px; margin-left: 5px;">🔥 БЕСПЛАТНО!</span>' : ''}
-            ` : `
-                <span style="font-weight: 700;">${currentPrice} <span style="color: #888888;">Ł</span></span>
-            `}
-        </div>
+    ${hasAnyDiscount ? `
+    <span style="text-decoration: line-through; color: #888; font-size: 13px; font-weight: 500;">${displayOriginalPrice} <span style="color: #888888;">Ł</span></span>
+    <span style="color: #ff3300; margin-left: 5px; font-weight: 700; font-size: 16px;">
+        ${displayPrice} <span style="color: #888888;">Ł</span>
+    </span>
+    ` : `
+    <span style="font-weight: 700;">${currentPrice} <span style="color: #888888;">Ł</span></span>
+    `}
+</div>
     </div>
     `;
 }
@@ -5847,7 +5900,7 @@ ${discountType === 'promo' ? '<span style="color: #00ff00; font-size: 11px; marg
     casePage.classList.remove('closing');
     
     currentCase = caseData;
-    casePageTitle.textContent = `${caseData.name} ${hasDiscount ? '🔥 БЕСПЛАТНО!' : ''}`;
+casePageTitle.textContent = caseData.name;
     
     // Сначала показываем страницу (она уже будет скрыта)
     casePage.style.display = 'flex';
@@ -5977,18 +6030,18 @@ spinningInterval = null;
     }
     
     // AIR
-    if (caseData.id === 'air') {
-        if (item.price <= 4.93) return 13; // TEC-9 "Gangster" - 13%
-        if (item.price <= 9.28) return 14; // Desert Eagle "Gambit" - 14%
-        if (item.price <= 11.00) return 15; // F/S "Wraith" - 15%
-        if (item.price <= 16.50) return 13; // UMP45 "Pixel" - 13%
-        if (item.price <= 18.75) return 10; // UMP45 "Spirit" - 10%
-        if (item.price <= 31.26) return 11; // SM1014 "Arctic" - 11%
-        if (item.price <= 31.80) return 12; // AKR "Arctic Camo" - 12%
-        if (item.price <= 48.10) return 10; // M40 "Arctic" - 10%
-        if (item.price <= 300.90) return 1; // P350 "Neon" - 1%
-        return 1; // UMP45 "Cyberpunk" - 1%
-    }
+if (caseData.id === 'air') {
+    if (item.price <= 4.93) return 17; // TEC-9 "Gangster" - 17%
+    if (item.price <= 9.28) return 14; // Desert Eagle "Gambit" - 14%
+    if (item.price <= 11.00) return 15; // F/S "Wraith" - 15%
+    if (item.price <= 16.50) return 13; // UMP45 "Pixel" - 13%
+    if (item.price <= 18.75) return 10; // UMP45 "Spirit" - 10%
+    if (item.price <= 31.26) return 10; // SM1014 "Arctic" - 10%
+    if (item.price <= 31.80) return 10; // AKR "Arctic Camo" - 10%
+    if (item.price <= 48.10) return 9; // M40 "Arctic" - 9%
+    if (item.price <= 300.90) return 1; // P350 "Neon" - 1%
+    return 1; // UMP45 "Cyberpunk" - 1%
+}
     
     // LIGHTNING
     if (caseData.id === 'lightning') {
@@ -6195,19 +6248,19 @@ if (!document.getElementById('itemCardHoverStyles')) {
     }
     
     // AIR
-    if (caseData.id === 'air') {
-        const rand = Math.random() * 100;
-        if (rand < 13) return items[0]; // TEC-9 "Gangster" - 13%
-        if (rand < 27) return items[1]; // Desert Eagle "Gambit" - 14%
-        if (rand < 42) return items[2]; // F/S "Wraith" - 15%
-        if (rand < 55) return items[3]; // UMP45 "Pixel" - 13%
-        if (rand < 65) return items[4]; // UMP45 "Spirit" - 10%
-        if (rand < 76) return items[5]; // SM1014 "Arctic" - 11%
-        if (rand < 88) return items[6]; // AKR "Arctic Camo" - 12%
-        if (rand < 98) return items[7]; // M40 "Arctic" - 10%
-        if (rand < 99) return items[8]; // P350 "Neon" - 1%
-        return items[9]; // UMP45 "Cyberpunk" - 1%
-    }
+if (caseData.id === 'air') {
+    const rand = Math.random() * 100;
+    if (rand < 17) return items[0]; // TEC-9 "Gangster" - 17%
+    if (rand < 31) return items[1]; // Desert Eagle "Gambit" - 14%
+    if (rand < 46) return items[2]; // F/S "Wraith" - 15%
+    if (rand < 59) return items[3]; // UMP45 "Pixel" - 13%
+    if (rand < 69) return items[4]; // UMP45 "Spirit" - 10%
+    if (rand < 79) return items[5]; // SM1014 "Arctic" - 10%
+    if (rand < 89) return items[6]; // AKR "Arctic Camo" - 10%
+    if (rand < 98) return items[7]; // M40 "Arctic" - 9%
+    if (rand < 99) return items[8]; // P350 "Neon" - 1%
+    return items[9]; // UMP45 "Cyberpunk" - 1%
+}
     
     // LIGHTNING
     if (caseData.id === 'lightning') {
@@ -6245,17 +6298,13 @@ if (!document.getElementById('itemCardHoverStyles')) {
         function spinWheel(quantity = 1) {
     if (isSpinning || !currentCase) return;
     
-    // ===== НОВОЕ: Расчёт цены с учётом скидки =====
+    // ===== Расчёт цены с учётом скидки =====
     let totalCost = 0;
     let hasDiscount = hasActiveDiscount(currentCase.id);
     
     if (hasDiscount) {
         // Первый кейс бесплатный, остальные по полной цене
         totalCost = (quantity - 1) * currentCase.price;
-        // Скидка сгорает после открытия (даже если открываем несколько)
-        useDiscount();
-        // Обновляем отображение кейсов
-        renderCases();
     } else {
         totalCost = currentCase.price * quantity;
     }
@@ -6263,9 +6312,16 @@ if (!document.getElementById('itemCardHoverStyles')) {
     // Округляем до 2 знаков
     totalCost = Math.round(totalCost * 100) / 100;
     
+    // ← СНАЧАЛА проверяем баланс
     if (balance < totalCost - 0.01) {
         showNotification(`❌ Недостаточно G! Нужно ${totalCost} Ł`, 'bad');
-        return;
+        return; // ← выходим ДО списания скидки
+    }
+    
+    // ← ТОЛЬКО ТЕПЕРЬ списываем скидку (если она была)
+    if (hasDiscount) {
+        useDiscount();
+        renderCases();
     }
     
     isSpinning = true;
@@ -7666,11 +7722,14 @@ if (submitPromo) {
             usedPromoCodes[currentUser.username].push(code);
             
             promoCodeUsage[code] = (promoCodeUsage[code] || 0) + 1;
-            deviceUsage++;
-            localStorage.setItem(deviceKey, deviceUsage);
-            saveAllData();
-            
-            const oldContainer = document.getElementById('promoRewardContainer');
+deviceUsage++;
+localStorage.setItem(deviceKey, deviceUsage);
+saveAllData();
+
+// ← ДОБАВЬ: сразу обновляем карточки кейсов, чтобы скидка применилась мгновенно
+renderCases();
+
+const oldContainer = document.getElementById('promoRewardContainer');
             if (oldContainer) oldContainer.remove();
             
             const rewardContainer = document.createElement('div');
@@ -9162,6 +9221,7 @@ closePromoModal();
 function setupBalanceClick() {
     const balanceWidget = document.getElementById('balanceWidget');
     const hiddenWidget = document.getElementById('hiddenBalanceWidget');
+    const caseWidget = document.getElementById('caseBalanceWidget'); // ← ДОБАВЬ
     
     function showTemporaryUnavailable(e) {
         e.preventDefault();
@@ -9189,6 +9249,10 @@ function setupBalanceClick() {
     if (hiddenWidget) {
         hiddenWidget.addEventListener('click', showTemporaryUnavailable);
     }
+    
+    if (caseWidget) { // ← ДОБАВЬ ЭТОТ БЛОК
+        caseWidget.addEventListener('click', showTemporaryUnavailable);
+    }
 }
 
 // Вызываем после загрузки
@@ -9200,6 +9264,16 @@ document.addEventListener('DOMContentLoaded', function() {
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setupBalanceClick();
 }
+
+
+
+
+
+
+
+
+
+
 
     </script>
 </body>
