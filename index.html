@@ -3665,6 +3665,657 @@ transform: translateY(0);
     display: block;
     object-fit: contain;
 }
+/* ===== НОВАЯ ЛЕНТА КЕЙСОВ ===== */
+.simple-case-display{border:2px solid rgba(0,212,255,.35);background:#0f1222;border-radius:26px;padding:14px}
+.cr-count{text-align:center;color:#8a8aaa;font-size:13px;font-weight:600;margin-bottom:10px}
+.cr-view{position:relative;padding:20px 0;border-radius:20px;background:linear-gradient(180deg,rgba(0,212,255,.06),rgba(255,0,127,.04))}
+.cr-clip{overflow:hidden;padding:14px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.cr-track{position:relative;display:flex;gap:10px;width:max-content;will-change:transform}
+.cr-track.go{transition:transform 5s cubic-bezier(.08,.7,.12,1)}
+
+/* метки сверху и снизу */
+.cr-mark{position:absolute;left:0;right:0;height:14px;pointer-events:none;z-index:5}
+.cr-mark::before{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,.6),transparent)}
+.cr-mark::after{content:'';position:absolute;left:50%;transform:translateX(-50%);border:7px solid transparent}
+.cr-top{top:2px}
+.cr-top::after{top:2px;border-top-color:#00d4ff;border-bottom:0}
+.cr-bottom{bottom:2px}
+.cr-bottom::after{bottom:2px;border-bottom-color:#ff007f;border-top:0}
+
+/* карточка предмета */
+.cr-card{position:relative;flex:0 0 150px;height:190px;border-radius:20px;background:#0d1020;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;transition:opacity .4s,transform .4s,box-shadow .4s,background .4s}
+.cr-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,var(--c),transparent 75%);opacity:.38}
+.cr-tab{position:absolute;top:0;left:50%;transform:translateX(-50%);width:44px;height:5px;border-radius:0 0 6px 6px;background:var(--c);z-index:1}
+.cr-img{position:relative;z-index:1;flex:1;display:flex;align-items:center;justify-content:center;padding:14px 10px 0}
+.cr-img img{max-width:100%;max-height:100px;object-fit:contain}
+.cr-meta{position:relative;z-index:1;padding:0 12px 12px;text-align:left}
+.cr-weapon{font-size:12px;color:#8a8aaa;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cr-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 6px}
+.cr-skin{min-width:0;max-width:100%;color:#fff;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cr-price{margin-left:auto;color:#ffdd00;font-size:13px;font-weight:700;opacity:0;transition:opacity .4s}
+
+/* после остановки */
+.cr-track.stopped .cr-price{opacity:1}
+.cr-track.stopped .cr-card:not(.is-win){opacity:.55;transform:scale(.96)}
+.cr-card.is-win{transform:scale(1.03);background:#23253a;box-shadow:0 0 0 2px #fff,0 0 18px var(--c)}
+.cr-card.is-win::before{background:linear-gradient(180deg,rgba(255,255,255,.22),transparent 75%);opacity:1}
+.cr-card.is-win .cr-tab{background:#fff}
+
+/* статус и кнопки */
+.cr-status{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:18px;font-size:16px;font-weight:600;color:#e0e0ff}
+.cr-dots{display:flex;align-items:center;gap:6px}
+.cr-dots i{width:9px;height:9px;border-radius:50%;background:#00d4ff;animation:crDot 1s ease-in-out infinite}
+.cr-dots i:nth-child(2){width:5px;height:5px;background:#ff007f;animation-delay:.25s}
+@keyframes crDot{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+.cr-actions{display:flex;gap:10px;margin-top:16px;animation:crUp .4s ease both}
+@keyframes crUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.cr-back{flex:0 0 60px;height:58px;border-radius:18px;border:2px solid #00d4ff;background:#0a0a1a;color:#00d4ff;font-size:20px;cursor:pointer}
+.cr-sell{flex:1;height:58px;border:none;border-radius:18px;background:linear-gradient(135deg,#00d4ff,#ff007f);color:#fff;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 5px 0 #1a0a1a}
+.cr-sell:active{transform:translateY(4px);box-shadow:0 1px 0 #1a0a1a}
+.cr-actions button:disabled{opacity:.5;pointer-events:none}
+
+@media(max-width:380px){
+  .cr-card{flex-basis:130px;height:170px}
+  .cr-img img{max-height:84px}
+}
+/* ===== ЛЕНТА v2 ===== */
+/* карточки 1:1, название по центру */
+.cr-card{flex:0 0 150px;height:150px}
+.cr-img{padding:12px 10px 0}
+.cr-img img{max-height:78px}
+.cr-meta{text-align:center;padding:0 10px 12px}
+
+/* плавное появление ленты */
+.cr-view{animation:crFade .4s ease both}
+@keyframes crFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* три одинаковые точки */
+.cr-dots i,.cr-dots i:nth-child(2){width:8px;height:8px;animation:crDot 1.1s ease-in-out infinite}
+.cr-dots i:nth-child(1){background:#00d4ff}
+.cr-dots i:nth-child(2){background:#7f6cff;animation-delay:.18s}
+.cr-dots i:nth-child(3){background:#ff007f;animation-delay:.36s}
+@keyframes crDot{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
+
+/* кнопки на месте «Открыть» */
+.cr-actions{margin:15px 0;width:100%;max-width:600px}
+
+@media(max-width:380px){
+  .cr-card{flex:0 0 130px;height:130px}
+  .cr-img img{max-height:64px}
+}
+/* ===== ЛЕНТА v3 ===== */
+/* выпавшая карточка: цвет редкости не меняем, остаётся только белая рамка */
+.cr-card.is-win{background:#0d1020}
+.cr-card.is-win::before{background:linear-gradient(180deg,var(--c),transparent 75%);opacity:.38}
+.cr-card.is-win .cr-tab{background:var(--c)}
+
+/* содержимое кейса */
+.items-grid .cr-card{flex:none;height:auto;aspect-ratio:1/1;align-self:start;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.items-grid .cr-card:active{transform:scale(.97)}
+.ci-info{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(10,10,26,.85);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transform:scale(.94);pointer-events:none;transition:opacity .25s,transform .25s}
+.cr-card.open{box-shadow:0 0 0 2px var(--c),0 0 18px var(--c)}
+.cr-card.open .ci-info{opacity:1;transform:none}
+.ci-price{font-size:22px;font-weight:800;color:#ffdd00}
+.ci-chance{font-size:13px;color:#8a8aaa;font-weight:600}
+.ci-chance b{color:#fff;font-size:15px}
+.ci-bar{width:70%;height:6px;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden}
+.ci-bar i{display:block;height:100%;border-radius:3px;background:var(--c)}
+
+/* картинка кейса и заглушка-SVG */
+.cimg{position:relative;width:100%;height:100%}
+.cimg-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.cimg-ph svg{width:62%;height:62%;animation:crPh 1.6s ease-in-out infinite}
+@keyframes crPh{0%,100%{opacity:.55}50%{opacity:1}}
+.cimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:16px;opacity:0;transition:opacity .35s}
+.cimg.big img{object-fit:contain}
+.cimg.ok img{opacity:1}
+.cimg.ok .cimg-ph{display:none}
+/* ===== v4 ===== */
+.gl{color:#888}
+.open-btn s{opacity:.75;font-weight:600;margin-right:2px}
+
+/* эмблема: переворот */
+.logo-icon.lf{position:relative;cursor:pointer;transform-style:preserve-3d;transform:perspective(300px) rotateY(0deg);transition:transform .7s cubic-bezier(.3,1.2,.5,1)!important}
+.logo-icon.lf.flipped{transform:perspective(300px) rotateY(180deg)}
+.lf-face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.lf-back{transform:rotateY(180deg);font-size:22px;font-weight:900;color:#fff;text-shadow:0 0 8px rgba(0,0,0,.35)}
+
+/* множественное открытие: вертикальные ленты рядом */
+.cr-multi{position:relative;display:flex;gap:8px;height:320px}
+.cr-vcol{flex:1;min-width:0}
+.cr-vclip{height:100%;padding:0 4px;overflow:hidden;border-radius:14px;background:rgba(0,0,0,.25);-webkit-mask-image:linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(180deg,transparent,#000 12%,#000 88%,transparent)}
+.cr-vtrack{flex-direction:column;width:100%;gap:8px}
+.cr-vtrack .cr-card{flex:none;width:100%;height:auto;aspect-ratio:1/1}
+.cr-vtrack .cr-meta{display:none}
+.cr-vtrack .cr-img{padding:8px}
+.cr-vtrack .cr-img img{max-height:100%}
+.cr-vtrack .cr-tab{width:24px;height:4px}
+.cr-vmark{position:absolute;left:0;right:0;top:50%;border-top:2px solid rgba(255,255,255,.6);box-shadow:0 0 10px rgba(0,212,255,.5);z-index:5;pointer-events:none}
+.cr-vmark::before,.cr-vmark::after{content:'';position:absolute;top:-8px;border:7px solid transparent}
+.cr-vmark::before{left:-2px;border-left-color:#00d4ff;border-right:0}
+.cr-vmark::after{right:-2px;border-right-color:#ff007f;border-left:0
+}
+/* ===== v5 ===== */
+/* шрифт везде (иконки Font Awesome не затрагиваются) */
+*{font-family:'Manrope','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+
+/* кнопка открытия на всю ширину, количество под ней */
+.controls-row{flex-direction:column;align-items:stretch;gap:12px;max-width:600px}
+.open-btn{width:100%;min-width:0;border-radius:14px;padding:16px 20px}
+.case-select{display:none}
+.qty-row{display:flex;gap:4px;padding:6px;border-radius:18px;background:rgba(255,255,255,.05)}
+.qty-item{flex:1;height:44px;border:none;border-radius:14px;background:transparent;color:#8a8aaa;font-size:17px;font-weight:700;cursor:pointer}
+.qty-item.on{background:rgba(0,212,255,.14);color:#fff;box-shadow:inset 0 0 0 1.5px #00d4ff}
+
+/* множественное открытие: названия, шрифты в тех же пропорциях, что у одиночной карточки */
+.cr-vtrack .cr-card{container-type:inline-size}
+.cr-vtrack .cr-img{padding:8cqw 6cqw 0}
+.cr-vtrack .cr-img img{max-height:52cqw}
+.cr-vtrack .cr-tab{width:29cqw;height:3.4cqw}
+.cr-vtrack .cr-meta{display:block;padding:0 8cqw 8cqw}
+.cr-vtrack .cr-weapon{font-size:max(6px,8cqw)}
+.cr-vtrack .cr-skin{font-size:max(7px,9.3cqw)}
+.cr-vmark{border-top-color:rgba(255,255,255,.3);box-shadow:0 0 8px rgba(0,212,255,.3)}
+
+/* SVG кейса: прозрачный и чуть темнее фона */
+.cimg-ph svg{filter:brightness(.2) saturate(0);animation:crPh2 1.8s ease-in-out infinite}
+@keyframes crPh2{0%,100%{opacity:.4}50%{opacity:.7}}
+
+/* оборот эмблемы: свечка на торте */
+.lf-back svg{width:32px;height:32px}
+.lf-flame{transform-box:fill-box;transform-origin:50% 100%;animation:crFlame .45s ease-in-out infinite alternate}
+@keyframes crFlame{from{transform:scale(1,1) rotate(-3deg)}to{transform:scale(.9,1.12) rotate(3deg)}}
+
+/* ===== v6 ===== */
+/* «Regular» над ценой */
+.ci-kind{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8a8aaa;margin-bottom:-2px}
+
+/* кнопка открытия: новый шрифт, ниже */
+.open-btn,.open-btn *,.qty-item,.cr-sell{font-family:'Manrope',-apple-system,'Segoe UI',sans-serif!important}
+.open-btn{padding:13px 20px;font-size:clamp(16px,4.8vw,19px);box-shadow:0 4px 0 #1a0a1a}
+.open-btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 0 0 #1a0a1a}
+
+/* выбор количества: выделение плавно переезжает */
+.qty-row{position:relative}
+.qty-item{position:relative;z-index:1;transition:color .25s}
+.qty-item.on{background:transparent;box-shadow:none;color:#fff}
+.qty-pill{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 28px) / 5);border-radius:14px;background:rgba(0,212,255,.14);box-shadow:inset 0 0 0 1.5px #00d4ff;transform:translateX(calc(var(--i, 0) * (100% + 4px)));transition:transform .4s cubic-bezier(.34,1.3,.5,1);pointer-events:none}
+.qty-row.snap .qty-pill{transition:none}
+
+/* окно «Временно недоступно»: появление и закрытие */
+.temporarily-unavailable-modal{display:flex;visibility:hidden;opacity:0;pointer-events:none;transition:opacity .3s ease,visibility 0s linear .3s}
+.temporarily-unavailable-modal.active{visibility:visible;opacity:1;pointer-events:auto;transition:opacity .3s ease,visibility 0s}
+.unavailable-content{transform:scale(.9) translateY(20px);transition:transform .3s ease-in}
+.temporarily-unavailable-modal.active .unavailable-content{transform:none;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+
+/* ===== v7b ===== */
+/* бейдж скидки: один цвет для любой скидки, включая 100% */
+.discount-badge{background:linear-gradient(135deg,#00d4ff,#ff007f)!important}
+
+/* баланс: плюс и Ł серые, как Ł в кейсах */
+.balance-widget i{color:#888!important}
+.balance-widget span:not([id]){color:#888!important}
+
+/* «Standoff 2» в овале */
+.game-pill{display:inline-flex;align-items:center;padding:7px 18px;border-radius:999px;border:1.5px solid rgba(0,212,255,.5);background:rgba(0,212,255,.1);color:#fff;font-size:15px;font-weight:800;letter-spacing:.02em}
+
+/* появление новой стоимости на кнопке */
+.px{display:inline-block;animation:pxIn .4s cubic-bezier(.2,.9,.3,1.25) both}
+@keyframes pxIn{from{opacity:0;transform:translateY(10px) scale(.9)}to{opacity:1;transform:none}}
+
+/* мягкое закрытие страницы кейса */
+.case-page.closing{animation:casePageOut .4s ease-out forwards}
+@keyframes casePageOut{0%{opacity:1;transform:scale(1) translateY(0)}100%{opacity:0;transform:scale(.97) translateY(20px)}}
+
+/* живой градиент «Lucky Drop» в шапке, слева направо */
+.header .logo-text{background:linear-gradient(90deg,#00d4ff,#ffdd00,#ff007f,#00d4ff);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;animation:crShine 4s linear infinite}
+@keyframes crShine{from{background-position:200% 50%}to{background-position:0% 50%}}
+
+/* SVG-заглушка кейса: чуть меньше самой картинки */
+.cimg-ph svg{width:86%;height:86%}
+
+/* ===== v8: бесплатные кейсы ===== */
+.controls-row.free .qty-row{display:none}
+.fc-price{font-size:15px;letter-spacing:.02em}
+
+/* ===== v9 ===== */
+/* замочек на кнопке: иконке возвращаем шрифт Font Awesome (из-за этого были «полоски») */
+.open-btn .fas{font-family:"Font Awesome 6 Free"!important;font-weight:900!important}
+
+/* уведомления сверху, сразу под шапкой */
+.notification{bottom:auto;top:74px;transform:translateY(-250%);opacity:0;transition:transform .35s cubic-bezier(.34,1.3,.5,1),opacity .25s ease}
+.notification.show{transform:translateY(0);opacity:1}
+
+/* анимация смены вкладок навигации */
+.tab-content.active{animation:tabIn .4s cubic-bezier(.2,.8,.3,1) both}
+@keyframes tabIn{from{opacity:0;transform:translateX(var(--tab-dx,0px)) translateY(10px)}to{opacity:1;transform:none}}
+.nav-item.active i{animation:navPop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes navPop{0%{transform:scale(.8)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+
+/* ===== v10 ===== */
+/* уведомление выезжает справа из-за экрана */
+.notification{transform:translateX(calc(100% + 40px))}
+.notification.show{transform:none}
+
+/* без надписи «Готов к открытию», картинка кейса чуть крупнее */
+.cimg.big + div{display:none}
+.cimg.big{width:190px!important;height:190px!important;margin:0 auto 6px!important}
+
+/* профиль выезжает плавнее */
+.profile-panel{right:-110%;transition:right .55s cubic-bezier(.22,1,.36,1)}
+.profile-overlay{display:block;opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s linear .45s}
+.profile-overlay.active{opacity:1;visibility:visible;transition:opacity .45s ease}
+
+/* мини-игры: панель, которая выезжает из-под навигации */
+#gamesTab .section-title{display:none}
+.gs-overlay{position:fixed;inset:0;z-index:84;background:rgba(0,0,0,.35);opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
+.gs-overlay.open{opacity:1;visibility:visible;transition:opacity .35s ease}
+.games-sheet{position:fixed;left:12px;right:12px;margin:0 auto;max-width:520px;bottom:60px;z-index:85;padding:14px 12px 30px;background:#12142a;border:2px solid #00d4ff;border-bottom:none;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.45);transform:translateY(105%);visibility:hidden;transition:transform .5s cubic-bezier(.22,1,.36,1),visibility 0s linear .5s}
+.games-sheet.open{transform:none;visibility:visible;transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.gs-title{text-align:center;font-size:15px;font-weight:800;color:#e0e0ff;margin-bottom:12px}
+.games-sheet .games-grid-modern{grid-template-columns:repeat(3,1fr);gap:10px;padding:0}
+.games-sheet .game-app-card{padding:10px 4px 8px;border-radius:18px}
+.games-sheet .game-icon{min-height:0;margin-bottom:6px}
+.games-sheet .game-icon i{font-size:30px}
+.games-sheet .game-name{font-size:12px}
+.games-sheet .game-desc{font-size:9px}
+.nav-item.sheet-on,.nav-item.sheet-on i,.nav-item.sheet-on span{color:#ff007f}
+
+/* ===== v11b ===== */
+/* размытая лента под картинкой кейса */
+.cr-idle{width:100%;height:112px;margin:2px 0 14px;overflow:hidden;border-radius:18px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+.cr-idle-track{display:flex;gap:10px;width:max-content;padding:6px 0;filter:blur(5px);opacity:.75;animation:crIdle 70s linear infinite}
+.cr-idle .cr-card{flex:0 0 100px;height:100px}
+.cr-idle .cr-img{padding:10px 8px 0}
+.cr-idle .cr-img img{max-height:62px}
+@keyframes crIdle{to{transform:translateX(-50%)}}
+
+/* мини-игры: парящая панель со стрелкой, только картинка и название */
+.gs-title{display:none}
+.games-sheet{right:auto;bottom:calc(var(--nav-h,62px) + 14px)!important;width:min(320px,86vw);max-width:none;margin:0;padding:18px 14px 16px;background:#14162b;border:1.5px solid rgba(0,212,255,.35);border-radius:26px;box-shadow:0 10px 40px rgba(0,0,0,.55);transform:translateY(14px) scale(.9);transform-origin:var(--arrow-x,50%) 100%;opacity:0;visibility:hidden;transition:transform .4s cubic-bezier(.22,1,.36,1),opacity .25s ease,visibility 0s linear .4s}
+.games-sheet.open{transform:none;opacity:1;visibility:visible;transition:transform .4s cubic-bezier(.22,1,.36,1),opacity .25s ease}
+.games-sheet::after{content:'';position:absolute;bottom:-9px;left:var(--arrow-x,50%);width:16px;height:16px;background:#14162b;border-right:1.5px solid rgba(0,212,255,.35);border-bottom:1.5px solid rgba(0,212,255,.35);border-radius:0 0 4px 0;transform:translateX(-50%) rotate(45deg)}
+.games-sheet .games-grid-modern{grid-template-columns:repeat(3,1fr);gap:18px 8px}
+.games-sheet .game-app-card{padding:0;background:none;border:none;box-shadow:none;border-radius:0}
+.games-sheet .game-app-card:hover{transform:none;background:none;box-shadow:none}
+.games-sheet .game-app-card:active{transform:scale(.94)}
+.games-sheet .game-desc{display:none}
+.games-sheet .game-icon{width:64px;height:64px;min-height:0;margin:0 auto 8px;border-radius:18px;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#2a2a55,#0a0a1a);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.08)}
+.games-sheet .game-icon i{font-size:28px;color:#fff!important}
+.games-sheet [data-game=stone] .game-icon{background:linear-gradient(145deg,#ff9966,#8a3300)}
+.games-sheet [data-game=rocket] .game-icon{background:linear-gradient(145deg,#00d4ff,#00507a)}
+.games-sheet [data-game=doubleup] .game-icon{background:linear-gradient(145deg,#44dd77,#0a5a2a)}
+.games-sheet [data-game=craft] .game-icon{background:linear-gradient(145deg,#ffcc44,#8a5a00)}
+.games-sheet [data-game=mine] .game-icon{background:linear-gradient(145deg,#aa66ff,#3a1a7a)}
+.games-sheet .game-name{font-size:12.5px;font-weight:600;color:#e0e0ff;margin:0}
+
+/* ===== v12 ===== */
+/* размытая лента теперь ЗА картинкой/заглушкой кейса */
+#caseAnimationArea{position:relative}
+.cimg.big{position:relative;z-index:1}
+.cr-idle{position:absolute;left:0;right:0;top:39px;margin:0;z-index:0;pointer-events:none}
+
+/* ===== v15b: Апгрейд (вместо CSS v14) ===== */
+.games-sheet [data-game=upgrade] .game-icon{background:linear-gradient(145deg,#44ddaa,#0a5a4a)}
+
+/* навигация остаётся видна: крафт и апгрейд заканчиваются над ней, панель мини-игр открывается поверх них */
+.gs-overlay{z-index:464;bottom:var(--nav-h,62px)}
+.games-sheet{z-index:465}
+.craft-page{height:calc(100% - var(--nav-h,62px))}
+
+.upg-page{position:fixed;top:0;left:0;right:0;bottom:var(--nav-h,62px);z-index:460;overflow-y:auto;padding:14px 14px 24px;
+  background:radial-gradient(circle at 50% 14%,rgba(0,212,255,.22),transparent 52%),radial-gradient(circle at 90% 62%,rgba(255,0,127,.18),transparent 48%),radial-gradient(circle at 8% 88%,rgba(0,212,255,.12),transparent 45%),linear-gradient(135deg,#0a0e1a,#1a0b26);
+  transform:translateY(100%);visibility:hidden;transition:transform .5s cubic-bezier(.22,1,.36,1),visibility 0s linear .5s}
+.upg-page.open{transform:none;visibility:visible;transition:transform .5s cubic-bezier(.22,1,.36,1)}
+
+/* шапка и «Как играть» */
+.upg-head{display:flex;justify-content:space-between;align-items:center;max-width:600px;margin:0 auto 8px}
+.upg-head h2{font-size:24px;font-weight:800;background:linear-gradient(90deg,#00d4ff,#ff007f);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 8px rgba(0,212,255,.45))}
+.upg-how{display:flex;align-items:center;gap:10px;cursor:pointer;color:#c8c8ff;font-size:14px;font-weight:700}
+.upg-chev{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:12px;border:1.5px solid rgba(0,212,255,.6);background:rgba(0,212,255,.1);box-shadow:0 0 14px rgba(0,212,255,.35)}
+.upg-chev i{color:#00d4ff;transition:transform .35s cubic-bezier(.34,1.3,.5,1)}
+.upg-how.open .upg-chev i{transform:rotate(180deg)}
+.upg-help{max-width:600px;margin:0 auto;max-height:0;opacity:0;overflow:hidden;transition:max-height .45s ease,opacity .3s ease,margin .3s ease}
+.upg-help.open{max-height:360px;opacity:1;margin-bottom:10px}
+.upg-help ol{padding:12px 14px 12px 32px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(0,212,255,.25);color:#d0d0ff;font-size:13px;line-height:1.55}
+.upg-help li{margin-bottom:4px}
+
+/* кольцо с шансом: полоса толще, размер кольца прежний */
+.upg-ring{position:relative;width:240px;height:240px;margin:14px auto 8px}
+.upg-ring::before{content:'';position:absolute;inset:-14px;border-radius:50%;border:1.5px dashed rgba(0,212,255,.35);animation:upgSpin 40s linear infinite}
+.upg-ring::after{content:'';position:absolute;inset:-30px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,.16),rgba(255,0,127,.08) 45%,transparent 68%);z-index:-1}
+@keyframes upgSpin{to{transform:rotate(360deg)}}
+.upg-ring svg{width:100%;height:100%;display:block;position:relative}
+.upg-track{fill:none;stroke:#161a3a;stroke-width:24}
+.upg-arc{fill:none;stroke-width:24;transition:stroke-dasharray .5s ease;filter:drop-shadow(0 0 8px rgba(0,212,255,.8))}
+.upg-pointer{position:absolute;inset:0;pointer-events:none}
+.upg-pointer::before{content:'';position:absolute;top:28px;left:50%;transform:translateX(-50%);border-left:10px solid transparent;border-right:10px solid transparent;border-bottom:18px solid #fff;filter:drop-shadow(0 0 8px #fff) drop-shadow(0 0 14px #00d4ff)}
+.upg-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.upg-center b{font-size:34px;font-weight:800;color:#fff;text-shadow:0 0 18px rgba(0,212,255,.8)}
+.upg-center span{font-size:12px;color:#9a9ad0;letter-spacing:.1em;text-transform:uppercase}
+.upg-center.win b{color:#44ff88;text-shadow:0 0 20px rgba(68,255,136,.8)}
+.upg-center.lose b{color:#ff007f;text-shadow:0 0 20px rgba(255,0,127,.8)}
+
+/* выбранные предметы и желаемый */
+.upg-row{display:flex;align-items:center;gap:10px;max-width:600px;margin:14px auto 10px}
+.upg-box{flex:1;min-height:86px;padding:10px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(0,212,255,.28);box-shadow:inset 0 0 18px rgba(0,212,255,.08),0 0 16px rgba(0,212,255,.1)}
+.upg-cap{font-size:11px;color:#9a9ad0;margin-bottom:8px}
+.upg-cap b{color:#ffdd00}
+.upg-thumbs{display:flex;gap:6px;flex-wrap:wrap;min-height:40px}
+.upg-thumbs img{width:40px;height:40px;object-fit:contain;padding:3px;border-radius:10px;background:#0d1020;box-shadow:0 0 8px rgba(0,212,255,.25)}
+.upg-arrow{color:#00d4ff;filter:drop-shadow(0 0 6px #00d4ff)}
+.upg-go{display:block;width:100%;max-width:600px;margin:12px auto;padding:14px;border:none;border-radius:14px;font-size:18px;font-weight:800;color:#fff;background:linear-gradient(135deg,#00d4ff,#ff007f);cursor:pointer;animation:upgGlow 2.2s ease-in-out infinite}
+.upg-go:disabled{opacity:.45;cursor:not-allowed;animation:none;box-shadow:0 4px 0 #1a0a1a}
+@keyframes upgGlow{0%,100%{box-shadow:0 4px 0 #1a0a1a,0 0 14px rgba(0,212,255,.5)}50%{box-shadow:0 4px 0 #1a0a1a,0 0 28px rgba(255,0,127,.7)}}
+
+/* вкладки и фильтры */
+.upg-tabs{display:flex;gap:6px;max-width:600px;margin:14px auto 10px;padding:5px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(0,212,255,.2)}
+.upg-tabs button{flex:1;padding:10px 4px;border:none;border-radius:12px;background:transparent;color:#9a9ad0;font-size:13px;font-weight:700;cursor:pointer}
+.upg-tabs button.on{background:rgba(0,212,255,.16);color:#fff;box-shadow:0 0 12px rgba(0,212,255,.45),inset 0 0 0 1.5px #00d4ff}
+.upg-filters{display:none;gap:8px;max-width:600px;margin:0 auto 10px}
+.upg-page.tgt .upg-filters{display:flex}
+.upg-filters button{flex:0 0 auto;padding:9px 14px;border-radius:12px;border:1px solid rgba(0,212,255,.25);background:rgba(255,255,255,.06);color:#c8c8ff;font-size:13px;font-weight:800;cursor:pointer}
+.upg-filters button.on{background:rgba(0,212,255,.18);color:#fff;box-shadow:0 0 12px rgba(0,212,255,.55),inset 0 0 0 1.5px #00d4ff}
+.upg-min{flex:1;min-width:0;padding:9px 12px;border-radius:12px;border:1px solid rgba(255,221,0,.5);background:rgba(10,10,26,.7);color:#fff;font-size:14px;outline:none}
+.upg-min:focus{box-shadow:0 0 12px rgba(255,221,0,.4)}
+
+/* блок оружий: видно 4 ряда, дальше прокрутка внутри блока */
+.upg-listwrap{container-type:inline-size;max-width:600px;margin:0 auto}
+.upg-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:6px;border-radius:18px;background:rgba(0,0,0,.18);border:1px solid rgba(0,212,255,.2);box-shadow:inset 0 0 20px rgba(0,212,255,.06);max-height:calc((100cqw - 34px) * 4 / 3 + 44px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.upg-empty{grid-column:1/-1;padding:24px 0;text-align:center;font-size:14px;color:#9a9ad0}
+.upg-list .cr-card{flex:none;height:auto;aspect-ratio:1/1;align-self:start;container-type:inline-size;cursor:pointer}
+.upg-list .cr-img{padding:8cqw 6cqw 0}
+.upg-list .cr-img img{max-height:46cqw}
+.upg-list .cr-tab{width:29cqw;height:3.4cqw}
+.upg-list .cr-meta{padding:0 6cqw 6cqw}
+.upg-list .cr-weapon{font-size:max(7px,8cqw)}
+.upg-list .cr-skin{font-size:max(8px,9.3cqw)}
+.upg-price{font-size:max(8px,9cqw);font-weight:700;color:#ffdd00}
+.upg-list .cr-card.on{box-shadow:0 0 0 2px #fff,0 0 16px var(--c)}
+.upg-list .cr-card.dis{opacity:.28;pointer-events:none}
+
+/* ===== v16 ===== */
+/* страницы игр лежат под навигацией, поэтому за её закруглёнными углами нет чужого фона */
+body.pg-on .header,body.pg-on .header-hidden{visibility:hidden}
+.upg-page,.craft-page{z-index:89}
+.upg-page{bottom:0;padding-bottom:calc(var(--nav-h,62px) + 24px);opacity:0;transform:scale(.97) translateY(20px);transition:opacity .4s ease-out,transform .4s ease-out,visibility 0s linear .4s}
+.upg-page.open{opacity:1;transform:none;transition:opacity .4s ease-out,transform .4s ease-out}
+.craft-page{display:block;height:100%;padding-bottom:calc(var(--nav-h,62px) + 24px);opacity:0;visibility:hidden;transform:scale(.97) translateY(20px);transition:opacity .4s ease-out,transform .4s ease-out,visibility 0s linear .4s}
+.craft-page.active{opacity:1;visibility:visible;transform:none;transition:opacity .4s ease-out,transform .4s ease-out}
+
+/* «Как играть» открывается поверх, ничего не сдвигая */
+.upg-head{position:relative}
+.upg-help{position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:30;max-height:none;margin:0;overflow:visible;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-8px) scale(.97);transform-origin:top right;transition:opacity .3s ease,transform .35s cubic-bezier(.22,1,.36,1),visibility 0s linear .3s}
+.upg-help.open{max-height:none;margin:0;opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity .3s ease,transform .35s cubic-bezier(.22,1,.36,1)}
+.upg-help ol{background:rgba(14,16,38,.97);border:1px solid rgba(0,212,255,.45);box-shadow:0 14px 34px rgba(0,0,0,.65),0 0 22px rgba(0,212,255,.25)}
+
+/* отступ между кругом и блоками «Ваши предметы» / «Желаемый» */
+.upg-ring{margin:20px auto 38px}
+
+/* шанс появляется плавно */
+.upg-pct.in{animation:upgIn .45s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes upgIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}
+
+/* переключатель вкладок: выделение плавно переезжает, как в выборе количества кейсов */
+.upg-tabs{position:relative}
+.upg-tabs button{position:relative;z-index:1;transition:color .25s}
+.upg-tabs button.on{background:transparent;box-shadow:none}
+.upg-pill{position:absolute;top:5px;bottom:5px;left:5px;border-radius:12px;background:rgba(0,212,255,.16);box-shadow:0 0 12px rgba(0,212,255,.45),inset 0 0 0 1.5px #00d4ff;pointer-events:none}
+.upg-tabs .upg-pill{width:calc((100% - 16px) / 2);transform:translateX(calc(var(--i,0) * (100% + 6px)));transition:transform .4s cubic-bezier(.34,1.3,.5,1)}
+
+/* фильтры 50/20/10 в таком же переключателе, повторное нажатие выключает фильтр */
+.upg-seg{position:relative;flex:1.5;min-width:0;display:flex;gap:4px;padding:5px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(0,212,255,.2)}
+.upg-seg button{position:relative;z-index:1;flex:1;padding:8px 0;border:none;border-radius:10px;background:transparent;color:#9a9ad0;font-size:13px;font-weight:800;cursor:pointer;transition:color .25s}
+.upg-seg button.on{color:#fff;background:transparent;box-shadow:none}
+.upg-seg .upg-pill{border-radius:10px;width:calc((100% - 18px) / 3);transform:translateX(calc(var(--i,0) * (100% + 4px)));transition:transform .4s cubic-bezier(.34,1.3,.5,1),opacity .25s ease}
+.upg-seg.none .upg-pill{opacity:0}
+.upg-min{flex:1}
+
+/* свечение и объём кнопки «Открыть» в кейсах, как у «Апгрейд» */
+.open-btn:not(:disabled){animation:upgGlow 2.2s ease-in-out infinite}
+.open-btn:disabled{animation:none}
+.open-btn:active:not(:disabled){animation:none}
+.upg-go:active:not(:disabled){animation:none;transform:translateY(4px);box-shadow:0 0 0 #1a0a1a}
+
+/* ===== v17 ===== */
+/* фон как в апгрейде: на главной странице и на «Бесплатно» */
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 50% 14%,rgba(0,212,255,.22),transparent 52%),radial-gradient(circle at 90% 62%,rgba(255,0,127,.18),transparent 48%),radial-gradient(circle at 8% 88%,rgba(0,212,255,.12),transparent 45%)}
+
+/* апгрейд и крафт: шапки полностью убраны, прокрутка не передаётся странице под ними */
+body.pg-on .header,body.pg-on .header-hidden{display:none!important}
+.upg-page,.craft-page{overscroll-behavior:contain}
+
+/* блоки «Ваши предметы» и «Желаемый» сразу в две строки, желаемое оружие под размер блока */
+.upg-thumbs{min-height:86px;align-content:flex-start}
+.upg-tgt img{width:86px;height:86px}
+
+/* точки «крутим» в центре кольца */
+.upg-pct .cr-dots{display:inline-flex;height:34px;align-items:center}
+
+/* кнопка «Продать» в кейсах: свечение и объём как у «Открыть» */
+.cr-sell{box-shadow:0 4px 0 #1a0a1a;animation:upgGlow 2.2s ease-in-out infinite}
+.cr-sell:disabled{animation:none}
+.cr-sell:active{animation:none;transform:translateY(4px);box-shadow:0 0 0 #1a0a1a}
+
+/* ===== v18 ===== */
+/* убираем фон-вспышку при нажатии на кнопки (в том числе на кнопку промокода) */
+html,body{-webkit-tap-highlight-color:transparent}
+.promo-big-btn{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+
+/* свечение кнопок без анимации box-shadow: она давала тёмный прямоугольник в углу на iOS */
+.open-btn,.cr-sell,.upg-go{position:relative;isolation:isolate;box-shadow:0 4px 0 #1a0a1a,0 0 14px rgba(0,212,255,.5);animation:none!important}
+.open-btn:disabled,.upg-go:disabled{box-shadow:0 4px 0 #1a0a1a}
+.open-btn::after,.cr-sell::after,.upg-go::after{content:'';position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 28px rgba(255,0,127,.7);opacity:0;z-index:-1;pointer-events:none;will-change:opacity;animation:upgPulse 2.2s ease-in-out infinite}
+.open-btn:disabled::after,.cr-sell:disabled::after,.upg-go:disabled::after,.open-btn:active::after,.cr-sell:active::after,.upg-go:active::after{animation:none;opacity:0}
+@keyframes upgPulse{0%,100%{opacity:0}50%{opacity:1}}
+
+/* карточки в блоках «Ваши предметы» и «Желаемый» */
+.upg-thumbs{container-type:inline-size;display:flex;flex-wrap:wrap;gap:6px;align-content:center;min-height:86px}
+.upg-mini{flex:none;width:86px;height:86px;aspect-ratio:1/1;container-type:inline-size;cursor:default;transition:width .35s cubic-bezier(.22,1,.36,1),height .35s cubic-bezier(.22,1,.36,1),opacity .3s ease,margin .3s ease,transform .3s ease}
+.upg-mine[data-n="2"] .upg-mini{width:calc((100cqw - 6px) / 2);height:calc((100cqw - 6px) / 2)}
+.upg-mine[data-n="3"] .upg-mini,.upg-mine[data-n="4"] .upg-mini,.upg-mine[data-n="5"] .upg-mini{width:calc((100cqw - 12px) / 3);height:calc((100cqw - 12px) / 3)}
+.upg-mini.in{animation:upgCardIn .4s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes upgCardIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+.upg-mini.out{width:0!important;height:0!important;opacity:0;margin:0 -3px;transform:scale(.6)}
+.upg-thumbs .cr-img{padding:8cqw 6cqw 0}
+.upg-thumbs .cr-img img{width:auto;height:auto;max-width:100%;max-height:50cqw;padding:0;background:none;box-shadow:none;border-radius:0}
+.upg-thumbs .cr-tab{width:29cqw;height:3.4cqw}
+.upg-thumbs .cr-meta{padding:0 6cqw 6cqw}
+.upg-thumbs .cr-weapon{font-size:max(5px,8cqw)}
+.upg-thumbs .cr-skin{font-size:max(5.5px,9.3cqw)}
+.upg-thumbs .upg-price{font-size:max(5px,9cqw)}
+@container (max-width:60px){.upg-thumbs .cr-meta{display:none}}
+
+/* горизонтальная ориентация: навигация и шапка остаются на своих местах */
+@media (orientation:landscape) and (max-height:500px){
+  .bottom-nav{position:fixed!important;margin-top:0!important}
+  .header{position:sticky!important}
+  .content{padding-bottom:80px!important}
+}
+
+/* ===== v19 ===== */
+/* фон страницы лежит на самом html и всегда тёмный, поэтому белой вспышки быть не может */
+html{background:linear-gradient(135deg,#0a0e1a,#1a0b26) #0a0e1a;color-scheme:dark}
+body{background:transparent}
+
+/* блоки «Ваши предметы» и «Желаемый»: высота фиксированная, под ширину устройства */
+.upg-box{container-type:inline-size}
+.upg-cap{min-height:14px;line-height:14px}
+.upg-thumbs{height:max(86px,calc((100cqw - 12px) / 3 * 2 + 6px));min-height:0;align-items:center;align-content:center}
+
+/* при 1-3 предметах карточки идут в одну строку и никогда не переносятся, пока меняют размер */
+.upg-mine:not([data-n="4"]):not([data-n="5"]){flex-wrap:nowrap}
+.upg-mini{flex:0 1 auto;min-width:0;height:auto}
+.upg-mine[data-n="2"] .upg-mini,.upg-mine[data-n="3"] .upg-mini,.upg-mine[data-n="4"] .upg-mini,.upg-mine[data-n="5"] .upg-mini{height:auto}
+
+/* ===== v20 ===== */
+.upg-help li.upg-note{list-style:none;margin:8px 0 0 -18px;font-size:11.5px;font-style:italic;color:#9a9ad0}
+
+/* картинка кейса: заглушка плавно растворяется, картинка плавно проявляется */
+.cimg img{opacity:0;transform:scale(.95);transition:opacity .6s ease,transform .6s ease}
+.cimg.ok img{opacity:1;transform:none}
+.cimg.ok .cimg-ph{display:flex!important;opacity:0;transition:opacity .5s ease;pointer-events:none}
+
+/* заглушка оружия: силуэт АКР, серый и пульсирует так же, как заглушка кейса */
+.cr-img,.inventory-item-icon{position:relative}
+.inventory-item-icon{min-height:60px}
+.cr-img::before,.inventory-item-icon::before{content:'';position:absolute;inset:12%;background:var(--akr) center/contain no-repeat;filter:brightness(.25) saturate(0);animation:crPh2 1.8s ease-in-out infinite;pointer-events:none}
+.cr-img.ok::before,.inventory-item-icon.ok::before{animation:crPhOut .45s ease forwards}
+@keyframes crPhOut{from{opacity:.6}to{opacity:0}}
+.cr-img img,.inventory-item-icon img{opacity:0;transition:opacity .5s ease}
+.cr-img.ok img,.inventory-item-icon.ok img{opacity:1}
+
+/* ===== v21 ===== */
+/* дуло заглушки АКР смотрит влево */
+.cr-img::before,.inventory-item-icon::before{transform:scaleX(-1)}
+
+/* ===== v22 ===== */
+/* основная шапка видна в мини-играх: апгрейд, лесенка и крафт начинаются под ней */
+body.pg-on .header{display:flex!important;position:fixed!important;top:0;left:0;right:0;opacity:1!important;transform:none!important;pointer-events:auto!important;z-index:100}
+body.pg-on .header-hidden{display:none!important}
+body.pg-on{padding-top:var(--hdr-h,64px)}
+.upg-page{top:var(--hdr-h,64px)}
+.craft-page{top:var(--hdr-h,64px);height:calc(100% - var(--hdr-h,64px))}
+
+/* ===== v23 ===== */
+/* шапка видна: в старом CSS v16 осталось правило visibility:hidden для неё */
+body.pg-on .header{visibility:visible!important}
+
+/* ===== Лесенка ===== */
+.stp-ladder{position:relative;max-width:600px;margin:14px auto 12px;padding:14px 10px 12px;border-radius:22px;background:rgba(255,255,255,.04);border:1px solid rgba(0,212,255,.28);box-shadow:inset 0 0 24px rgba(0,212,255,.08),0 0 20px rgba(0,212,255,.12)}
+.stp-rows{margin-bottom:30px}
+.stp-row{height:36px}
+.stp-segs{display:flex}
+.stp-seg{position:relative;flex:1;height:36px;cursor:default}
+.stp-seg::before{content:'';position:absolute;inset:12px .5px;border-radius:999px;background:#2a2e48;transition:background .3s,box-shadow .3s}
+.stp-seg.act{cursor:pointer}
+.stp-seg.act::before{background:linear-gradient(90deg,#ff2a6d,#ff007f);box-shadow:0 0 8px rgba(255,0,127,.7)}
+.stp-seg.sel::before{background:#ffd0e0}
+.stp-seg.pick::before{background:#44ff88;box-shadow:0 0 8px rgba(68,255,136,.7)}
+.stp-seg.hit::before{background:#ff2a6d;box-shadow:0 0 8px rgba(255,0,127,.8)}
+
+/* камни падают с этажа выше */
+.stp-rock{position:absolute;left:50%;top:50%;width:min(130%,26px);aspect-ratio:1/1;border-radius:50%;transform:translate(-50%,-50%);z-index:2;background:radial-gradient(circle at 65% 68%,rgba(0,0,0,.28) 14%,transparent 16%),radial-gradient(circle at 32% 30%,#b8b1a3,#6a655c 62%,#47433c);box-shadow:inset -2px -2px 3px rgba(0,0,0,.35),0 0 6px rgba(0,0,0,.5);animation:stpDrop .6s backwards}
+@keyframes stpDrop{
+  0%{transform:translate(-50%,calc(-50% - 50px));opacity:0;animation-timing-function:cubic-bezier(.5,0,.9,.6)}
+  12%{opacity:1}
+  68%{transform:translate(-50%,-50%);animation-timing-function:cubic-bezier(.2,.7,.4,1)}
+  82%{transform:translate(-50%,calc(-50% - 7px));animation-timing-function:cubic-bezier(.5,0,.9,.6)}
+  100%{transform:translate(-50%,-50%)}
+}
+
+/* клевер: стоит над плитой этажа */
+.stp-hero{position:absolute;left:0;top:0;width:22px;height:22px;z-index:3;pointer-events:none;filter:drop-shadow(0 0 6px rgba(68,255,136,.8))}
+.stp-hero.dead{filter:grayscale(1);opacity:.45;transition:opacity .4s,filter .4s}
+.stp-hero svg{width:100%;height:100%;display:block}
+
+/* лента коэффициентов и сообщения поверх неё */
+.stp-chipwrap{position:relative}
+.stp-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.stp-chips::-webkit-scrollbar{display:none}
+.stp-chip{flex:0 0 84px;padding:6px 0;text-align:center;font-size:13px;font-weight:800;color:#fff;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);transition:background .3s,color .3s}
+.stp-chip.done{color:#44ff88;background:rgba(68,255,136,.1);border-color:rgba(68,255,136,.3)}
+.stp-chip.cur{color:#fff;background:linear-gradient(135deg,#00d4ff,#ff007f);border-color:transparent}
+.stp-msg{position:absolute;inset:0;z-index:4;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:13px;font-weight:800;color:#fff;text-align:center;opacity:0;pointer-events:none;transition:opacity .35s ease}
+.stp-msg.show{opacity:1;pointer-events:auto;cursor:pointer}
+.stp-msg.lose{background:linear-gradient(135deg,#ff2a6d,#ff007f)}
+.stp-msg.win{background:linear-gradient(135deg,#44ff88,#0a9a4a)}
+.stp-msg.info{background:rgba(14,16,38,.97);border:1px solid rgba(0,212,255,.45)}
+
+/* количество камней (блок 3x2) и ставка */
+.stp-ctlrow{display:flex;gap:10px;max-width:600px;margin:0 auto 10px}
+.stp-ctl{margin:0}
+.stp-ctl.lock{opacity:.5;pointer-events:none}
+.stp-ctlrow .stp-ctl:first-child{flex:0 0 156px}
+.stp-ctlrow .stp-ctl:last-child{flex:1;min-width:0}
+.stp-cap{margin:0 0 6px 2px;font-size:12px;color:#9a9ad0}
+.stp-bet{width:100%;padding:12px 14px;border-radius:14px;border:1px solid rgba(255,221,0,.5);background:rgba(10,10,26,.7);color:#fff;font-size:16px;outline:none}
+.stp-bet:focus{box-shadow:0 0 12px rgba(255,221,0,.4)}
+.stp-stones{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:6px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(0,212,255,.2)}
+.stp-stones button{position:relative;z-index:1;height:38px;border:none;border-radius:12px;background:transparent;color:#8a8aaa;font-size:17px;font-weight:700;cursor:pointer;transition:color .25s}
+.stp-stones button.on{color:#fff}
+.stp-stones .qty-pill{top:6px;left:6px;bottom:auto;width:calc((100% - 20px) / 3);height:calc((100% - 16px) / 2);transform:translate(calc(var(--x,0) * (100% + 4px)),calc(var(--y,0) * (100% + 4px)))}
+
+/* ===== v24 ===== */
+/* кейсы: доводка до центра карточки плавная, без резкого старта */
+
+
+/* в мини-играх показывается скрытая (компактная) шапка, основная убирается */
+body.pg-on .header{display:none!important}
+body.pg-on .header-hidden{display:flex!important;visibility:visible!important;opacity:1!important;transform:none!important;pointer-events:auto!important;z-index:99;background:linear-gradient(180deg,rgba(10,14,26,.94),rgba(10,14,26,0))!important}
+.upg-page{top:0;padding-top:calc(var(--hdr-h,64px) + 6px)}
+.craft-page{top:0;height:100%;padding-top:calc(var(--hdr-h,64px) + 6px)}
+
+/* лесенка: клевер двигается через transform, свечение мягкое, без следа */
+.stp-hero{filter:none;will-change:transform}
+.stp-hero::before{content:'';position:absolute;inset:-12px;border-radius:50%;background:radial-gradient(circle,rgba(68,255,136,.45),rgba(68,255,136,.16) 45%,transparent 70%);pointer-events:none}
+.stp-hero svg{position:relative;overflow:visible}
+.stp-hero.dead{filter:none;opacity:.4;transition:opacity .4s}
+.stp-hero.dead::before{opacity:0}
+
+/* лесенка: новый камень, стоит над плитой */
+.stp-rock{width:24px;height:24px;aspect-ratio:auto;border-radius:0;box-shadow:none;background:var(--rock) center/contain no-repeat;transform:translate(-50%,calc(-50% - 17px));animation:stpDrop2 .6s backwards}
+@keyframes stpDrop2{
+  0%{transform:translate(-50%,calc(-50% - 69px));opacity:0;animation-timing-function:cubic-bezier(.5,0,.9,.6)}
+  12%{opacity:1}
+  68%{transform:translate(-50%,calc(-50% - 17px));animation-timing-function:cubic-bezier(.2,.7,.4,1)}
+  82%{transform:translate(-50%,calc(-50% - 24px));animation-timing-function:cubic-bezier(.5,0,.9,.6)}
+  100%{transform:translate(-50%,calc(-50% - 17px))}
+}
+
+/* лесенка: коэффициенты уже, текущий загорается плавно, без артефактов по краям */
+.stp-ladder{overflow:hidden}
+.stp-chip{flex:0 0 72px;position:relative;isolation:isolate;transition:color .5s ease,background .5s ease,border-color .5s ease}
+.stp-chip::before{content:'';position:absolute;inset:-1px;z-index:-1;border-radius:inherit;background:linear-gradient(135deg,#00d4ff,#ff007f);opacity:0;transition:opacity .5s ease}
+.stp-chip.cur{background:rgba(255,255,255,.06);border-color:transparent}
+.stp-chip.cur::before{opacity:1}
+
+/* лесенка: ставка слева, количество камней справа; плавный сброс игры */
+.stp-ctlrow .stp-ctl:first-child{flex:1;min-width:0}
+.stp-ctlrow .stp-ctl:last-child{flex:0 0 156px}
+.stp-rows{transition:opacity .45s ease}
+.stp-rows.fade{opacity:0}
+
+/* ===== v25 ===== */
+.stp-chip.tick{animation:stpTick .55s ease}
+@keyframes stpTick{40%{transform:scale(1.08)}}
+
+/* ===== v26 ===== */
+/* лента коэффициентов: «подпрыгивает» только число, рамка не меняется */
+.stp-chip.tick{animation:none}
+.stp-chip span{display:inline-block}
+.stp-chip span.tick{animation:stpTickTxt .55s ease}
+@keyframes stpTickTxt{40%{transform:scale(1.2)}}
+
+/* поля ввода не должны увеличивать страницу на iOS */
+input,textarea,select{font-size:16px!important}
+
+/* карточка «Башня» в панели мини-игр: большой камень в правом нижнем углу на градиенте */
+.games-sheet [data-game=stone] .game-icon,.games-sheet [data-game=upgrade] .game-icon{position:relative;overflow:hidden}
+.games-sheet [data-game=stone] .game-icon{background:linear-gradient(145deg,#6a5a9a,#1a1030 70%,#0a0a1a)}
+.games-sheet [data-game=stone] .game-icon i{display:none}
+.games-sheet [data-game=stone] .game-icon::after{content:'';position:absolute;inset:0;background:var(--rock) right -16px bottom -16px/84px no-repeat}
+
+/* карточка «Апгрейд»: кольцо шанса с указателем */
+.games-sheet [data-game=upgrade] .game-icon{background:linear-gradient(145deg,#0f6a6a,#0a1a3a 70%,#14082a)}
+.games-sheet [data-game=upgrade] .game-icon::before{content:'';position:absolute;inset:8px;border-radius:50%;background:conic-gradient(#00d4ff,#8a5cff 45%,#ff007f 70%,rgba(255,255,255,.1) 70%);-webkit-mask:radial-gradient(circle,transparent 52%,#000 54%);mask:radial-gradient(circle,transparent 52%,#000 54%)}
+.games-sheet [data-game=upgrade] .game-icon::after{content:'';position:absolute;top:3px;left:50%;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:8px solid #fff;transform:translateX(-50%) rotate(252deg);transform-origin:50% 29px;filter:drop-shadow(0 0 4px #fff)}
+.games-sheet [data-game=upgrade] .game-icon i{position:relative;z-index:1;font-size:18px}
+
+/* ===== v27 ===== */
+/* камень лежит поверх клевера, клевер сквозь него больше не виден */
+.stp-seg .stp-rock{z-index:4}
+
+/* карточка «Башня»: закатный фон, на котором серый камень хорошо виден */
+.games-sheet [data-game=stone] .game-icon{background:radial-gradient(circle at 25% 20%,rgba(255,255,255,.35),transparent 45%),linear-gradient(160deg,#ffb347 0%,#ff5e7e 40%,#4a2a8a 75%,#1a1040 100%)}
+
+/* карточка «Апгрейд»: без треугольника на кольце */
+.games-sheet [data-game=upgrade] .game-icon::after{display:none}
+
+/* полосы прокрутки справа скрыты везде, прокручивать по-прежнему можно */
+*{scrollbar-width:none}
+*::-webkit-scrollbar{display:none;width:0;height:0}
+*{touch-action:manipulation}
 
     </style>
 </head>
@@ -4902,15 +5553,15 @@ const rainbowItems = [
 {
 id: 'beginner',
 name: 'Beginner',
-price: 10, // ← Новая цена (со скидкой, если есть)
-originalPrice: 10, // ← Старая цена (если больше price → будет скидка)
+price: 20, // ← Новая цена (со скидкой, если есть)
+originalPrice: 20, // ← Старая цена (если больше price → будет скидка)
 icon: '9621CC6E-58F4-4B97-B87F-3FD4EFBDC60D.png',
 items: beginnerItems
 },
 {
 id: 'cheap',
 name: 'Cheap',
-price: 25,
+price: 29,
 originalPrice: 35,
 icon: '31E637AD-346D-4C5C-808A-2B6716F1A981.png',
 items: cheapItems
@@ -6349,442 +7000,135 @@ if (caseData.id === 'air') {
 }
 function createCSGORolling(items, finalItems, quantity) {
     if (!caseAnimationArea) return;
-    
-    // Функция для создания элемента ленты с подсветкой редкости
-    function createRollingItemHTML(item, isFinal = false) {
-        const isImage = item.icon && (item.icon.startsWith('http') || item.icon.startsWith('/') || item.icon.includes('.'));
-        const rarityColor = RARITY_COLORS[item.rarity] || RARITY_COLORS[''];
-        
-        // Для финального предмета - мощное свечение
-        const glowStyle = isFinal ? `
-            box-shadow: 0 0 40px ${rarityColor}, inset 0 0 20px ${rarityColor}44;
-            border-color: ${rarityColor};
-            border-width: 3px;
-            transform: scale(1.05);
-        ` : `
-            border-color: ${rarityColor};
-            border-width: 2px;
-            box-shadow: 0 0 10px ${rarityColor}33;
-        `;
-        
-        return `
-            <div class="rolling-item-csgo" style="
-                width: 100px; 
-                flex-shrink: 0; 
-                ${glowStyle}
-                transition: all 0.3s ease;
-                position: relative;
-                overflow: hidden;
-            ">
-                ${isFinal ? `
-                    <div style="
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-                        background: radial-gradient(circle at center, ${rarityColor}22, transparent 70%);
-                        pointer-events: none;
-                        animation: finalGlow 1s ease-in-out infinite;
-                    "></div>
-                ` : ''}
-                <div style="font-size: 35px; position: relative; z-index: 1;">
-                    ${isImage ? `<img src="${item.icon}" style="width: 80px; height: 80px; object-fit: contain;">` : item.icon}
-                </div>
-                <div style="
-                    font-size: 9px; 
-                    color: ${rarityColor}; 
-                    font-weight: 700; 
-                    margin-top: 2px;
-                    text-shadow: 0 0 10px ${rarityColor};
-                    position: relative;
-                    z-index: 1;
-                    text-transform: uppercase;
-                    letter-spacing: 1px;
-                ">
-                    ${item.rarity || 'Arcane'}
-                </div>
-            </div>
-        `;
+
+    const WIN_INDEX = 90;   // сколько карточек пролетает до выигрышной
+    const NUDGE_PX = 70;    // на сколько лента «уходит влево» перед разгоном
+    const NUDGE_MS = 800;   // длительность этого сдвига
+    const SPIN_MS = 8200;   // разгон и остановка
+
+    // кнопки «Продать» и «‹» встают на место «Открыть» и выбора количества
+    const controls = document.querySelector('.controls-row');
+    let actions = document.getElementById('crActions');
+    if (!actions) {
+        actions = document.createElement('div');
+        actions.id = 'crActions';
+        controls.parentNode.insertBefore(actions, controls);
     }
-    
-    if (quantity === 1) {
-        const rollingItems = [];
-        for (let i = 0; i < 120; i++) rollingItems.push(items[Math.floor(Math.random() * items.length)]);
-        const winStartIndex = rollingItems.length;
-        for (let i = 0; i < finalItems.length; i++) rollingItems.push(finalItems[i]);
-        for (let i = 0; i < 40; i++) rollingItems.push(items[Math.floor(Math.random() * items.length)]);
-        
-        let itemsHTML = '';
-        rollingItems.forEach((item, index) => {
-            const isFinal = index >= winStartIndex && index < winStartIndex + finalItems.length;
-            itemsHTML += createRollingItemHTML(item, isFinal);
-        });
-        
+
+    function splitName(name) {
+        const m = String(name).match(/^(.*?)\s*"(.*)"\s*$/);
+        return m ? { weapon: m[1], skin: m[2] } : { weapon: '', skin: name };
+    }
+
+    function cardHTML(item) {
+        const c = RARITY_COLORS[item.rarity] || RARITY_COLORS[''];
+        const n = splitName(item.name);
+        const img = item.icon && item.icon.includes('.')
+            ? `<img src="${item.icon}" alt="">`
+            : `<span style="font-size:46px">${item.icon || '🎁'}</span>`;
+        return `<div class="cr-card" style="--c:${c}">
+            <i class="cr-tab"></i>
+            <div class="cr-img">${img}</div>
+            <div class="cr-meta">
+                <div class="cr-weapon">${n.weapon || item.rarity || ''}</div>
+                <div class="cr-skin">${n.skin}</div>
+            </div>
+        </div>`;
+    }
+
+    function finish() {
+        actions.remove();
+        controls.style.display = '';
+        casePage.classList.remove('active');
+        isSpinning = false;
+        openCaseBtn.disabled = false;
+        caseQuantity.disabled = false;
+        const back = document.getElementById('backToMain');
+        if (back) back.disabled = false;
+        saveAllData();
+    }
+
+    function roll(index) {
+        if (index >= finalItems.length) { finish(); return; }
+        const win = finalItems[index];
+        actions.className = '';
+        actions.innerHTML = '';
+
+        const list = [];
+        for (let i = 0; i < WIN_INDEX; i++) list.push(items[Math.floor(Math.random() * items.length)]);
+        list.push(win);
+        for (let i = 0; i < 12; i++) list.push(items[Math.floor(Math.random() * items.length)]);
+
         caseAnimationArea.innerHTML = `
-            <div class="csgo-rolling" style="position: relative; background: #1a0f0f; border-radius: 16px; padding: 15px;">
-                <div class="rolling-container" style="position: relative; overflow: hidden; width: 100%;">
-                    <div id="rollingTrack" style="display: flex; gap: 8px; width: fit-content; transition: transform 4.5s cubic-bezier(0.05, 0.75, 0.15, 1);">
-                        ${itemsHTML}
-                    </div>
-                    <div class="highlight-bar" style="
-                        position: absolute;
-                        top: 0;
-                        left: 50%;
-                        right: auto;
-                        transform: translateX(-50%);
-                        width: 110px;
-                        height: 100%;
-                        background: rgba(255, 255, 255, 0.08);
-                        border: 3px solid #ffdd00;
-                        border-radius: 12px;
-                        pointer-events: none;
-                        z-index: 5;
-                        box-shadow: 0 0 30px rgba(255, 221, 0, 0.3);
-                    "></div>
-                </div>
+            ${finalItems.length > 1 ? `<div class="cr-count">Кейс ${index + 1} из ${finalItems.length}</div>` : ''}
+            <div class="cr-view">
+                <div class="cr-mark cr-top"></div>
+                <div class="cr-clip" id="crClip"><div class="cr-track" id="crTrack">${list.map(cardHTML).join('')}</div></div>
+                <div class="cr-mark cr-bottom"></div>
             </div>
-            <div style="margin-top: 20px; text-align: center; color: #00cc00; font-weight: bold;" id="rollingStatus">🎰 Крутим...</div>
+            <div class="cr-status" id="crStatus"><span class="cr-dots"><i></i><i></i><i></i></span><span>Открытие кейса</span></div>
         `;
-        
-        const track = document.getElementById('rollingTrack');
-        const status = document.getElementById('rollingStatus');
-        if (!track) return;
-        
-        setTimeout(() => {
-            const bar = document.querySelector('.highlight-bar');
-            if (!bar) return;
-            
-            const barRect = bar.getBoundingClientRect();
-            const allItems = document.querySelectorAll('.rolling-item-csgo');
-            const targetItem = allItems[winStartIndex];
-            if (!targetItem) return;
-            
-            const targetRect = targetItem.getBoundingClientRect();
-            const targetCenter = targetRect.left + targetRect.width / 2;
-            const barCenter = barRect.left + barRect.width / 2;
-            const delta = targetCenter - barCenter;
-            
-            let currentX = 0;
-            const transform = track.style.transform;
-            if (transform && transform !== 'none') {
-                const match = transform.match(/translateX\(([-\d.]+)px\)/);
-                if (match) currentX = parseFloat(match[1]);
-            }
-            
-            const newX = currentX - delta;
-            track.style.transition = 'transform 4.5s cubic-bezier(0.05, 0.75, 0.15, 1)';
-            track.style.transform = `translateX(${newX}px)`;
-            
-            status.textContent = 'Прокрутка...';
-            setTimeout(() => status.textContent = 'Ожидание...', 2000);
-            
-            setTimeout(() => {
-                status.textContent = '✨ Результат! ✨';
-                const winItem = finalItems[0];
-                const rarityColor = RARITY_COLORS[winItem.rarity] || RARITY_COLORS[''];
-                const isWinImage = winItem.icon && (winItem.icon.startsWith('http') || winItem.icon.startsWith('/') || winItem.icon.includes('.'));
-                
-                caseAnimationArea.innerHTML = `
-                    <div class="final-item-csgo" style="
-                        background: linear-gradient(145deg, #1a0a1a, #2a1a2a);
-                        border: 4px solid ${rarityColor};
-                        border-radius: 30px;
-                        padding: 30px;
-                        text-align: center;
-                        box-shadow: 0 0 60px ${rarityColor}44, inset 0 0 60px ${rarityColor}22;
-                        animation: finalPulse 1.5s ease-in-out infinite;
-                        position: relative;
-                        overflow: hidden;
-                    ">
-                        <div style="
-                            position: absolute;
-                            top: -50%;
-                            left: -50%;
-                            width: 200%;
-                            height: 200%;
-                            background: radial-gradient(circle at center, ${rarityColor}11, transparent 70%);
-                            animation: rotateGlow 8s linear infinite;
-                            pointer-events: none;
-                        "></div>
-                        <div style="position: relative; z-index: 1;">
-                            <div style="
-                                font-size: 13px; 
-                                color: ${rarityColor}; 
-                                font-weight: 800; 
-                                margin-bottom: 10px;
-                                text-transform: uppercase;
-                                letter-spacing: 3px;
-                                text-shadow: 0 0 30px ${rarityColor};
-                            ">
-                                ★ ${winItem.rarity || 'ARCANE'} ★
-                            </div>
-                            <div class="final-icon-csgo" style="font-size: 80px; margin: 10px 0;">
-                                ${isWinImage ? `<img src="${winItem.icon}" style="max-width: 150px; max-height: 150px; object-fit: contain; border-radius: 12px;">` : winItem.icon}
-                            </div>
-                            <div class="final-name-csgo" style="font-size: 22px; font-weight: bold; margin: 15px 0; color: #e0e0ff; text-shadow: 0 0 20px rgba(255,255,255,0.1);">
-                                ${winItem.name}
-                            </div>
-                            <div class="final-price-csgo" style="color: ${rarityColor}; font-size: 26px; font-weight: 700; text-shadow: 0 0 20px ${rarityColor};">
-    ${formatBalance(winItem.price)} <span style="color: #888888;">Ł</span>
-</div>
-                        </div>
-                    </div>
-                    <div class="final-buttons" style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
-                        <button class="small-btn" id="finalSellBtn" style="background: #ff3300; font-size: 16px; padding: 14px 40px;">💰 Продать</button>
-                        <button class="small-btn" id="finalKeepBtn" style="background: #00cc00; font-size: 16px; padding: 14px 40px;">📦 В инвентарь</button>
-                    </div>
-                `;
-                
-                document.getElementById('finalSellBtn')?.addEventListener('click', () => {
-                    balance += winItem.price;
-                    const userIndex = users.findIndex(u => u.username === currentUser.username);
-                    if (userIndex !== -1) users[userIndex].balance = balance;
-                    updateBalanceUI(true);
-                    showNotification(`✅ Продан за ${formatBalance(winItem.price)} Ł`, 'good');
-                    casePage.classList.remove('active');
-                    isSpinning = false;
-                    openCaseBtn.disabled = false;
-                    caseQuantity.disabled = false;
-                    const backBtn = document.getElementById('backToMain');
-                    if (backBtn) backBtn.disabled = false;
-                    saveAllData();
-                });
-                
-                document.getElementById('finalKeepBtn')?.addEventListener('click', () => {
-                    addToInventory(winItem);
-                    showNotification(`${winItem.name} добавлен в инвентарь`, 'good');
-                    casePage.classList.remove('active');
-                    isSpinning = false;
-                    openCaseBtn.disabled = false;
-                    caseQuantity.disabled = false;
-                    const backBtn = document.getElementById('backToMain');
-                    if (backBtn) backBtn.disabled = false;
-                    saveAllData();
-                });
-            }, 4600);
-        }, 20);
-        return;
-    }
-    
-    // ===== МНОЖЕСТВЕННОЕ ОТКРЫТИЕ (2-5 кейсов) =====
-    let currentIndex = 0;
-    const allWinItems = [...finalItems];
-    
-    function showSingleCaseRoll(index) {
-        if (index >= allWinItems.length) {
-            casePage.classList.remove('active');
-            isSpinning = false;
-            openCaseBtn.disabled = false;
-            caseQuantity.disabled = false;
-            const backBtn = document.getElementById('backToMain');
-            if (backBtn) backBtn.disabled = false;
-            saveAllData();
-            return;
+
+        const clip = document.getElementById('crClip');
+        const track = document.getElementById('crTrack');
+        const card = track.children[WIN_INDEX];
+        const endX = card.offsetLeft + card.offsetWidth / 2 - clip.clientWidth / 2;
+        let done = false;
+
+        function next() {
+            actions.className = '';
+            actions.innerHTML = '';
+            roll(index + 1);
         }
-        
-        const currentWinItem = allWinItems[index];
-        const caseItems = currentCase.items;
-        
-        const rollingItems = [];
-        for (let i = 0; i < 120; i++) rollingItems.push(caseItems[Math.floor(Math.random() * caseItems.length)]);
-        rollingItems.push(currentWinItem);
-        for (let i = 0; i < 40; i++) rollingItems.push(caseItems[Math.floor(Math.random() * caseItems.length)]);
-        
-        let itemsHTML = '';
-        rollingItems.forEach((item, idx) => {
-            const isFinal = idx === 120;
-            const isImage = item.icon && (item.icon.startsWith('http') || item.icon.startsWith('/') || item.icon.includes('.'));
-            const rarityColor = RARITY_COLORS[item.rarity] || RARITY_COLORS[''];
-            
-            const glowStyle = isFinal ? `
-                box-shadow: 0 0 40px ${rarityColor}, inset 0 0 20px ${rarityColor}44;
-                border-color: ${rarityColor};
-                border-width: 3px;
-                transform: scale(1.05);
-            ` : `
-                border-color: ${rarityColor};
-                border-width: 2px;
-                box-shadow: 0 0 10px ${rarityColor}33;
-            `;
-            
-            itemsHTML += `
-                <div class="rolling-item-csgo" style="
-                    width: 100px; 
-                    flex-shrink: 0; 
-                    ${glowStyle}
-                    transition: all 0.3s ease;
-                    position: relative;
-                    overflow: hidden;
-                ">
-                    ${isFinal ? `
-                        <div style="
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            right: 0;
-                            bottom: 0;
-                            background: radial-gradient(circle at center, ${rarityColor}22, transparent 70%);
-                            pointer-events: none;
-                            animation: finalGlow 1s ease-in-out infinite;
-                        "></div>
-                    ` : ''}
-                    <div style="font-size: 35px; position: relative; z-index: 1;">
-                        ${isImage ? `<img src="${item.icon}" style="width: 80px; height: 80px; object-fit: contain;">` : item.icon}
-                    </div>
-                    <div style="
-                        font-size: 9px; 
-                        color: ${rarityColor}; 
-                        font-weight: 700; 
-                        margin-top: 2px;
-                        text-shadow: 0 0 10px ${rarityColor};
-                        position: relative;
-                        z-index: 1;
-                        text-transform: uppercase;
-                        letter-spacing: 1px;
-                    ">
-                        ${item.rarity || 'Arcane'}
-                    </div>
-                </div>
-            `;
-        });
-        
-        caseAnimationArea.innerHTML = `
-            <div style="text-align: center; margin-bottom: 15px;">
-                <span style="color: #00cc00; font-size: 18px;">Кейс ${index + 1} из ${allWinItems.length}</span>
-                <div style="font-size: 14px; color: #ff3300; margin-top: 5px;">Открытие...</div>
-            </div>
-            <div class="csgo-rolling" style="position: relative; background: #1a0f0f; border-radius: 16px; padding: 15px;">
-                <div class="rolling-container" style="position: relative; overflow: hidden; width: 100%;">
-                    <div id="rollingTrack" style="display: flex; gap: 8px; width: fit-content; transition: transform 4.5s cubic-bezier(0.05, 0.75, 0.15, 1);">
-                        ${itemsHTML}
-                    </div>
-                   
-<div class="highlight-bar" style="
-    position: absolute;
-    top: 0;
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    width: 110px;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.08);
-    border: 3px solid #ffdd00;
-    border-radius: 12px;
-    pointer-events: none;
-    z-index: 5;
-    box-shadow: 0 0 30px rgba(255, 221, 0, 0.3);
-    box-sizing: border-box;
-"></div>
-                </div>
-            </div>
-            <div style="margin-top: 20px; text-align: center; color: #00cc00; font-weight: bold;" id="rollingStatus">🎰 Крутим...</div>
-        `;
-        
-        const track = document.getElementById('rollingTrack');
-        const status = document.getElementById('rollingStatus');
-        if (!track) return;
-        
-        setTimeout(() => {
-            const bar = document.querySelector('.highlight-bar');
-            if (!bar) return;
-            
-            const barRect = bar.getBoundingClientRect();
-            const allItemsDom = document.querySelectorAll('.rolling-item-csgo');
-            const targetItem = allItemsDom[120];
-            if (!targetItem) return;
-            
-            const targetRect = targetItem.getBoundingClientRect();
-            const targetCenter = targetRect.left + targetRect.width / 2;
-            const barCenter = barRect.left + barRect.width / 2;
-            const delta = targetCenter - barCenter;
-            
-            let currentX = 0;
-            const transform = track.style.transform;
-            if (transform && transform !== 'none') {
-                const match = transform.match(/translateX\(([-\d.]+)px\)/);
-                if (match) currentX = parseFloat(match[1]);
-            }
-            
-            const newX = currentX - delta;
-            track.style.transition = 'transform 4.5s cubic-bezier(0.05, 0.75, 0.15, 1)';
-            track.style.transform = `translateX(${newX}px)`;
-            
-            status.textContent = 'Прокрутка...';
-            setTimeout(() => status.textContent = 'Ожидание...', 2000);
-            
-            setTimeout(() => {
-                status.textContent = '✨ Результат! ✨';
-                const winItem = currentWinItem;
-                const rarityColor = RARITY_COLORS[winItem.rarity] || RARITY_COLORS[''];
-                const isWinImage = winItem.icon && (winItem.icon.startsWith('http') || winItem.icon.startsWith('/') || winItem.icon.includes('.'));
-                
-                caseAnimationArea.innerHTML = `
-                    <div style="text-align: center; margin-bottom: 15px;">
-                        <span style="color: #00cc00; font-size: 18px;">Кейс ${index + 1} из ${allWinItems.length}</span>
-                        <div style="font-size: 13px; color: ${rarityColor}; margin-top: 5px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 20px ${rarityColor};">
-                            ★ ${winItem.rarity || 'ARCANE'} ★
-                        </div>
-                    </div>
-                    <div class="final-item-csgo" style="
-                        background: linear-gradient(145deg, #1a0a1a, #2a1a2a);
-                        border: 4px solid ${rarityColor};
-                        border-radius: 30px;
-                        padding: 30px;
-                        text-align: center;
-                        box-shadow: 0 0 60px ${rarityColor}44, inset 0 0 60px ${rarityColor}22;
-                        animation: finalPulse 1.5s ease-in-out infinite;
-                        position: relative;
-                        overflow: hidden;
-                    ">
-                        <div style="
-                            position: absolute;
-                            top: -50%;
-                            left: -50%;
-                            width: 200%;
-                            height: 200%;
-                            background: radial-gradient(circle at center, ${rarityColor}11, transparent 70%);
-                            animation: rotateGlow 8s linear infinite;
-                            pointer-events: none;
-                        "></div>
-                        <div style="position: relative; z-index: 1;">
-                            <div class="final-icon-csgo" style="font-size: 80px; margin: 10px 0;">
-                                ${isWinImage ? `<img src="${winItem.icon}" style="max-width: 150px; max-height: 150px; object-fit: contain; border-radius: 12px;">` : winItem.icon}
-                            </div>
-                            <div class="final-name-csgo" style="font-size: 20px; font-weight: bold; margin: 15px 0; color: #e0e0ff; text-shadow: 0 0 20px rgba(255,255,255,0.1);">
-                                ${winItem.name}
-                            </div>
-                            <div class="final-price-csgo" style="color: ${rarityColor}; font-size: 24px; font-weight: 700; text-shadow: 0 0 20px ${rarityColor};">
-                                ${formatBalance(winItem.price)} G
-                            </div>
-                        </div>
-                    </div>
-                    <div class="final-buttons" style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
-                        <button class="small-btn" id="multiSellBtn" style="background: #ff3300; font-size: 16px; padding: 14px 40px;">💰 Продать</button>
-                        <button class="small-btn" id="multiKeepBtn" style="background: #00cc00; font-size: 16px; padding: 14px 40px;">📦 В инвентарь</button>
-                    </div>
-                `;
-                
-                document.getElementById('multiSellBtn')?.addEventListener('click', () => {
-                    balance += winItem.price;
-                    const userIndex = users.findIndex(u => u.username === currentUser.username);
-                    if (userIndex !== -1) users[userIndex].balance = balance;
-                    updateBalanceUI(true);
-                    showNotification(`✅ Продан за ${formatBalance(winItem.price)} Ł`, 'good');
-                    showSingleCaseRoll(index + 1);
-                });
-                
-                document.getElementById('multiKeepBtn')?.addEventListener('click', () => {
-                    addToInventory(winItem);
-                    showNotification(`${winItem.name} добавлен в инвентарь`, 'good');
-                    showSingleCaseRoll(index + 1);
-                });
-            }, 4600);
-        }, 20);
+
+        function reveal() {
+            if (done) return;
+            done = true;
+            track.classList.add('stopped');
+            card.classList.add('is-win');
+            document.getElementById('crStatus').style.display = 'none';
+
+            controls.style.display = 'none';
+            actions.className = 'cr-actions';
+            actions.innerHTML = `
+                <button class="cr-back" id="crKeep" title="В инвентарь"><i class="fas fa-chevron-left"></i></button>
+                <button class="cr-sell" id="crSell">Продать за ${formatBalance(win.price)} Ł</button>`;
+
+            document.getElementById('crSell').addEventListener('click', function () {
+                balance += win.price;
+                const u = users.findIndex(x => x.username === currentUser.username);
+                if (u !== -1) users[u].balance = balance;
+                updateBalanceUI(true);
+                showNotification(`✅ Продан за ${formatBalance(win.price)} Ł`, 'good');
+                saveAllData();
+                next();
+            });
+
+            document.getElementById('crKeep').addEventListener('click', function () {
+                addToInventory(win);
+                showNotification(`${win.name} добавлен в инвентарь`, 'good');
+                next();
+            });
+        }
+
+        // 1) лента медленно уходит влево, 2) плавно разгоняется, 3) долго и мягко тормозит
+        const spin = track.animate([
+            { transform: 'translateX(0px)', offset: 0, easing: 'cubic-bezier(.55,.085,.68,.53)' },
+            { transform: `translateX(${-NUDGE_PX}px)`, offset: NUDGE_MS / (NUDGE_MS + SPIN_MS), easing: 'cubic-bezier(.45,.045,.05,1)' },
+            { transform: `translateX(${-endX}px)`, offset: 1 }
+        ], { duration: NUDGE_MS + SPIN_MS, fill: 'forwards' });
+
+        spin.onfinish = () => {
+            track.style.transform = `translateX(${-endX}px)`;
+            spin.cancel();
+            reveal();
+        };
     }
-    
-    showSingleCaseRoll(0);
+
+    roll(0);
 }
+
+
 
         if (openCaseBtn) {
             openCaseBtn.addEventListener('click', function() {
@@ -9264,6 +9608,1710 @@ document.addEventListener('DOMContentLoaded', function() {
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
     setupBalanceClick();
 }
+
+
+(function () {
+    const PULL_MS = 1500, PULL_PX = 170;      // откат вправо (вверх у вертикальных лент)
+    const V_PULL = 120;
+    const SPIN_MS = 8500;                     // разгон и остановка
+    const WIN_INDEX = 90, V_WIN = 60;         // сколько карточек пролетает
+    const BASE_PX = 400, V_BASE = 300;        // запас карточек для отката
+    const PULL_EASE = 'cubic-bezier(.37,0,.63,1)';
+    const SPIN_EASE = 'cubic-bezier(.35,0,.05,1)';
+    const GL = '<span class="gl">Ł</span>';
+
+    const CASE_SVG = '<svg viewBox="0 0 120 92" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M38.4 2.9 98.6 10.9 95 50.8 38 42.8z" fill="#2b2d33" stroke="#2b2d33" stroke-width="3" stroke-linejoin="round"/><path d="M40.3 5.5 96 12.8 92.8 49.3 40.2 41.3z" fill="#4a4d56"/><path d="M40.3 14.4 95.2 21.9M40.3 23.4 94.4 31M40.2 32.3 93.6 40.2" stroke="#6a6d76" stroke-width="2.4" stroke-dasharray="1.6 2.4" stroke-linecap="round"/><path d="M39.2 43.5 95 52.9 83 67 19.1 56.8z" fill="#b4b6bd" stroke="#2b2d33" stroke-width="2.5" stroke-linejoin="round"/><path d="M19.1 56.8 83 67 81 86 22 75.5z" fill="#4a4d56" stroke="#2b2d33" stroke-width="2.5" stroke-linejoin="round"/><path d="M83 67 95 52.9 94 72 81 86z" fill="#3a3c43" stroke="#2b2d33" stroke-width="2.5" stroke-linejoin="round"/><path d="M26 58.4l5 .8-.4 7-5-.8zM49 62.2l5 .8-.4 7-5-.8zM72 65.9l5 .8-.4 7-5-.8z" fill="#2b2d33"/><path d="M44 72.5 62 75.7" stroke="#2b2d33" stroke-width="3" stroke-linecap="round"/></svg>';
+
+
+    let controls, actions;
+
+    // ---------- общие куски ----------
+    function split(name) {
+        const m = String(name).match(/^(.*?)\s*"(.*)"\s*$/);
+        return m ? { w: m[1], s: m[2] } : { w: '', s: name };
+    }
+
+    function cardHTML(item, chance) {
+        const c = RARITY_COLORS[item.rarity] || RARITY_COLORS[''];
+        const n = split(item.name);
+        const img = item.icon && item.icon.includes('.')
+            ? `<img src="${item.icon}" alt="">`
+            : `<span style="font-size:46px">${item.icon || '🎁'}</span>`;
+        const info = chance == null ? '' : `
+            <div class="ci-info">
+                <div class="ci-price">${formatBalance(item.price)} ${GL}</div>
+                <div class="ci-chance">Шанс <b>${chance}%</b></div>
+                <div class="ci-bar"><i style="width:${Math.min(100, chance * 4)}%"></i></div>
+            </div>`;
+        return `<div class="cr-card" style="--c:${c}">
+            <i class="cr-tab"></i>
+            <div class="cr-img">${img}</div>
+            <div class="cr-meta">
+                <div class="cr-weapon">${n.w || item.rarity || ''}</div>
+                <div class="cr-skin">${n.s}</div>
+            </div>${info}
+        </div>`;
+    }
+
+    function caseImgHTML(c, size) {
+        const isImg = c.icon && /\.(png|jpe?g)$/i.test(c.icon);
+        const st = size ? `width:${size}px;height:${size}px;margin:0 auto 15px` : '';
+        return `<div class="cimg${size ? ' big' : ''}" style="${st}"><span class="cimg-ph">${CASE_SVG}</span>${
+            isImg ? `<img src="${c.icon}" alt="${c.name}" onload="this.parentNode.classList.add('ok')" onerror="this.remove()">` : ''
+        }</div>`;
+    }
+
+    function showCaseIdle() {
+        if (!caseAnimationArea || !currentCase) return;
+        caseAnimationArea.innerHTML = `
+            <div style="display:flex;flex-direction:column;align-items:center">
+                ${caseImgHTML(currentCase, 160)}
+                <div style="font-size:24px;margin-bottom:20px">Готов к открытию!</div>
+                <div style="color:#00cc00">Нажми "Открыть"</div>
+            </div>`;
+    }
+
+    // «Открыть за X Ł», с учётом скидки 100% на один кейс
+    function updateOpenBtn() {
+        if (!openCaseBtn || !currentCase) return;
+        const n = parseInt(caseQuantity.value) || 1;
+        const p = currentCase.price;
+        if (hasActiveDiscount(currentCase.id)) {
+            openCaseBtn.innerHTML = `Открыть за <s>${formatBalance(p * n)}</s> ${formatBalance(p * (n - 1))} ${GL}`;
+
+        } else {
+            openCaseBtn.innerHTML = `Открыть за ${formatBalance(p * n)} ${GL}`;
+        }
+    }
+    if (caseQuantity) caseQuantity.addEventListener('change', updateOpenBtn);
+
+    // ---------- список кейсов ----------
+    window.renderCaseItem = function (c) {
+        const promo = getCasePriceWithDiscount(c).hasDiscount;
+        const orig = c.originalPrice || c.price;
+        let price = c.price, pct = 0, kind = '';
+        if (promo) { price = 0; pct = 100; kind = 'promo'; }
+        else if (orig > c.price) { pct = Math.ceil((orig - c.price) / orig * 100); kind = 'regular'; }
+
+        const badge = pct ? `<div class="discount-badge" style="background:${kind === 'promo' ? 'linear-gradient(135deg,#ff007f,#ffdd00)' : 'linear-gradient(135deg,#00d4ff,#ff007f)'};animation:discountPulse 1s ease infinite">-${pct}%</div>` : '';
+        const priceHTML = pct
+            ? `<span style="text-decoration:line-through;color:#888;font-size:13px;font-weight:500">${orig} ${GL}</span><span style="color:#ff3300;margin-left:5px;font-weight:700;font-size:16px">${price} ${GL}</span>`
+            : `<span style="font-weight:700">${c.price} ${GL}</span>`;
+
+        return `<div class="case-item" data-case-id="${c.id}">${badge}<div class="case-image" style="position:relative">${caseImgHTML(c)}</div><div class="case-name">${c.name}</div><div class="case-price">${priceHTML}</div></div>`;
+    };
+
+    // ---------- страница кейса ----------
+    window.openCasePage = function (caseData) {
+        if (!caseData) return;
+        window._currentCaseDiscount = hasActiveDiscount(caseData.id);
+        casePage.classList.remove('closing');
+        currentCase = caseData;
+        casePageTitle.textContent = caseData.name;
+        casePage.style.display = 'flex';
+        requestAnimationFrame(() => {
+            casePage.classList.add('active');
+            setTimeout(() => {
+                const s = document.getElementById('casePageScroll');
+                if (s) s.scrollTop = 0;
+            }, 100);
+        });
+        showCaseIdle();
+        updateOpenBtn();
+        renderItemsGrid(caseData);
+    };
+
+    window.renderItemsGrid = function (caseData) {
+        const grid = document.getElementById('itemsGrid');
+        if (!grid) return;
+                const RANK = { Arcane: 0, Legendary: 1, Epic: 2, Rare: 3, Uncommon: 4, Common: 5 };
+        const sorted = [...caseData.items].sort((a, b) => ((RANK[a.rarity] ?? 9) - (RANK[b.rarity] ?? 9)) || (b.price - a.price));
+
+        grid.innerHTML = sorted.map(it => cardHTML(it, getItemChance(it, caseData))).join('');
+        grid.onclick = e => {
+            const card = e.target.closest('.cr-card');
+            if (!card) return;
+            const was = card.classList.contains('open');
+            grid.querySelectorAll('.cr-card.open').forEach(x => x.classList.remove('open'));
+            if (!was) card.classList.add('open');
+        };
+    };
+
+    // ---------- открытие ----------
+    function finish() {
+        actions.remove();
+        controls.style.display = '';
+        isSpinning = false;
+        openCaseBtn.disabled = false;
+        caseQuantity.disabled = false;
+        const back = document.getElementById('backToMain');
+        if (back) back.disabled = false;
+        showCaseIdle();      // страница кейса остаётся открытой
+        updateOpenBtn();
+        saveAllData();
+    }
+
+    // кнопки «Продать за X Ł» и «‹» на месте «Открыть» (для одного или сразу всех кейсов)
+    function showActions(wins) {
+        document.getElementById('crStatus').style.display = 'none';
+        controls.style.display = 'none';
+        const sum = wins.reduce((s, w) => s + w.price, 0);
+        actions.className = 'cr-actions';
+        actions.innerHTML = `
+            <button class="cr-back" id="crKeep" title="В инвентарь"><i class="fas fa-chevron-left"></i></button>
+            <button class="cr-sell" id="crSell">Продать за ${formatBalance(sum)} Ł</button>`;
+
+        document.getElementById('crSell').addEventListener('click', () => {
+            balance += sum;
+            const u = users.findIndex(x => x.username === currentUser.username);
+            if (u !== -1) users[u].balance = balance;
+            updateBalanceUI(true);
+            showNotification(`✅ Продано за ${formatBalance(sum)} Ł`, 'good');
+            saveAllData();
+            finish();
+        });
+        document.getElementById('crKeep').addEventListener('click', () => {
+            wins.forEach(w => addToInventory(w));
+            showNotification(wins.length > 1 ? `Предметов добавлено в инвентарь: ${wins.length}` : `${wins[0].name} добавлен в инвентарь`, 'good');
+            finish();
+        });
+    }
+
+    const STATUS = '<div class="cr-status" id="crStatus"><span class="cr-dots"><i></i><i></i><i></i></span><span>Открытие кейса</span></div>';
+    const pick = items => items[Math.floor(Math.random() * items.length)];
+
+    function rollSingle(items, win) {
+        const list = [];
+        for (let i = 0; i < WIN_INDEX; i++) list.push(pick(items));
+        list.push(win);
+        for (let i = 0; i < 12; i++) list.push(pick(items));
+
+        caseAnimationArea.innerHTML = `
+            <div class="cr-view">
+                <div class="cr-mark cr-top"></div>
+                <div class="cr-clip" id="crClip"><div class="cr-track" id="crTrack">${list.map(it => cardHTML(it)).join('')}</div></div>
+                <div class="cr-mark cr-bottom"></div>
+            </div>${STATUS}`;
+
+        const clip = document.getElementById('crClip');
+        const track = document.getElementById('crTrack');
+        const card = track.children[WIN_INDEX];
+        const cx = card.offsetLeft + card.offsetWidth / 2 - clip.clientWidth / 2;   // ровно по центру
+        const endX = cx + (Math.random() - 0.5) * card.offsetWidth * 0.84;          // случайное место остановки
+
+        const spin = track.animate([
+            { transform: `translateX(${-BASE_PX}px)`, offset: 0, easing: PULL_EASE },
+            { transform: `translateX(${-BASE_PX + PULL_PX}px)`, offset: PULL_MS / (PULL_MS + SPIN_MS), easing: SPIN_EASE },
+            { transform: `translateX(${-endX}px)`, offset: 1 }
+        ], { duration: PULL_MS + SPIN_MS, fill: 'forwards' });
+
+        spin.onfinish = () => {
+            track.style.transform = `translateX(${-endX}px)`;
+            spin.cancel();
+            void track.offsetWidth;
+            track.style.transition = 'transform 1.1s cubic-bezier(.45,0,.25,1)';
+   // выравнивание по центру
+            track.style.transform = `translateX(${-cx}px)`;
+            track.classList.add('stopped');
+            card.classList.add('is-win');
+            showActions([win]);
+        };
+    }
+
+    // несколько кейсов сразу: вертикальные ленты рядом
+    function rollMulti(items, wins) {
+        const cols = wins.map(win => {
+            const list = [];
+            for (let k = 0; k < V_WIN; k++) list.push(pick(items));
+            list.push(win);
+            for (let k = 0; k < 8; k++) list.push(pick(items));
+            return `<div class="cr-vcol"><div class="cr-vclip"><div class="cr-track cr-vtrack">${list.map(it => cardHTML(it)).join('')}</div></div></div>`;
+        }).join('');
+        caseAnimationArea.innerHTML = `<div class="cr-multi">${cols}<div class="cr-vmark"></div></div>${STATUS}`;
+
+        let left = wins.length;
+        caseAnimationArea.querySelectorAll('.cr-vtrack').forEach((track, i) => {
+            const clip = track.parentNode;
+            const card = track.children[V_WIN];
+            const cy = card.offsetTop + card.offsetHeight / 2 - clip.clientHeight / 2;
+            const endY = cy + (Math.random() - 0.5) * card.offsetHeight * 0.84;
+            const total = PULL_MS + SPIN_MS + i * 450;    // ленты останавливаются с небольшой разницей
+
+            const spin = track.animate([
+                { transform: `translateY(${-V_BASE}px)`, offset: 0, easing: PULL_EASE },
+                { transform: `translateY(${-V_BASE + V_PULL}px)`, offset: PULL_MS / total, easing: SPIN_EASE },
+                { transform: `translateY(${-endY}px)`, offset: 1 }
+            ], { duration: total, fill: 'forwards' });
+
+            spin.onfinish = () => {
+                track.style.transform = `translateY(${-endY}px)`;
+                spin.cancel();
+                void track.offsetWidth;
+                track.style.transition = 'transform 1.1s cubic-bezier(.45,0,.25,1)';
+
+                track.style.transform = `translateY(${-cy}px)`;
+                track.classList.add('stopped');
+                card.classList.add('is-win');
+                if (--left === 0) showActions(wins);
+            };
+        });
+    }
+
+    window.createCSGORolling = function (items, finalItems) {
+        if (!caseAnimationArea) return;
+        controls = document.querySelector('.controls-row');
+        actions = document.getElementById('crActions');
+        if (!actions) {
+            actions = document.createElement('div');
+            actions.id = 'crActions';
+            controls.parentNode.insertBefore(actions, controls);
+        }
+        actions.className = '';
+        actions.innerHTML = '';
+        if (finalItems.length > 1) rollMulti(items, finalItems);
+        else rollSingle(items, finalItems[0]);
+    };
+
+    // ---------- эмблема: переворот и конфетти ----------
+        function confetti(el) {
+        const r = el.getBoundingClientRect();
+        const x = r.left + r.width / 2, y = r.top + r.height / 2;
+        const box = document.createElement('div');
+        box.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:99999;overflow:hidden';
+        document.body.appendChild(box);
+        const colors = ['#00d4ff', '#ff007f', '#ffdd00', '#44ff88', '#aa44ff', '#ffffff'];
+        for (let i = 0; i < 36; i++) {
+            const p = document.createElement('i');
+            const s = 5 + Math.random() * 6, a = Math.random() * Math.PI * 2, d = 50 + Math.random() * 100;
+            const dx = Math.cos(a) * d, up = Math.sin(a) * d * 0.8 - 30;
+            const sway = (Math.random() - 0.5) * 50;
+            p.style.cssText = `position:absolute;left:${x}px;top:${y}px;width:${s}px;height:${s * 0.6}px;background:${colors[i % colors.length]};border-radius:${i % 3 ? '1px' : '50%'}`;
+            box.appendChild(p);
+            p.animate([
+                { transform: 'translate(0,0) rotate(0deg) scale(.4)', opacity: 1, easing: 'cubic-bezier(.12,.75,.3,1)' },
+                { transform: `translate(${dx}px,${up}px) rotate(${Math.random() * 360}deg) scale(1)`, opacity: 1, offset: 0.3, easing: 'cubic-bezier(.4,0,.6,1)' },
+                { transform: `translate(${dx * 1.1 + sway}px,${up + 110}px) rotate(${Math.random() * 720}deg) scale(.9)`, opacity: 0 }
+            ], { duration: 2600 + Math.random() * 900, fill: 'forwards' });
+        }
+        setTimeout(() => box.remove(), 3700);
+    }
+
+
+    document.querySelectorAll('.logo-icon').forEach(el => {
+        el.innerHTML = '<div class="lf-face">' + el.innerHTML + '</div><div class="lf-face lf-back">1</div>';
+        el.classList.add('lf');
+        el.addEventListener('click', () => {
+            if (el.classList.contains('flipped')) return;
+            el.classList.add('flipped');
+            confetti(el);
+            setTimeout(() => el.classList.remove('flipped'), 3000);
+        });
+    });
+
+    renderCases();
+})();
+
+
+
+(function () {
+    // шрифт (можно вместо этого добавить такой же <link> в <head>)
+    const font = document.createElement('link');
+    font.rel = 'stylesheet';
+    font.href = 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap';
+    document.head.appendChild(font);
+
+    // выбор количества: ряд цифр и плавающее выделение
+    const sel = document.getElementById('caseQuantity');
+    const row = document.createElement('div');
+    row.className = 'qty-row snap';
+    row.innerHTML = '<div class="qty-pill"></div>' +
+        [1, 2, 3, 4, 5].map(n => `<button class="qty-item" data-n="${n}">${n}</button>`).join('');
+    sel.parentNode.appendChild(row);
+
+    const sync = () => {
+        row.style.setProperty('--i', (parseInt(sel.value) || 1) - 1);
+        row.querySelectorAll('.qty-item').forEach(b => b.classList.toggle('on', b.dataset.n === sel.value));
+    };
+    row.onclick = e => {
+        const b = e.target.closest('.qty-item');
+        if (!b || isSpinning) return;
+        sel.value = b.dataset.n;
+        sel.dispatchEvent(new Event('change'));   // обновит и текст кнопки
+    };
+    sel.addEventListener('change', sync);
+
+    // мгновенный сброс на 1 без анимации
+    function resetQty() {
+        row.classList.add('snap');
+        sel.value = '1';
+        sel.dispatchEvent(new Event('change'));
+        void row.offsetWidth;
+        row.classList.remove('snap');
+    }
+    resetQty();
+
+    const open0 = window.openCasePage;
+    window.openCasePage = function (c) { open0(c); resetQty(); };
+    const back = document.getElementById('backToMain');
+    if (back) back.addEventListener('click', resetQty);
+
+    // «Regular» над ценой в содержимом кейса
+    const items0 = window.renderItemsGrid;
+    window.renderItemsGrid = function (c) {
+        items0(c);
+        document.querySelectorAll('#itemsGrid .ci-price')
+            .forEach(p => p.insertAdjacentHTML('beforebegin', '<div class="ci-kind">Regular</div>'));
+    };
+
+    // оборот эмблемы: «1» в виде свечки
+    const CANDLE = '<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M15 14 21 10.5h5V36h-6V19.5l-5 1.8z" fill="#ffdd00" stroke="#fff" stroke-width="1" stroke-linejoin="round"/><path d="M20 26l6-3.5M20 31l6-3.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" opacity=".7"/><path d="M23 8v2.5" stroke="#333" stroke-width="1.2" stroke-linecap="round"/><g class="lf-flame"><path d="M23 1c3.2 3 3.2 5.5 0 7.5-3.2-2-3.2-4.5 0-7.5z" fill="#ff8800"/><path d="M23 4c1.4 1.4 1.4 2.6 0 3.5-1.4-.9-1.4-2.1 0-3.5z" fill="#fff2a8"/></g></svg>';
+    document.querySelectorAll('.lf-back').forEach(b => { b.innerHTML = CANDLE; });
+
+    // скидка применяется сразу: список кейсов и кнопка обновляются мгновенно
+    let last = JSON.stringify(activeDiscounts);
+    const save0 = window.saveDiscounts;
+    window.saveDiscounts = function () {
+        save0();
+        const now = JSON.stringify(activeDiscounts);
+        if (now === last) return;
+        last = now;
+        renderCases();
+        sel.dispatchEvent(new Event('change'));
+    };
+
+    // не показывать уведомление об активации скидки на кейс
+    const notify0 = window.showNotification;
+    window.showNotification = function (text, type) {
+        if (/Бесплатное открытие кейса/.test(String(text))) return;
+        notify0(text, type);
+    };
+})();
+
+
+(function () {
+    // «Standoff 2» в овале вместо заголовка
+    const h = document.querySelector('#casesTab .section-title h2');
+    if (h) {
+        const pill = document.createElement('div');
+        pill.className = 'game-pill';
+        pill.textContent = 'Standoff 2';
+        h.replaceWith(pill);
+    }
+
+    // анимация появления новой стоимости при смене количества
+    const sel = document.getElementById('caseQuantity');
+    const btn = document.getElementById('openCaseBtn');
+    const row = document.querySelector('.qty-row');
+    sel.addEventListener('change', () => {
+        if (row && row.classList.contains('snap')) return;   // сброс при заходе в кейс не анимируем
+        if (!/^Открыть за/.test(btn.textContent)) return;
+        btn.innerHTML = btn.innerHTML.replace(/^Открыть за\s*/, 'Открыть за <span class="px">') + '</span>';
+    });
+})();
+
+
+(function () {
+    // ====== БЕСПЛАТНЫЕ КЕЙСЫ ======
+    // chances: id оружия -> шанс в %. Оружие берётся из уже существующих массивов по id.
+    const FREE_CASES = [
+        {
+            id: 'free_telegram',
+            name: 'Telegram',
+            icon: '1ADD0D51-CB76-4FC5-9B08-4FB0132FA435.png',
+                          // ← СЮДА путь к картинке кейса Telegram
+            cooldownMs: 24 * 3600 * 1000,      // ← время таймера
+            chances: {
+                fs_aquamarine: 11, mallard_paint_scrawl: 12, fs_zap: 18, deagle_violet_flame: 19,
+                val_forge: 17, p90_purple_mist: 15, m110_grid: 3, m60_fatal: 2,
+                fn_fal_dusk_tide: 2, tec9_splash: 1
+            }
+        },
+        {
+            id: 'free_vk',
+            name: 'VK',
+            icon: 'E52CB8A1-6D9C-4D92-8F11-D818D3021D95.png',
+                          // ← СЮДА путь к картинке кейса VK
+            cooldownMs: 24 * 3600 * 1000,      // ← время таймера
+            chances: {
+                tec9_aurora: 10, g22_scale: 12, val_vertex: 15, akr_scale: 16,
+                deagle_ace: 18, mp7_rebelion: 20, p350_ooz: 3, tec9_gangster: 3,
+                mallard_polar_bear: 2, akimbo_uzi_spray: 1
+            }
+        }
+    ];
+
+    const ALL = [beginnerItems, cheapItems, fireItems, landItems, waterItems, airItems, lightningItems, rainbowItems].flat();
+    FREE_CASES.forEach(c => {
+        c.price = 0;
+        c.originalPrice = 0;
+        c.free = true;
+        c.items = Object.keys(c.chances).map(id => {
+            const it = ALL.find(i => i.id === id);
+            if (!it) console.warn('Нет предмета с id', id);
+            return it;
+        }).filter(Boolean);
+    });
+
+    // ====== таймеры (отдельно для каждого кейса и каждого пользователя) ======
+    const KEY = 'freeCaseCooldowns';
+    const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } };
+    function remaining(c) {
+        if (!currentUser) return 0;
+        const t = (load()[currentUser.username] || {})[c.id];
+        return t ? Math.max(0, t + c.cooldownMs - Date.now()) : 0;
+    }
+    function startCooldown(c) {
+        const all = load();
+        (all[currentUser.username] = all[currentUser.username] || {})[c.id] = Date.now();
+        localStorage.setItem(KEY, JSON.stringify(all));
+    }
+    const p2 = n => String(n).padStart(2, '0');
+    function fmt(ms) {
+        const s = Math.ceil(ms / 1000);
+        return `${p2(Math.floor(s / 3600))}:${p2(Math.floor(s % 3600 / 60))}:${p2(s % 60)}`;
+    }
+
+    // ====== карточки во вкладке «Бесплатно» ======
+    const tab = document.getElementById('freeTab');
+    const old = tab.querySelector('.free-case-box');
+    if (old) old.remove();                       // убираем старый бесплатный кейс со случайной валютой
+
+    const PH = (document.querySelector('.cimg-ph') || {}).innerHTML || '📦';
+    function caseImg(c) {
+        const isImg = c.icon && /\.(png|jpe?g)$/i.test(c.icon);
+        return `<div class="cimg"><span class="cimg-ph">${PH}</span>${
+            isImg ? `<img src="${c.icon}" alt="${c.name}" onload="this.parentNode.classList.add('ok')" onerror="this.remove()">` : ''
+        }</div>`;
+    }
+
+    const grid = document.createElement('div');
+    grid.className = 'cases-grid';
+    grid.innerHTML = FREE_CASES.map(c => `
+        <div class="case-item" data-free-id="${c.id}">
+            <div class="case-image" style="position:relative">${caseImg(c)}</div>
+            <div class="case-name">${c.name}</div>
+            <div class="case-price fc-price" data-fc="${c.id}">БЕСПЛАТНО</div>
+        </div>`).join('');
+    tab.appendChild(grid);
+
+    // клик в фазе перехвата: обычный обработчик кейсов не вмешивается
+    grid.addEventListener('click', e => {
+        const card = e.target.closest('[data-free-id]');
+        if (!card) return;
+        e.stopPropagation();
+        if (!checkAuth()) return;
+        openCasePage(FREE_CASES.find(c => c.id === card.dataset.freeId));
+    }, true);
+
+    // ====== кнопка «Открыть» на странице бесплатного кейса ======
+    const btn = document.getElementById('openCaseBtn');
+    const controls = document.querySelector('.controls-row');
+
+    function syncBtn() {
+        if (!currentCase || !currentCase.free) return;
+        const left = remaining(currentCase);
+        const html = left > 0 ? `<i class="fas fa-lock"></i> ${fmt(left)}` : 'Открыть бесплатно';
+        if (btn.innerHTML !== html) btn.innerHTML = html;
+        if (left > 0) btn.disabled = true;
+        else if (!isSpinning) btn.disabled = false;
+    }
+    // старый код переписывает текст кнопки («Открыть за 0 Ł»), поэтому следим за ней
+    new MutationObserver(syncBtn).observe(btn, { childList: true, characterData: true, subtree: true });
+
+    const open0 = window.openCasePage;
+    window.openCasePage = function (c) {
+        open0(c);
+        controls.classList.toggle('free', !!c.free);   // выбор количества скрыт
+        syncBtn();
+    };
+
+    // открывать можно только когда таймер закончился, количество всегда 1
+    const spin0 = window.spinWheel;
+    window.spinWheel = function (q) {
+        if (currentCase && currentCase.free) {
+            const left = remaining(currentCase);
+            if (left > 0) { showNotification('🔒 Кейс будет доступен через ' + fmt(left), 'bad'); return; }
+            q = 1;
+        }
+        spin0(q);
+    };
+
+    // таймер запускается в момент открытия
+    const roll0 = window.createCSGORolling;
+    window.createCSGORolling = function (items, wins) {
+        if (currentCase && currentCase.free) { startCooldown(currentCase); tick(); }
+        roll0(items, wins);
+    };
+
+    // ====== шансы и выпадение для бесплатных кейсов ======
+    const chance0 = window.getItemChance;
+    window.getItemChance = (item, c) => c.free ? c.chances[item.id] : chance0(item, c);
+
+    const random0 = window.getRandomItemWithChance;
+    window.getRandomItemWithChance = function (items, c) {
+        if (!c.free) return random0(items, c);
+        let r = Math.random() * 100;
+        for (const it of items) {
+            r -= c.chances[it.id];
+            if (r < 0) return it;
+        }
+        return items[items.length - 1];
+    };
+
+    // ====== обновление надписей раз в секунду ======
+    function tick() {
+        FREE_CASES.forEach(c => {
+            const el = document.querySelector(`[data-fc="${c.id}"]`);
+            const left = remaining(c);
+            const html = left > 0 ? `<i class="fas fa-lock" style="color:#888"></i> ${fmt(left)}` : 'БЕСПЛАТНО';
+            if (el && el.innerHTML !== html) el.innerHTML = html;
+        });
+        syncBtn();
+    }
+    tick();
+    setInterval(tick, 1000);
+})();
+
+
+(function () {
+    const btn = document.getElementById('openCaseBtn');
+
+    // обычные кейсы после бесплатного: кнопка снова активна
+    const open0 = window.openCasePage;
+    window.openCasePage = function (c) {
+        open0(c);
+        if (!c.free && !isSpinning) btn.disabled = false;
+    };
+
+    // два и больше кейсов: «Кейсы открываются»
+    const roll0 = window.createCSGORolling;
+    window.createCSGORolling = function (items, wins) {
+        roll0(items, wins);
+        if (wins.length > 1) {
+            const s = document.querySelector('#crStatus span:last-child');
+            if (s) s.textContent = 'Открытие кейсов';
+        }
+    };
+
+    // вкладки навигации: анимация выезжает со стороны, куда переходишь
+    const order = ['cases', 'free', 'games'];
+    const switch0 = window.switchTab;
+    window.switchTab = function (id) {
+        const dir = Math.sign(order.indexOf(id) - order.indexOf(lastActiveTab));
+        document.documentElement.style.setProperty('--tab-dx', dir * 28 + 'px');
+        switch0(id);
+    };
+})();
+
+
+
+(function () {
+    window.SOUND_ON = true;   // false выключает все звуки
+
+    // ===== ссылки, куда перекидывает перед открытием бесплатного кейса =====
+    const FREE_LINKS = {
+        free_telegram: 'https://t.me/+941MLCjEwF5hNzQy',
+        free_vk: ''           // ← СЮДА ссылку VK (пока пусто, кейс открывается без перехода)
+    };
+
+    const VKEY = 'freeCaseVisits', CKEY = 'freeCaseCooldowns';
+    const read = k => { try { return JSON.parse(localStorage.getItem(k)) || {}; } catch (e) { return {}; } };
+    const uname = () => currentUser && currentUser.username;
+    const timeLeft = c => { const t = (read(CKEY)[uname()] || {})[c.id]; return t ? Math.max(0, t + c.cooldownMs - Date.now()) : 0; };
+    const visited = c => !!(read(VKEY)[uname()] || {})[c.id];
+    function setVisited(c, v) {
+        const all = read(VKEY);
+        (all[uname()] = all[uname()] || {})[c.id] = v;
+        localStorage.setItem(VKEY, JSON.stringify(all));
+    }
+
+    // первый клик «Открыть» у бесплатного кейса ведёт в канал, второй уже открывает кейс
+    const spin0 = window.spinWheel;
+    window.spinWheel = function (q) {
+        const c = currentCase;
+                if (c && c.free && FREE_LINKS[c.id] && timeLeft(c) === 0 && !visited(c)) {
+            setVisited(c, true);
+            if (!window.open(FREE_LINKS[c.id], '_blank')) location.href = FREE_LINKS[c.id];
+            return;
+        }
+
+        spin0(q);
+    };
+
+    // ===== подсказка под кейсом, пока идёт таймер =====
+    setInterval(() => {
+        const c = currentCase;
+        if (!c || !c.free) return;
+        const hint = document.querySelector('#caseAnimationArea .cimg.big ~ div:last-child');
+        if (!hint) return;
+        const wait = timeLeft(c) > 0;
+        const txt = wait ? 'Ожидайте истечение таймера' : 'Нажми "Открыть"';
+        if (hint.textContent !== txt) { hint.textContent = txt; hint.style.color = wait ? '#ffdd00' : '#00cc00'; }
+    }, 500);
+
+    // ===== звуки (синтезируются, файлы не нужны) =====
+    let ac;
+    function ctx() {
+        if (!window.SOUND_ON) return null;
+        ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+        if (ac.state === 'suspended') ac.resume();
+        return ac;
+    }
+    function tone(freq, delay, dur, vol, type) {
+        const a = ctx(); if (!a) return;
+        const t = a.currentTime + delay;
+        const o = a.createOscillator(), g = a.createGain();
+        o.type = type || 'sine';
+        o.frequency.value = freq;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(vol, t + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        o.connect(g); g.connect(a.destination);
+        o.start(t); o.stop(t + dur + 0.05);
+    }
+    function whoosh(delay, dur) {
+        const a = ctx(); if (!a) return;
+        const t = a.currentTime + delay;
+        const buf = a.createBuffer(1, a.sampleRate * 2, a.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+        const src = a.createBufferSource();
+        src.buffer = buf; src.loop = true;
+        const f = a.createBiquadFilter();
+        f.type = 'bandpass'; f.Q.value = 1.2;
+        f.frequency.setValueAtTime(300, t);
+        f.frequency.exponentialRampToValueAtTime(2200, t + dur * 0.25);
+        f.frequency.exponentialRampToValueAtTime(400, t + dur);
+        const g = a.createGain();
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.16, t + dur * 0.2);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        src.connect(f); f.connect(g); g.connect(a.destination);
+        src.start(t); src.stop(t + dur + 0.1);
+    }
+    function playOpen() {
+        if (!ctx()) return;
+        tone(180, 0, 0.5, 0.08, 'triangle');        // «натяжение» в начале
+        whoosh(1.2, 8.5);                           // разгон ленты
+        for (let k = 0; k < 22; k++) {              // щелчки, которые замедляются к остановке
+            const u = 0.3 + 0.7 * k / 21;
+            tone(1400, 3.0 + 6.0 * Math.pow(u, 1.8), 0.04, 0.05, 'sine');
+        }
+    }
+    function playDrop(tier) {                       // tier 0..5, чем реже предмет, тем выше и богаче звук
+        if (!ctx()) return;
+        const k = Math.pow(2, tier * 2 / 12);
+        [523.25, 659.25, 783.99, 1046.5].slice(0, tier >= 3 ? 4 : 3)
+            .forEach((f, i) => tone(f * k, i * 0.09, 0.45, 0.12, 'triangle'));
+        if (tier >= 4) [1568, 2093, 2637].forEach((f, i) => tone(f, 0.3 + i * 0.08, 0.5, 0.06, 'sine'));
+    }
+
+    const roll0 = window.createCSGORolling;
+    window.createCSGORolling = function (items, wins) {
+        if (currentCase && currentCase.free) setVisited(currentCase, false);   // следующий раз снова через канал
+       
+        roll0(items, wins);
+    };
+
+    // звук выпадения: срабатывает, когда карточка получает рамку победителя
+    const TIERS = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Arcane'];
+    new MutationObserver(list => {
+        list.forEach(m => {
+            const el = m.target;
+            if (el.classList && el.classList.contains('is-win') && !el.dataset.snd) {
+                el.dataset.snd = 1;
+                const col = el.style.getPropertyValue('--c').trim().toLowerCase();
+                playDrop(Math.max(0, TIERS.findIndex(k => RARITY_COLORS[k].toLowerCase() === col)));
+            }
+        });
+    }).observe(document.getElementById('caseAnimationArea'), { subtree: true, attributes: true, attributeFilter: ['class'] });
+
+    // ===== мини-игры: панель из-под навигации вместо отдельной вкладки =====
+    const nav = document.querySelector('.bottom-nav');
+    const gItem = nav.querySelector('.nav-item[data-tab="games"]');
+    const gGrid = document.querySelector('#gamesTab .games-grid-modern');   // переносим сетку игр вместе с обработчиками
+    const sheet = document.createElement('div');
+    sheet.className = 'games-sheet';
+    sheet.innerHTML = '<div class="gs-title">🎮 Мини-игры</div>';
+    sheet.appendChild(gGrid);
+    const ov = document.createElement('div');
+    ov.className = 'gs-overlay';
+    document.body.append(ov, sheet);
+
+    function setSheet(open) {
+        if (open) sheet.style.bottom = (nav.offsetHeight - 18) + 'px';
+        sheet.classList.toggle('open', open);
+        ov.classList.toggle('open', open);
+        gItem.classList.toggle('sheet-on', open);
+    }
+    nav.addEventListener('click', e => {
+        const it = e.target.closest('.nav-item');
+        if (!it) return;
+        if (it === gItem) { e.stopPropagation(); setSheet(!sheet.classList.contains('open')); }
+        else setSheet(false);
+    }, true);
+    ov.addEventListener('click', () => setSheet(false));
+    sheet.addEventListener('click', e => {
+        const card = e.target.closest('.game-app-card');
+        if (!card) return;
+        setSheet(false);
+        if (card.dataset.game !== 'craft') switchTab('games');   // крафт открывается поверх, без смены вкладки
+    });
+    if (lastActiveTab === 'games') switchTab('cases');           // пустую вкладку игр без выбранной игры не показываем
+})();
+
+
+(function () {
+    // ===== размытая лента под картинкой кейса (видна, пока кейс не открыт) =====
+    const area = document.getElementById('caseAnimationArea');
+
+    function mini(it) {
+        const c = RARITY_COLORS[it.rarity] || RARITY_COLORS[''];
+        const img = it.icon && it.icon.includes('.') ? `<img src="${it.icon}" alt="">` : '';
+        return `<div class="cr-card" style="--c:${c}"><i class="cr-tab"></i><div class="cr-img">${img}</div></div>`;
+    }
+    function addIdleRibbon() {
+        if (!currentCase || !area.querySelector('.cimg.big') || area.querySelector('.cr-idle')) return;
+        const hint = area.querySelector('.cimg.big ~ div:last-child');
+        if (!hint) return;
+        const list = [...currentCase.items].sort(() => Math.random() - 0.5);
+        const half = [...list, ...list].map(mini).join('');
+        const r = document.createElement('div');
+        r.className = 'cr-idle';
+        r.innerHTML = `<div class="cr-idle-track">${half}${half}</div>`;   // две одинаковые половины для бесшовного цикла
+        hint.before(r);
+    }
+    new MutationObserver(addIdleRibbon).observe(area, { childList: true });
+
+    // ===== панель мини-игр: стрелка и положение над кнопкой «Мини-игры» =====
+    const nav = document.querySelector('.bottom-nav');
+    const gItem = nav.querySelector('.nav-item[data-tab="games"]');
+    const sheet = document.querySelector('.games-sheet');
+
+    const setNavH = () => document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
+    setNavH();
+    window.addEventListener('resize', setNavH);
+
+    function place() {
+        const w = sheet.offsetWidth, vw = window.innerWidth;
+        const r = gItem.getBoundingClientRect();
+        const cx = r.left + r.width / 2;
+        const left = (vw - w) / 2;
+
+        sheet.style.left = left + 'px';
+        sheet.style.setProperty('--arrow-x', Math.min(Math.max(28, cx - left), w - 28) + 'px');
+    }
+    new MutationObserver(() => { if (sheet.classList.contains('open')) place(); })
+        .observe(sheet, { attributes: true, attributeFilter: ['class'] });
+})();
+
+
+(function () {
+    // панель мини-игр закрывается, когда курсор уходит за её пределы (только для мыши)
+    if (!window.matchMedia('(hover: hover)').matches) return;
+
+    const sheet = document.querySelector('.games-sheet');
+    const ov = document.querySelector('.gs-overlay');
+    const gItem = document.querySelector('.bottom-nav .nav-item[data-tab="games"]');
+    let timer = null;
+
+    document.addEventListener('mouseover', e => {
+        if (!sheet.classList.contains('open')) return;
+        if (sheet.contains(e.target) || gItem.contains(e.target)) {   // внутри панели или на кнопке «Мини-игры»
+            clearTimeout(timer);
+            timer = null;
+            return;
+        }
+        if (!timer) {
+            timer = setTimeout(() => {                                  // небольшая задержка, чтобы курсор успел
+                timer = null;                                           // дойти от кнопки до панели
+                if (sheet.classList.contains('open')) ov.click();
+            }, 250);
+        }
+    });
+})();
+
+
+(function () {
+    // панель мини-игр закрывается при малейшем скролле заднего плана
+    const sheet = document.querySelector('.games-sheet');
+    const ov = document.querySelector('.gs-overlay');
+    let openedAt = 0;
+
+    new MutationObserver(() => { if (sheet.classList.contains('open')) openedAt = Date.now(); })
+        .observe(sheet, { attributes: true, attributeFilter: ['class'] });
+
+    const closeOnScroll = () => {
+        // 200 мс после открытия не считаем, чтобы инерция прошлого скролла не закрыла панель сразу
+        if (sheet.classList.contains('open') && Date.now() - openedAt > 200) ov.click();
+    };
+    window.addEventListener('scroll', closeOnScroll, { passive: true });
+    ov.addEventListener('touchmove', closeOnScroll, { passive: true });
+})();
+
+(function () {
+    const MAX_IN = 5;                 // сколько предметов можно вложить
+    const MIN_CH = 1, MAX_CH = 90;
+    const FEE = 0.1;                  // комиссия сайта: 10% от шанса
+                    // комиссия сайта: минус 5 процентных пунктов от шанса
+                 // комиссия сайта: 5% от шанса
+// границы шанса, %
+   // границы шанса, %
+    const PULL_MS = 900, PULL_DEG = 38, SPIN_MS = 6500;   // откат назад, его величина и вращение вперёд
+    const BANDS = { 50: [35, 65], 20: [14, 26], 10: [7, 13] };   // какой шанс попадает под фильтр 50% / 20% / 10%
+
+    let sel = [], target = null, tab = 'mine', busy = false, endA = 0;
+    let band = null, custom = '', idle = null, shown = 0, raf = 0, gRaf = 0;
+
+    // все оружия без повторов, от дешёвых к дорогим
+    const targets = (() => {
+        const m = new Map();
+        weapons.forEach(w => m.set(w.id, w));
+        return [...m.values()].sort((a, b) => a.price - b.price);
+    })();
+
+    const sum = () => sel.reduce((s, i) => s + i.price, 0);
+        const calc = (s, price) => s / price * 100 * (1 - FEE);        // шанс после комиссии сайта
+              // шанс после комиссии: 50% -> 45%, 10% -> 5%
+
+    const chance = () => (target && sel.length) ? calc(sum(), target.price) : 0;
+    const ok = it => { const c = calc(sum(), it.price); return sel.length > 0 && c >= MIN_CH && c <= MAX_CH; };
+
+    const split = n => { const m = String(n).match(/^(.*?)\s*"(.*)"\s*$/); return m ? { w: m[1], s: m[2] } : { w: '', s: n }; };
+
+        function visible(w) {
+        const s = sum();
+        if (s && calc(s, w.price) > MAX_CH) return false;             // слишком высокий шанс (в том числе дешевле вложений): не показываем
+        if (band) { const c = calc(s, w.price); return c >= BANDS[band][0] && c <= BANDS[band][1]; }
+        if (custom !== '' && !isNaN(parseFloat(custom))) return w.price >= parseFloat(custom);
+        return true;
+    }
+
+
+    function tile(it, cls, attr) {
+        const c = RARITY_COLORS[it.rarity] || RARITY_COLORS[''];
+        const n = split(it.name);
+        return `<div class="cr-card upg-tile ${cls}" ${attr} style="--c:${c}">
+            <i class="cr-tab"></i>
+            <div class="cr-img"><img src="${it.icon}" alt=""></div>
+            <div class="cr-meta">
+                <div class="cr-weapon">${n.w || it.rarity || ''}</div>
+                <div class="cr-skin">${n.s}</div>
+                <div class="upg-price">${formatBalance(it.price)} <span class="gl">Ł</span></div>
+            </div>
+        </div>`;
+    }
+
+    // ===== страница игры =====
+    const page = document.createElement('div');
+    page.className = 'upg-page';
+    page.innerHTML = `
+        <div class="upg-head">
+            <h2>Апгрейд</h2>
+            <div class="upg-how"><span>Как играть</span><b class="upg-chev"><i class="fas fa-chevron-down"></i></b></div>
+            <div class="upg-help"><ol>
+                <li>Выбери от 1 до 5 предметов из инвентаря на вкладке «Мои предметы».</li>
+                <li>На вкладке «Желаемый предмет» выбери оружие, которое хочешь получить. Можно отфильтровать по шансу 50%, 20% или 10% либо ввести свою цену.</li>
+                <li>Шанс равен стоимости твоих предметов, делённой на стоимость желаемого. Он закрашивается на кольце.</li>
+                <li>Нажми «Апгрейд»: стрелка закрутится и остановится. Если она встала в закрашенной зоне, ты получаешь желаемый предмет, если нет, вложенные предметы сгорают.</li>
+                <li class="upg-note">Примечание: сайт берёт комиссию ${Math.round(FEE * 100)}%. Шанс на кольце уже с учетом комиссии.</li>
+
+            </ol></div>
+        </div>
+        <div class="upg-ring">
+            <svg viewBox="0 0 240 240">
+                <defs>
+                    <linearGradient id="upgGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="240" y2="240">
+                        <stop offset="0" stop-color="#00d4ff"/><stop offset=".25" stop-color="#8a5cff"/><stop offset=".5" stop-color="#ff007f"/><stop offset=".75" stop-color="#8a5cff"/><stop offset="1" stop-color="#00d4ff"/>
+                    </linearGradient>
+                </defs>
+                <circle class="upg-track" cx="120" cy="120" r="104"/>
+                <circle class="upg-arc" cx="120" cy="120" r="104" pathLength="100" stroke="url(#upgGrad)" stroke-dasharray="0 100" transform="rotate(-90 120 120)"/>
+            </svg>
+            <div class="upg-pointer"></div>
+            <div class="upg-center"><b class="upg-pct">0%</b><span class="upg-lbl">шанс</span></div>
+        </div>
+        <div class="upg-row">
+            <div class="upg-box"><div class="upg-cap">Ваши предметы <b class="upg-sum"></b></div><div class="upg-thumbs upg-mine"></div></div>
+            <i class="fas fa-arrow-right upg-arrow"></i>
+            <div class="upg-box"><div class="upg-cap">Желаемый <b class="upg-tsum"></b></div><div class="upg-thumbs upg-tgt"></div></div>
+        </div>
+        <button class="upg-go" disabled>Апгрейд</button>
+        <div class="upg-tabs"><div class="upg-pill"></div><button data-t="mine" class="on">Мои предметы</button><button data-t="target">Желаемый предмет</button></div>
+        <div class="upg-filters">
+            <div class="upg-seg none"><div class="upg-pill"></div><button data-b="50">50%</button><button data-b="20">20%</button><button data-b="10">10%</button></div>
+            <input class="upg-min" type="number" inputmode="decimal" min="0" placeholder="Своя цена от">
+        </div>
+        <div class="upg-listwrap"><div class="upg-list"></div></div>`;
+    document.body.appendChild(page);
+
+    const $ = s => page.querySelector(s);
+    const arc = $('.upg-arc'), ptr = $('.upg-pointer'), center = $('.upg-center');
+    const pctEl = $('.upg-pct'), lbl = $('.upg-lbl'), grad = $('#upgGrad');
+    const go = $('.upg-go'), list = $('.upg-list'), minInput = $('.upg-min');
+    const tabsEl = $('.upg-tabs'), seg = $('.upg-seg');
+        // ===== блоки «Ваши предметы» и «Желаемый»: карточки, размер зависит от количества =====
+    const mineEl = $('.upg-mine'), tgtEl = $('.upg-tgt');
+    const cardEls = new Map();                                 // invId -> карточка в блоке «Ваши предметы»
+    const mkCard = it => {
+        const d = document.createElement('div');
+        d.innerHTML = tile(it, 'upg-mini in', '');
+        return d.firstElementChild;
+    };
+    function resetBoxes() {
+        mineEl.querySelectorAll('.upg-mini').forEach(el => el.remove());
+        cardEls.clear();
+        tgtEl.innerHTML = '';
+        tgtEl.dataset.id = '';
+    }
+    function renderBoxes() {
+        mineEl.dataset.n = sel.length;                         // от этого числа зависит размер карточек
+        cardEls.forEach((el, id) => {                          // убранные карточки плавно схлопываются
+            if (!sel.some(s => s.invId === id)) {
+                el.classList.remove('in');
+                el.classList.add('out');
+                cardEls.delete(id);
+                setTimeout(() => el.remove(), 300);
+            }
+        });
+        sel.forEach(it => {                                    // новые плавно появляются
+            if (!cardEls.has(it.invId)) {
+                const el = mkCard(it);
+                mineEl.appendChild(el);
+                cardEls.set(it.invId, el);
+            }
+        });
+        const ph = mineEl.querySelector('.upg-ph');
+        if (!sel.length && !ph) mineEl.insertAdjacentHTML('beforeend', '<span class="upg-cap upg-ph">выбери от 1 до 5</span>');
+        if (sel.length && ph) ph.remove();
+
+        const id = target ? target.id : '';                    // желаемый: одна карточка, при смене плавно появляется
+        if (tgtEl.dataset.id !== id) {
+            tgtEl.dataset.id = id;
+            tgtEl.innerHTML = '';
+            if (target) tgtEl.appendChild(mkCard(target));
+            else tgtEl.innerHTML = '<span class="upg-cap">не выбран</span>';
+        }
+    }
+
+
+    // ===== переливающийся градиент закрашенной части кольца =====
+    function gradLoop(t) {
+        const r = t / 6000 * 2 * Math.PI;                      // оборот примерно за 6 секунд
+        const dx = Math.cos(r) * 120, dy = Math.sin(r) * 120;
+        grad.setAttribute('x1', 120 - dx); grad.setAttribute('y1', 120 - dy);
+        grad.setAttribute('x2', 120 + dx); grad.setAttribute('y2', 120 + dy);
+        gRaf = requestAnimationFrame(gradLoop);
+    }
+    const startGrad = () => { if (!gRaf) gRaf = requestAnimationFrame(gradLoop); };
+    const stopGrad = () => { cancelAnimationFrame(gRaf); gRaf = 0; };
+
+    // плавное появление и «набегание» процента
+    function pop() { pctEl.classList.remove('in'); void pctEl.offsetWidth; pctEl.classList.add('in'); }
+    function setPct(to) {
+        cancelAnimationFrame(raf);
+        const from = shown, t0 = performance.now();
+        const step = t => {
+            const k = Math.min(1, (t - t0) / 450), e = 1 - Math.pow(1 - k, 3);
+            shown = from + (to - from) * e;
+            pctEl.textContent = (shown ? shown.toFixed(shown < 10 ? 2 : 1) : 0) + '%';
+            if (k < 1) raf = requestAnimationFrame(step);
+        };
+        raf = requestAnimationFrame(step);
+    }
+
+    // ===== отрисовка по частям, чтобы тап по предмету не пересоздавал список =====
+    function renderStats() {
+        const c = chance();
+        arc.style.strokeDasharray = `${c} ${100 - c}`;
+        if (!busy) { center.className = 'upg-center'; lbl.textContent = 'шанс'; setPct(c); }
+        $('.upg-sum').innerHTML = sel.length ? `${formatBalance(sum())} <span class="gl">Ł</span>` : '';
+        $('.upg-tsum').innerHTML = target ? `${formatBalance(target.price)} <span class="gl">Ł</span>` : '';
+        renderBoxes();
+
+        go.disabled = busy || !(sel.length && target && ok(target));
+    }
+    function renderTabs() {
+        tabsEl.style.setProperty('--i', tab === 'target' ? 1 : 0);
+        tabsEl.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.t === tab));
+        page.classList.toggle('tgt', tab === 'target');
+    }
+    function renderChips() {
+        const i = [50, 20, 10].indexOf(band);
+        if (i >= 0) seg.style.setProperty('--i', i);
+        seg.classList.toggle('none', band === null);
+        seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', +b.dataset.b === band));
+    }
+    function renderList() {
+        if (tab === 'mine') {
+            const inv = [...inventory].sort((a, b) => a.price - b.price);     // от дешёвых к дорогим
+            list.innerHTML = inv.length
+                ? inv.map(it => tile(it, sel.some(s => s.invId === it.invId) ? 'on' : '', `data-inv="${it.invId}"`)).join('')
+                : '<div class="upg-empty">Инвентарь пуст. Открой кейсы, чтобы получить предметы.</div>';
+        } else if (!sel.length) {
+            list.innerHTML = '<div class="upg-empty">Сначала выбери свои предметы</div>';
+        } else {
+            const shownT = targets.filter(visible);
+            list.innerHTML = shownT.length
+                ? shownT.map(w => tile(w, (target && target.id === w.id ? 'on ' : '') + (ok(w) ? '' : 'dis'), `data-t="${w.id}"`)).join('')
+                : '<div class="upg-empty">Нет подходящих предметов</div>';
+        }
+    }
+    // полная перерисовка (вкладка, фильтр): позицию страницы сохраняем, список начинаем сверху
+    function render() {
+        const p = page.scrollTop;
+        renderStats(); renderTabs(); renderChips(); renderList();
+        list.scrollTop = 0;
+        page.scrollTop = p;
+    }
+
+    list.onclick = e => {
+        if (busy) return;
+        const el = e.target.closest('.upg-tile');
+        if (!el) return;
+        if (el.dataset.inv) {
+            const it = inventory.find(i => String(i.invId) === el.dataset.inv);
+            if (!it) return;
+            const k = sel.findIndex(s => s.invId === it.invId);
+            if (k >= 0) sel.splice(k, 1);
+            else if (sel.length < MAX_IN) sel.push(it);
+            else { showNotification(`❌ Максимум ${MAX_IN} предметов`, 'bad'); return; }
+            if (target && !ok(target)) target = null;          // цель больше не подходит по шансу
+            el.classList.toggle('on', k < 0);                  // меняем только эту карточку, список не перерисовывается
+        } else {
+            const w = targets.find(t => t.id === el.dataset.t);
+            if (!w || !ok(w)) return;
+            const was = target && target.id === w.id;
+            list.querySelectorAll('.upg-tile.on').forEach(x => x.classList.remove('on'));
+            target = was ? null : w;
+            if (!was) el.classList.add('on');
+        }
+        renderStats();
+    };
+
+    tabsEl.onclick = e => {
+        const b = e.target.closest('button');
+        if (!b || busy || b.dataset.t === tab) return;
+        tab = b.dataset.t;
+        render();
+    };
+
+    // фильтры 50/20/10: повторный тап выключает, ввод своей цены тоже выключает их
+    seg.onclick = e => {
+        const b = e.target.closest('button');
+        if (!b) return;
+        band = band === +b.dataset.b ? null : +b.dataset.b;
+        custom = '';
+        minInput.value = '';
+        render();
+    };
+    minInput.oninput = () => {
+        custom = minInput.value;
+        if (custom !== '') band = null;
+        render();
+    };
+
+    // «Как играть»: подсказка поверх, закрывается по повторному нажатию или нажатию в любом другом месте
+    const how = $('.upg-how'), help = $('.upg-help');
+    how.onclick = () => { how.classList.toggle('open'); help.classList.toggle('open'); };
+    page.addEventListener('click', e => {
+        if (e.target.closest('.upg-how, .upg-help')) return;
+        how.classList.remove('open');
+        help.classList.remove('open');
+    });
+
+    // ===== стрелка: медленно ходит по кругу, пока не нажат «Апгрейд» =====
+    function startIdle(a) {
+        stopIdle();
+        idle = ptr.animate([{ transform: `rotate(${a}deg)` }, { transform: `rotate(${a + 360}deg)` }],
+            { duration: 16000, iterations: Infinity });
+    }
+    function stopIdle() {                                      // возвращает текущий угол стрелки
+        if (!idle) return endA;
+        const m = new DOMMatrix(getComputedStyle(ptr).transform);
+        const a = (Math.atan2(m.b, m.a) * 180 / Math.PI + 360) % 360;
+        idle.cancel();
+        idle = null;
+        ptr.style.transform = `rotate(${a}deg)`;
+        return a;
+    }
+
+    // ===== вращение: чуть назад, потом плавный разгон вперёд и плавная остановка =====
+    go.onclick = () => {
+        if (busy || !target || !sel.length || !ok(target)) return;
+        busy = true;
+        go.disabled = true;
+        const c = chance(), goal = target, used = [...sel];
+        const win = Math.random() * 100 < c;                   // честный бросок: шанс на кольце равен настоящему
+        const zone = c * 3.6;                                  // закрашенная зона, градусы от верха по часовой
+        const a = win
+            ? zone * (0.06 + 0.88 * Math.random())
+            : zone + (360 - zone) * (0.04 + 0.92 * Math.random());
+
+        used.forEach(i => removeFromInventory(i.invId));
+
+        cancelAnimationFrame(raf);
+        center.className = 'upg-center';
+        pctEl.innerHTML = '<span class="cr-dots"><i></i><i></i><i></i></span>';   // те же три точки, что при открытии кейса
+        lbl.textContent = 'крутим';
+        pop();
+
+        const cur = stopIdle();
+        const final = Math.ceil((cur + 360 * 5 - a) / 360) * 360 + a;   // минимум 5 оборотов, остановка ровно на угле a
+        const total = PULL_MS + SPIN_MS;
+        const spin = ptr.animate([
+            { transform: `rotate(${cur}deg)`, offset: 0, easing: 'cubic-bezier(.37,0,.63,1)' },
+            { transform: `rotate(${cur - PULL_DEG}deg)`, offset: PULL_MS / total, easing: 'cubic-bezier(.35,0,.05,1)' },
+            { transform: `rotate(${final}deg)`, offset: 1 }
+        ], { duration: total, fill: 'forwards' });
+
+        spin.onfinish = () => {
+            ptr.style.transform = `rotate(${final}deg)`;
+            spin.cancel();
+            endA = a;
+            center.className = 'upg-center ' + (win ? 'win' : 'lose');
+            let next = [];                                     // что выбрано для следующего апгрейда
+            if (win) {
+                addToInventory(goal);
+                const last = inventory[inventory.length - 1];  // только что полученное оружие
+                if (last && last.id === goal.id) next = [last];
+                pctEl.textContent = 'Успех!';
+                lbl.textContent = 'предмет получен';
+            } else {
+                pctEl.textContent = 'Неудача';
+                lbl.textContent = 'предметы сгорели';
+            }
+            pop();
+            saveAllData();
+            setTimeout(() => {                                 // через пару секунд готово к новой попытке
+                busy = false;
+                sel = next;
+                target = null;
+                tab = 'mine';
+                render();
+                startIdle(endA);
+            }, 2200);
+        };
+    };
+
+    // ===== открытие и закрытие =====
+    const craftPageEl = document.getElementById('craftPage');
+
+    function openUpgrade() {
+        if (!checkAuth()) return;
+        craftPageEl.classList.remove('active');
+        sel = []; target = null; tab = 'mine'; busy = false;
+        band = null; custom = ''; minInput.value = ''; shown = 0;
+        how.classList.remove('open'); help.classList.remove('open');
+        render();
+        pop();
+        page.classList.add('open');
+        startIdle(endA);
+    }
+    function closeOverlays() {                                 // закрыть крафт и апгрейд (апгрейд не закрываем во время вращения)
+        craftPageEl.classList.remove('active');
+        if (!busy) { page.classList.remove('open'); stopIdle(); }
+    }
+
+    // пока открыт крафт или апгрейд, шапки скрыты, а навигация остаётся поверх; градиент крутится только пока апгрейд открыт
+    const mo = { attributes: true, attributeFilter: ['class'] };
+    const syncBody = () => document.body.classList.toggle('pg-on', !!document.querySelector('.upg-page.open') || craftPageEl.classList.contains('active'));
+
+    new MutationObserver(() => { syncBody(); page.classList.contains('open') ? startGrad() : stopGrad(); }).observe(page, mo);
+    new MutationObserver(syncBody).observe(craftPageEl, mo);
+
+    // вкладка навигации закрывает крафт и апгрейд
+    const nav = document.querySelector('.bottom-nav');
+    nav.addEventListener('click', e => {
+        const it = e.target.closest('.nav-item');
+        if (it && it.dataset.tab !== 'games') closeOverlays();
+    }, true);
+
+    // ===== карточка «Апгрейд» в панели мини-игр =====
+    const sheet = document.querySelector('.games-sheet');
+    const card = document.createElement('div');
+    card.className = 'game-app-card';
+    card.dataset.game = 'upgrade';
+    card.innerHTML = '<div class="game-icon"><i class="fas fa-arrow-up"></i></div><div class="game-name">Апгрейд</div>';
+    sheet.querySelector('.games-grid-modern').prepend(card);
+
+    sheet.addEventListener('click', e => {
+        if (!e.target.closest('[data-game="upgrade"]')) return;
+        e.stopPropagation();                                   // открывается поверх, вкладка не меняется
+        document.querySelector('.gs-overlay').click();         // закрыть панель
+        openUpgrade();
+    }, true);
+    sheet.addEventListener('click', e => {                     // выбор другой игры закрывает апгрейд
+        const g = e.target.closest('.game-app-card');
+        if (!g || g.dataset.game === 'upgrade') return;
+        if (g.dataset.game === 'craft') { if (!busy) { page.classList.remove('open'); stopIdle(); } }
+        else closeOverlays();
+    });
+})();
+
+
+(function () {
+    const casePageEl = document.getElementById('casePage');
+    const back = document.getElementById('backToMain');
+
+    // когда предмет выпал и кнопки «Продать» и «‹» уже на экране, стрелка назад снова активна
+    new MutationObserver(() => { if (document.getElementById('crKeep')) back.disabled = false; })
+        .observe(casePageEl, { childList: true, subtree: true });
+
+    // нажатие на стрелку назад = «В инвентарь», после чего страница закрывается как обычно
+    casePageEl.addEventListener('click', e => {
+        if (!e.target.closest('#backToMain')) return;
+        const keep = document.getElementById('crKeep');
+        if (keep) keep.click();
+    }, true);
+})();
+
+
+if (!document.querySelector('meta[name="theme-color"]')) {
+    document.head.insertAdjacentHTML('beforeend', '<meta name="theme-color" content="#0a0e1a"><meta name="color-scheme" content="dark">');
+}
+
+
+(function () {
+    const FLOORS = 10;           // этажей
+    const BASE = 16;             // ступенек на нижнем этаже, на каждом следующем на одну меньше (на десятом 7)
+    const MAX_STONES = 6;        // камней можно выбрать от 1 до 6 (на верхнем этаже ступенек больше, чем камней)
+        const MIN_MULT = 1.01;       // коэффициент никогда не бывает ниже 1.01
+    // коэффициент последнего (десятого) этажа для каждого количества камней, комиссия уже внутри;
+    // коэффициенты остальных этажей рассчитываются от него
+    const FINAL = { 1: 2.05, 2: 6.10, 3: 18.15, 4: 80.00, 5: 364.10, 6: 2000.00 };
+           // комиссия сайта, уже учтена в коэффициентах (0 — без комиссии)
+           // комиссия сайта, уже учтена в коэффициентах (0 — без комиссии)
+    const MIN_BET = 5;
+    const HW = 22;               // размер клевера
+    const RESET_MS = 3000;       // через сколько после конца игры игра сбрасывается
+    const TITLE = 'Башня';       // название игры
+
+    const cellsOf = i => BASE - i;                              // сколько ступенек на этаже i (0 — нижний)
+    // коэффициент этажа: шансы всех пройденных этажей, перемноженные и уменьшенные на комиссию
+        // коэффициент этажа: берём настоящие шансы всех пройденных этажей и подгоняем их так, чтобы последний этаж
+    // получил значение из таблицы FINAL; форма роста сохраняется, ниже MIN_MULT коэффициент не опускается
+    const mults = s => {
+        const raw = []; let m = 1;
+        for (let i = 0; i < FLOORS; i++) { const c = cellsOf(i); m *= c / (c - s); raw.push(m); }
+        const k = Math.log(FINAL[s]) / Math.log(raw[FLOORS - 1]);
+        return raw.map(r => Math.max(MIN_MULT, Math.pow(r, k)));
+    };
+    const fmtM = m => 'X' + m.toFixed(2);
+
+    const money = x => formatBalance(Math.floor(x * 100) / 100);
+    const pickStones = (c, s) => {
+        const a = Array.from({ length: c }, (_, j) => j);
+        for (let k = a.length - 1; k > 0; k--) { const r = Math.floor(Math.random() * (k + 1)); [a[k], a[r]] = [a[r], a[k]]; }
+        return a.slice(0, s);
+    };
+
+    // ===== камень: граненый, с бликом и тенью =====
+    const ROCK = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'>" +
+        "<defs><radialGradient id='g' cx='.35' cy='.3' r='.9'><stop offset='0' stop-color='#ddd7ca'/><stop offset='.55' stop-color='#8f897e'/><stop offset='1' stop-color='#4f4b44'/></radialGradient></defs>" +
+        "<ellipse cx='16' cy='29.3' rx='10' ry='2.2' fill='rgba(0,0,0,.4)'/>" +
+        "<path d='M5 22L4 15L9 8L17 5L25 8L29 15L27 23L20 28L10 27Z' fill='url(#g)' stroke='#3a3732' stroke-width='1' stroke-linejoin='round'/>" +
+        "<path d='M9 8L17 5L18 12L11 14Z' fill='rgba(255,255,255,.3)'/>" +
+        "<path d='M25 8L29 15L27 23L21 19Z' fill='rgba(0,0,0,.25)'/>" +
+        "<path d='M10 27L20 28L27 23L21 19L12 21Z' fill='rgba(0,0,0,.18)'/>" +
+        "<path d='M11 14L12 21M18 12L21 19' stroke='rgba(0,0,0,.35)' stroke-width='.8' fill='none'/>" +
+        "</svg>";
+    const st = document.createElement('style');
+    st.textContent = ':root{--rock:url("data:image/svg+xml,' + encodeURIComponent(ROCK) + '")}';
+    document.head.appendChild(st);
+
+    let stones = 1, active = false, moving = false, floor = 0, bet = 0, layout = [], picks = [], over = null;   // over: 'win' | 'lose' | null
+    let msgTimer = 0, resetSeq = 0, hy = 0, chipVals = [], chipRaf = 0, tweening = false;
+
+    // ===== высота шапки: мини-игры начинаются под ней =====
+    const hdr = document.querySelector('.header');
+    const setHdr = () => { const h = hdr.offsetHeight; if (h) document.documentElement.style.setProperty('--hdr-h', h + 'px'); };
+    setHdr();
+    window.addEventListener('resize', setHdr);
+
+    // ===== страница игры (оформление как у апгрейда) =====
+    const page = document.createElement('div');
+    page.className = 'upg-page stp-page';
+    page.innerHTML = `
+        <div class="upg-head">
+            <h2>${TITLE}</h2>
+            <div class="upg-how"><span>Как играть</span><b class="upg-chev"><i class="fas fa-chevron-down"></i></b></div>
+            <div class="upg-help"><ol>
+                <li>Сделай ставку и выбери количество камней (от 1 до ${MAX_STONES}).</li>
+                <li>Все этажи видны сразу: ${FLOORS} этажей, на нижнем ${BASE} ступенек, на каждом следующем на одну меньше. У каждого этажа свой коэффициент, он показан в ленте под этажами. Чем больше камней, тем коэффициенты выше.</li>
+                <li>Выбирай ступеньку на подсвеченном этаже. Если там камень, ставка сгорает. Если нет, клевер поднимается выше, а камни пройденного этажа показываются.</li>
+                <li>После первого этажа в любой момент можно нажать «Забрать» и получить ставку, умноженную на коэффициент последнего пройденного этажа. Если дойдёшь до верха, выигрыш заберётся сам.</li>
+                <li class="upg-note">Примечание: комиссия сайта уже учтена в коэффициентах.</li>
+            </ol></div>
+        </div>
+        <div class="stp-ladder">
+            <div class="stp-rows"></div>
+            <div class="stp-hero"></div>
+            <div class="stp-chipwrap"><div class="stp-chips"></div><div class="stp-msg"></div></div>
+        </div>
+        <div class="stp-ctlrow">
+            <div class="stp-ctl"><div class="stp-cap">Сумма ставки</div><input class="stp-bet" type="number" inputmode="decimal" min="5" value="5"></div>
+            <div class="stp-ctl"><div class="stp-cap">Количество камней</div>
+                <div class="stp-stones"><div class="qty-pill"></div>${Array.from({ length: MAX_STONES }, (_, k) => `<button${k === 0 ? ' class="on"' : ''} data-s="${k + 1}">${k + 1}</button>`).join('')}</div>
+            </div>
+        </div>
+        <button class="upg-go">Начать игру</button>`;
+    document.body.appendChild(page);
+
+    const $ = s => page.querySelector(s);
+    const ladder = $('.stp-ladder'), rowsEl = $('.stp-rows'), hero = $('.stp-hero'), msg = $('.stp-msg'), chips = $('.stp-chips');
+    const go = $('.upg-go'), betInput = $('.stp-bet'), stonesEl = $('.stp-stones'), ctls = page.querySelectorAll('.stp-ctl');
+    const craftPageEl = document.getElementById('craftPage');
+
+    // фигурка: клевер с логотипа сайта
+    const clover = document.querySelector('.clover-icon');
+    hero.innerHTML = clover ? clover.outerHTML : '🍀';
+
+    // сообщение лежит поверх ленты коэффициентов; по нажатию плавно исчезает
+    function setMsg(text, cls) {
+        clearTimeout(msgTimer);
+        if (!text) { msg.classList.remove('show'); return; }
+        msg.textContent = text;
+        msg.className = 'stp-msg show ' + cls;
+        if (cls === 'info') msgTimer = setTimeout(() => msg.classList.remove('show'), 2500);
+    }
+    msg.onclick = () => { clearTimeout(msgTimer); msg.classList.remove('show'); };
+    const syncUser = () => { const u = users.findIndex(x => x.username === currentUser.username); if (u !== -1) users[u].balance = balance; };
+
+    // ===== этажи: строятся один раз за игру, дальше меняются только состояния ступенек =====
+    function buildLadder() {
+        rowsEl.innerHTML = Array.from({ length: FLOORS }, (_, k) => {
+            const i = FLOORS - 1 - k;                           // сверху вниз: верхний этаж первым
+            const n = cellsOf(i);
+            const off = Math.floor(Math.random() * (BASE - n + 1));   // этажи смещены по горизонтали случайно
+            const segs = Array.from({ length: n }, (_, j) => `<div class="stp-seg" data-j="${j}"></div>`).join('');
+            return `<div class="stp-row" data-i="${i}"><div class="stp-segs" style="width:${n / BASE * 100}%;margin-left:${off / BASE * 100}%">${segs}</div></div>`;
+        }).join('');
+    }
+    function paint() {
+        rowsEl.querySelectorAll('.stp-row').forEach(row => {
+            const i = +row.dataset.i;
+            row.querySelectorAll('.stp-seg').forEach(seg => {
+                const j = +seg.dataset.j;
+                const stone = !!layout[i] && layout[i].includes(j);
+                const revealed = i < floor || (i === floor && over === 'lose');   // камни показываются у пройденных этажей и у этажа, где проиграл
+                let cls = 'stp-seg';
+                if (i < floor && picks[i] === j) cls += ' pick';
+                if (i === floor && over === 'lose' && picks[i] === j) cls += ' hit';
+                if (active && !moving && i === floor) cls += ' act';
+                else if (active && moving && i === floor && picks[i] === j) cls += ' sel';
+                seg.className = cls;
+                const rock = seg.querySelector('.stp-rock');
+                if (revealed && stone && !rock) {                // новый камень падает сверху, у каждого своя небольшая задержка
+                    seg.insertAdjacentHTML('beforeend', `<i class="stp-rock" style="animation-delay:${Math.round(Math.random() * 220)}ms"></i>`);
+                }
+                if (!(revealed && stone) && rock) rock.remove();
+            });
+        });
+    }
+
+    // ===== клевер: стоит над плитой, к следующей плите идёт под ней и поднимается над ней =====
+    // координаты считаются по разметке (offset), а не по getBoundingClientRect: анимация открытия страницы их не искажает
+    function segPos(i, j) {
+        const row = rowsEl.querySelector(`.stp-row[data-i="${i}"]`);
+        const seg = row.querySelector(`.stp-seg[data-j="${j}"]`);
+        return { x: seg.offsetLeft + seg.offsetWidth / 2 - HW / 2, above: row.offsetTop - HW / 2 };
+    }
+    function setHero(x, y, anim) {                               // клевер двигается через transform: без следа и рывков
+        hero.style.transition = anim || 'none';
+        hero.style.transform = `translate(${x}px,${y}px)`;
+        hy = y;
+        if (!anim) void hero.offsetWidth;
+    }
+    function placeHero() {                                       // мгновенно ставит клевер туда, где ему положено быть
+        const f = over === 'lose' ? floor : floor - 1;
+        if (f >= 0 && picks[f] != null) { const p = segPos(f, picks[f]); setHero(p.x, p.above); }
+        else {                                                   // старт: по центру внизу, под нижним этажом
+            const r0 = rowsEl.querySelector('.stp-row[data-i="0"]');
+            setHero(ladder.clientWidth / 2 - HW / 2, r0.offsetTop + r0.offsetHeight + 10 - HW / 2);
+        }
+    }
+    function walk(x, y, done) {                                  // сначала вбок по текущему этажу, потом вверх над плиту
+        setHero(x, hy, 'transform .35s cubic-bezier(.4,0,.2,1)');
+        setTimeout(() => {
+            setHero(x, y, 'transform .4s cubic-bezier(.34,1.2,.5,1)');
+            setTimeout(done, 430);
+        }, 370);
+    }
+
+    // лента коэффициентов: плитки создаются один раз, меняются только классы, поэтому всё загорается плавно;
+    // число лежит в отдельном span, чтобы при смене анимировалось только оно, а не вся рамка
+    chips.innerHTML = Array.from({ length: FLOORS }, () => '<div class="stp-chip"><span></span></div>').join('');
+    const setChipText = (el, v) => { el.firstChild.textContent = fmtM(v); };
+    function renderChips(animate) {
+        const M = mults(stones);
+        const cur = Math.min(FLOORS - 1, active ? floor : over === 'win' ? Math.max(0, floor - 1) : over === 'lose' ? floor : 0);
+        [...chips.children].forEach((el, i) => {
+            el.classList.toggle('done', i < floor);
+            el.classList.toggle('cur', i === cur);
+        });
+        if (animate && chipVals.length) tweenChips(M);           // при смене количества камней числа плавно «пересчитываются»
+        else if (!tweening) { [...chips.children].forEach((el, i) => setChipText(el, M[i])); chipVals = M.slice(); }
+        const c = chips.children[cur];
+        if (c) chips.scrollTo({ left: c.offsetLeft - (chips.clientWidth - c.offsetWidth) / 2, behavior: 'smooth' });
+    }
+    function tweenChips(M) {
+        cancelAnimationFrame(chipRaf);
+        const from = chipVals.slice(), t0 = performance.now();
+        tweening = true;
+        [...chips.children].forEach(el => { const s = el.firstChild; s.classList.remove('tick'); void s.offsetWidth; s.classList.add('tick'); });
+        const step = t => {
+            const k = Math.min(1, (t - t0) / 600), e = 1 - Math.pow(1 - k, 3);
+            [...chips.children].forEach((el, i) => setChipText(el, from[i] + (M[i] - from[i]) * e));
+            if (k < 1) chipRaf = requestAnimationFrame(step);
+            else { tweening = false; chipVals = M.slice(); [...chips.children].forEach(el => el.firstChild.classList.remove('tick')); }
+        };
+        chipRaf = requestAnimationFrame(step);
+    }
+    function updateBtn() {
+        if (!active) { go.textContent = 'Начать игру'; go.disabled = false; }
+        else if (floor === 0 || moving) { go.textContent = moving ? '...' : 'Выбери ступеньку'; go.disabled = true; }
+        else { go.textContent = `Забрать ${money(bet * mults(stones)[floor - 1])} Ł`; go.disabled = false; }
+        ctls.forEach(c => c.classList.toggle('lock', active));
+    }
+    function refresh(animateChips) { paint(); renderChips(animateChips); updateBtn(); }
+
+    function freshLadder() { over = null; floor = 0; layout = []; picks = []; hero.classList.remove('dead'); setMsg(''); buildLadder(); placeHero(); }
+    function cancelReset() { resetSeq++; rowsEl.classList.remove('fade'); hero.style.opacity = ''; }
+
+    // через 3 секунды после конца игры всё плавно гаснет, перестраивается и так же плавно проявляется
+    function scheduleReset() {
+        const my = ++resetSeq;
+        setTimeout(() => {
+            if (my !== resetSeq) return;
+            setMsg('');
+            rowsEl.classList.add('fade');
+            hero.style.transition = 'opacity .45s ease';
+            hero.style.opacity = '0';
+            setTimeout(() => {
+                if (my !== resetSeq) return;
+                freshLadder();                                   // новая башня и клевер внизу по центру, пока всё невидимо
+                refresh();
+                rowsEl.classList.remove('fade');
+                hero.style.transition = 'opacity .5s ease';
+                hero.style.opacity = '';
+            }, 520);
+        }, RESET_MS);
+    }
+
+    // ===== ход игры =====
+    function cash() {
+        const m = mults(stones)[floor - 1];
+        const win = Math.floor(bet * m * 100) / 100;
+        balance += win;
+        syncUser();
+        updateBalanceUI(true);
+        saveAllData();
+        active = false; over = 'win';
+        setMsg(`Выигрыш +${money(win)} Ł (${fmtM(m)})`, 'win');
+        refresh();
+        scheduleReset();
+    }
+
+    rowsEl.onclick = e => {
+        const seg = e.target.closest('.stp-seg.act');
+        if (!seg || !active || moving) return;
+        const j = +seg.dataset.j;
+        picks[floor] = j;
+        moving = true;
+        refresh();                                               // плита подсвечивается, остальные нельзя нажать
+        const p = segPos(floor, j);
+        walk(p.x, p.above, () => {
+            moving = false;
+            if (layout[floor].includes(j)) {                     // камень
+                active = false; over = 'lose';
+                hero.classList.add('dead');
+                setMsg(`Камень! Ставка ${money(bet)} Ł сгорела`, 'lose');
+                saveAllData();
+                refresh();
+                scheduleReset();
+                return;
+            }
+            floor++;
+            if (floor === FLOORS) { cash(); return; }            // дошёл до верха: выигрыш забирается сам
+            refresh();
+        });
+    };
+
+    go.onclick = () => {
+        if (active) { if (floor > 0 && !moving) cash(); return; }
+        if (!checkAuth()) return;
+        const b = parseFloat(betInput.value);
+        if (isNaN(b) || b < MIN_BET) { showNotification(`❌ Минимальная ставка ${MIN_BET} Ł`, 'bad'); return; }
+        if (b > balance) { showNotification('❌ Недостаточно Ł!', 'bad'); return; }
+        bet = Math.floor(b * 100) / 100;
+        balance -= bet;
+        syncUser();
+        updateBalanceUI();
+        saveAllData();
+        cancelReset();
+        freshLadder();
+        layout = Array.from({ length: FLOORS }, (_, i) => pickStones(cellsOf(i), stones));   // камни расставлены заранее и не меняются
+        active = true;
+        setMsg('Выбери ступеньку на нижнем этаже', 'info');
+        refresh();
+    };
+
+    // количество камней: блок 3x2, выделение плавно переезжает и по строке, и по столбцу, коэффициенты плавно пересчитываются
+    stonesEl.onclick = e => {
+        const b = e.target.closest('button');
+        if (!b || active || +b.dataset.s === stones) return;
+        stones = +b.dataset.s;
+        stonesEl.style.setProperty('--x', (stones - 1) % 3);
+        stonesEl.style.setProperty('--y', Math.floor((stones - 1) / 3));
+        stonesEl.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+        if (over) { cancelReset(); freshLadder(); }
+        refresh(true);
+    };
+
+    // «Как играть»: подсказка поверх, закрывается повторным нажатием или нажатием в другом месте
+    const how = $('.upg-how'), help = $('.upg-help');
+    how.onclick = () => { how.classList.toggle('open'); help.classList.toggle('open'); };
+    page.addEventListener('click', e => {
+        if (e.target.closest('.upg-how, .upg-help')) return;
+        how.classList.remove('open');
+        help.classList.remove('open');
+    });
+
+    // ===== открытие и закрытие =====
+    function openStones() {
+        if (!checkAuth()) return;
+        craftPageEl.classList.remove('active');
+        document.querySelectorAll('.upg-page.open').forEach(p => { if (p !== page) p.classList.remove('open'); });
+        if (!active && over) { cancelReset(); freshLadder(); }   // идущая игра сохраняется, даже если выйти на другую вкладку
+        how.classList.remove('open'); help.classList.remove('open');
+        page.scrollTop = 0;                                      // всегда начинаем с начала страницы
+        page.classList.add('open');
+        refresh();
+        placeHero();
+    }
+    new MutationObserver(() => document.body.classList.toggle('pg-on', !!document.querySelector('.upg-page.open') || craftPageEl.classList.contains('active')))
+        .observe(page, { attributes: true, attributeFilter: ['class'] });
+    window.addEventListener('resize', () => { if (!moving) placeHero(); });
+
+    // вкладка навигации закрывает игру
+    document.querySelector('.bottom-nav').addEventListener('click', e => {
+        const it = e.target.closest('.nav-item');
+        if (it && it.dataset.tab !== 'games') page.classList.remove('open');
+    }, true);
+
+    // ===== карточка в панели мини-игр: Stone Floors заменена на «Башню» =====
+    const sheet = document.querySelector('.games-sheet');
+    const card = sheet.querySelector('[data-game="stone"]');
+    if (card) card.querySelector('.game-name').textContent = TITLE;
+    sheet.addEventListener('click', e => {
+        const g = e.target.closest('.game-app-card');
+        if (!g) return;
+        if (g.dataset.game === 'stone') {
+            e.stopPropagation();                                 // старая игра больше не открывается
+            document.querySelector('.gs-overlay').click();       // закрыть панель
+            openStones();
+        } else page.classList.remove('open');                    // выбор другой игры закрывает эту
+    }, true);
+
+    buildLadder();
+    refresh();
+    placeHero();
+})();
+
+
+
+
+
+
+
+
+(function () {
+    // ===== силуэт АКР для заглушек оружия =====
+    const AKR = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 50'>" +
+        "<path d='M3 19 20 17 22 29 7 34z' fill='#5a5d66'/>" +                 // приклад
+        "<path d='M20 16h44v12H20z' fill='#6a6d76'/>" +                        // ствольная коробка
+        "<path d='M22 13h40l3 3H22z' fill='#4a4d56'/>" +                       // крышка
+        "<path d='M64 17h26v10H64z' fill='#8a8d96'/>" +                        // цевьё
+        "<path d='M64 13h30v3H64z' fill='#4a4d56'/>" +                         // газовая трубка
+        "<path d='M90 19h24v3H90z' fill='#6a6d76'/>" +                         // ствол
+        "<path d='M113 17h5v8h-5zM104 14h3v6h-3z' fill='#4a4d56'/>" +          // дульный тормоз и мушка
+        "<path d='M42 28h10q7 11 2 20H45q4-9-3-20z' fill='#5a5d66'/>" +        // изогнутый магазин
+        "<path d='M28 28h7l-2 11h-7z' fill='#4a4d56'/>" +                      // рукоять
+        "<path d='M36 28h6v3q-4 4-6 0z' fill='#4a4d56'/>" +                    // спусковая скоба
+        "</svg>";
+    const st = document.createElement('style');
+    st.textContent = ':root{--akr:url("data:image/svg+xml,' + encodeURIComponent(AKR) + '")}';
+    document.head.appendChild(st);
+
+    const SEL = '.cimg, .cr-img, .inventory-item-icon';
+
+    // иконка кейса, если картинка из разметки пропала (например, из-за сбоя сети)
+    function caseSrc(c) {
+        const card = c.closest('[data-case-id]');
+        if (card) { const d = cases.find(x => x.id === card.dataset.caseId); return d && d.icon; }
+        if (c.classList.contains('big') && currentCase) return currentCase.icon;
+        return '';
+    }
+
+    // проверяем всё, что ещё не «готово»: и во время загрузки, и после неё
+    function scan() {
+        document.querySelectorAll('.cimg:not(.ok), .cr-img:not(.ok), .inventory-item-icon:not(.ok)').forEach(c => {
+            const img = c.querySelector('img');
+            if (img) {
+                if (img.complete && img.naturalWidth > 0) c.classList.add('ok');
+            } else if (c.classList.contains('cimg')) {
+                const s = caseSrc(c);
+                if (s && /\.(png|jpe?g)$/i.test(s)) {
+                    const n = document.createElement('img');
+                    n.src = s;
+                    n.alt = '';
+                    n.onload = () => c.classList.add('ok');
+                    c.appendChild(n);
+                }
+            } else c.classList.add('ok');                      // картинки нет (эмодзи): заглушка не нужна
+        });
+    }
+
+    // картинка загрузилась: сразу показываем её
+    document.addEventListener('load', e => {
+        const t = e.target;
+        if (t.tagName === 'IMG' && t.parentNode && t.parentNode.matches && t.parentNode.matches(SEL)) t.parentNode.classList.add('ok');
+    }, true);
+
+    // ошибка загрузки: старый обработчик удалял картинку навсегда, теперь пробуем ещё до 6 раз
+    window.addEventListener('error', e => {
+        const t = e.target;
+        if (!t || t.tagName !== 'IMG' || !t.parentNode || !t.parentNode.matches || !t.parentNode.matches(SEL)) return;
+        e.stopImmediatePropagation();
+        const n = (+t.dataset.try || 0) + 1;
+        t.dataset.try = n;
+        if (n > 6) return;
+        const base = t.dataset.base || (t.dataset.base = (t.getAttribute('src') || '').split('?')[0]);
+        setTimeout(() => { if (t.isConnected) t.src = base + '?r=' + n; }, 800 * n);
+    }, true);
+
+    let q = 0;
+    new MutationObserver(() => { if (!q) q = requestAnimationFrame(() => { q = 0; scan(); }); })
+        .observe(document.body, { childList: true, subtree: true });
+    setInterval(scan, 700);
+    scan();
+})();
+
+
+(function () {
+    // при каждом открытии апгрейд, игра и крафт показывают самое начало страницы
+    document.querySelectorAll('.upg-page').forEach(p => {
+        new MutationObserver(() => { if (p.classList.contains('open')) p.scrollTop = 0; })
+            .observe(p, { attributes: true, attributeFilter: ['class'] });
+    });
+    const craft = document.getElementById('craftPage');
+    new MutationObserver(() => { if (craft.classList.contains('active')) craft.scrollTop = 0; })
+        .observe(craft, { attributes: true, attributeFilter: ['class'] });
+})();
+
+
+
 
 
 
